@@ -37,18 +37,24 @@ export function isSeniorLevel(level: string): boolean {
   return level.startsWith('SS');
 }
 
-/** Brand palette, taken from the school logo. Mirrors the CSS custom properties. */
+/**
+ * Brand palette, sampled from the school crest. Mirrors the CSS custom
+ * properties in globals.css, and used where a colour has to be an inline
+ * value: email templates, the canvas field, the browser theme colour.
+ */
 export const BRAND = {
-  /** Emerald, used for headings and primary actions. */
-  brand: '#17604A',
-  brandDeep: '#0E4335',
-  /** Brass, the accent that reads on the dark surfaces. */
-  gold: '#D9B665',
-  ink: '#0A1410',
-  warm: '#F7F4EC',
+  /** The seed red, exactly as it appears in the crest. */
+  seed: '#DE0C0F',
+  /** The working red. Holds its contrast on paper at small sizes. */
+  brand: '#D21B1F',
+  brandDeep: '#A2141A',
+  /** The accent for dark surfaces, where the pure red vibrates against black. */
+  brandLight: '#F04A4E',
+  ink: '#141414',
+  warm: '#F7F5F1',
   white: '#FFFFFF',
-  muted: '#5C6B62',
-  hairline: '#E6EAE4',
+  muted: '#6B6660',
+  hairline: '#E9E5DF',
 } as const;
 
 export function siteUrl(): string {

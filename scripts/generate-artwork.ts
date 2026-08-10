@@ -25,16 +25,16 @@ import path from 'node:path';
 const OUT = path.join(process.cwd(), 'public', 'artwork');
 
 const C = {
-  night: '#040907',
-  ink: '#0A1410',
-  inkSoft: '#142019',
-  brandDeep: '#0E4335',
-  brand: '#17604A',
-  brandBright: '#238C69',
-  gold: '#D9B665',
-  goldDeep: '#A8842F',
-  goldPale: '#F0DCA9',
-  ivory: '#F7F4EC',
+  night: '#080706',
+  ink: '#141414',
+  inkSoft: '#221F1E',
+  brandDeep: '#6E0E12',
+  brand: '#A2141A',
+  brandBright: '#D21B1F',
+  gold: '#F04A4E',
+  goldDeep: '#B8322F',
+  goldPale: '#FFD9D4',
+  ivory: '#F7F5F1',
 };
 
 type Rand = () => number;

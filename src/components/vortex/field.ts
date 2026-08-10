@@ -25,7 +25,7 @@ interface Particle {
   spin: number;
   length: number;
   weight: number;
-  /** 0 emerald, 1 brass, 2 white hot. */
+  /** 0 crest red, 1 lighter red, 2 white hot. */
   tone: 0 | 1 | 2;
 }
 
@@ -41,9 +41,9 @@ const TAU = Math.PI * 2;
 /* Matching the site palette, as plain channel triples so alpha can vary
    without rebuilding a colour string on every draw. */
 const TONE = [
-  '35,140,105', // emerald
-  '217,182,101', // brass
-  '255,248,236', // white hot
+  '210,27,31', // the crest red
+  '240,74,78', // its lighter mix
+  '255,248,244', // white hot
 ] as const;
 
 export class GravityField {
@@ -192,8 +192,8 @@ export class GravityField {
     const well = ctx.createRadialGradient(0, 0, core * 0.6, 0, 0, wellOuter);
     well.addColorStop(0, `rgba(0,0,0,${0.97 * openness})`);
     well.addColorStop(0.3, `rgba(4,10,8,${0.8 * openness})`);
-    well.addColorStop(0.68, `rgba(10,20,16,${0.32 * openness})`);
-    well.addColorStop(1, 'rgba(10,20,16,0)');
+    well.addColorStop(0.68, `rgba(20,20,20,${0.32 * openness})`);
+    well.addColorStop(1, 'rgba(20,20,20,0)');
     ctx.fillStyle = well;
     ctx.beginPath();
     ctx.arc(0, 0, wellOuter, 0, TAU);
@@ -241,10 +241,10 @@ export class GravityField {
       ctx.scale(1, ring.squash);
 
       const glow = ctx.createRadialGradient(0, 0, ring.r * 0.7, 0, 0, ring.r * 1.14);
-      glow.addColorStop(0, 'rgba(23,96,74,0)');
-      glow.addColorStop(0.5, `rgba(35,150,110,${ring.alpha * openness * 0.55})`);
-      glow.addColorStop(0.82, `rgba(217,182,101,${ring.alpha * openness * 0.9})`);
-      glow.addColorStop(1, 'rgba(217,182,101,0)');
+      glow.addColorStop(0, 'rgba(162,20,26,0)');
+      glow.addColorStop(0.5, `rgba(210,27,31,${ring.alpha * openness * 0.55})`);
+      glow.addColorStop(0.82, `rgba(255,150,120,${ring.alpha * openness * 0.9})`);
+      glow.addColorStop(1, 'rgba(255,150,120,0)');
 
       ctx.strokeStyle = glow;
       ctx.lineWidth = ring.width * (1 + openness * 2.2);
@@ -256,9 +256,9 @@ export class GravityField {
 
     /* 4. Shear at the inner edge, the hottest part of the field. */
     const shear = ctx.createRadialGradient(0, 0, core * 0.95, 0, 0, core * 1.55);
-    shear.addColorStop(0, `rgba(255,250,240,${0.95 * openness})`);
-    shear.addColorStop(0.4, `rgba(217,182,101,${0.6 * openness})`);
-    shear.addColorStop(1, 'rgba(35,150,110,0)');
+    shear.addColorStop(0, `rgba(255,250,246,${0.95 * openness})`);
+    shear.addColorStop(0.4, `rgba(240,110,90,${0.6 * openness})`);
+    shear.addColorStop(1, 'rgba(210,27,31,0)');
     ctx.fillStyle = shear;
     ctx.beginPath();
     ctx.arc(0, 0, core * 1.55, 0, TAU);
@@ -272,7 +272,7 @@ export class GravityField {
     ctx.fill();
 
     // A thin bright rim keeps the edge of the hole crisp against the disk.
-    ctx.strokeStyle = `rgba(255,246,225,${0.7 * openness})`;
+    ctx.strokeStyle = `rgba(255,242,238,${0.7 * openness})`;
     ctx.lineWidth = 1 + openness * 1.6;
     ctx.beginPath();
     ctx.arc(0, 0, core, 0, TAU);
@@ -283,8 +283,8 @@ export class GravityField {
       const burst = reach * 0.95 * this.flash;
       const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, burst);
       glow.addColorStop(0, `rgba(255,252,245,${0.9 * this.flash})`);
-      glow.addColorStop(0.35, `rgba(217,182,101,${0.4 * this.flash})`);
-      glow.addColorStop(1, 'rgba(23,96,74,0)');
+      glow.addColorStop(0.35, `rgba(240,110,90,${0.4 * this.flash})`);
+      glow.addColorStop(1, 'rgba(162,20,26,0)');
       ctx.globalCompositeOperation = 'lighter';
       ctx.fillStyle = glow;
       ctx.beginPath();

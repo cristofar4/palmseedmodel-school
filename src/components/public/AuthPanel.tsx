@@ -29,9 +29,9 @@ export function AuthPanel({
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(105% 80% at 18% 8%, rgba(23,96,74,0.42) 0%, transparent 58%),' +
-              'radial-gradient(70% 60% at 88% 92%, rgba(217,182,101,0.12) 0%, transparent 60%),' +
-              'linear-gradient(172deg, #142019 0%, #0A1410 60%, #050B08 100%)',
+              'radial-gradient(105% 80% at 18% 8%, rgba(162,20,26,0.42) 0%, transparent 58%),' +
+              'radial-gradient(70% 60% at 88% 92%, rgba(240,74,78,0.12) 0%, transparent 60%),' +
+              'linear-gradient(172deg, #221F1E 0%, #141414 60%, #080706 100%)',
           }}
         />
         <div className="relative flex h-full flex-col justify-between p-12 xl:p-16">

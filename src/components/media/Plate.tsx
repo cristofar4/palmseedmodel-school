@@ -73,7 +73,7 @@ export function Band({
           ? undefined
           : {
               backgroundImage:
-                'radial-gradient(120% 90% at 22% 12%, rgba(23,96,74,0.5) 0%, rgba(10,20,16,0) 62%), linear-gradient(180deg, #142019 0%, #0A1410 55%, #040907 100%)',
+                'radial-gradient(120% 90% at 22% 12%, rgba(162,20,26,0.5) 0%, rgba(20,20,20,0) 62%), linear-gradient(180deg, #221F1E 0%, #141414 55%, #080706 100%)',
             }
       }
     >
@@ -84,7 +84,7 @@ export function Band({
           className="absolute inset-x-0 bottom-0 h-4/5"
           style={{
             background:
-              'linear-gradient(to top, rgba(4,9,7,0.94) 0%, rgba(4,9,7,0.78) 30%, rgba(4,9,7,0.42) 62%, transparent 100%)',
+              'linear-gradient(to top, rgba(8,7,6,0.94) 0%, rgba(8,7,6,0.78) 30%, rgba(8,7,6,0.42) 62%, transparent 100%)',
           }}
         />
       ) : null}

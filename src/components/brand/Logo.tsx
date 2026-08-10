@@ -35,7 +35,7 @@ export function Logo({
   className = '',
 }: LogoProps) {
   const nameColour = tone === 'light' ? 'text-warm' : 'text-ink';
-  const mottoColour = tone === 'light' ? 'text-gold' : 'text-brand';
+  const mottoColour = tone === 'light' ? 'text-brand-light' : 'text-brand';
 
   const width = Math.round(size * ASPECT);
 

@@ -108,7 +108,7 @@ export function SignInForm({
           <button
             type="button"
             onClick={onSwitchToSignup}
-            className="font-medium text-gold underline underline-offset-4"
+            className="font-medium text-brand-light underline underline-offset-4"
           >
             Create an account
           </button>

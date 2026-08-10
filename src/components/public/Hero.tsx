@@ -53,7 +53,7 @@ export function HeroContent({ variant = 'split' }: { variant?: 'split' | 'full' 
   return (
     <div ref={rootRef} className={`relative z-10 ${outer}`}>
       <div className={inner}>
-        <p data-hero-line className="eyebrow mb-7 text-gold">
+        <p data-hero-line className="eyebrow mb-7 text-brand-light">
           Nigerian Secondary Education
         </p>
 
@@ -67,10 +67,10 @@ export function HeroContent({ variant = 'split' }: { variant?: 'split' | 'full' 
           }`}
         >
           A school that takes
-          <span className="block text-gold">every mind seriously.</span>
+          <span className="block text-brand-light">every mind seriously.</span>
         </h1>
 
-        <div data-hero-line className="mt-9 h-px w-16 bg-gold/50" />
+        <div data-hero-line className="mt-9 h-px w-16 bg-brand/50" />
 
         <p
           data-hero-line
@@ -88,7 +88,7 @@ export function HeroContent({ variant = 'split' }: { variant?: 'split' | 'full' 
             type="button"
             disabled={busy}
             onClick={() => open('signup', applyRef.current)}
-            className="bg-gold px-8 py-4 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-gold-deep hover:text-warm disabled:opacity-60"
+            className="bg-brand px-8 py-4 text-[0.9375rem] font-semibold text-white transition-colors hover:bg-brand-deep disabled:opacity-60"
           >
             Begin a registration
           </button>

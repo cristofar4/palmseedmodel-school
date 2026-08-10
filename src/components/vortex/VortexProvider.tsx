@@ -450,7 +450,7 @@ function VortexPanelHost({
       <button
         type="button"
         onClick={onClose}
-        className="fixed right-5 top-5 z-[95] flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-warm transition hover:border-gold hover:text-gold"
+        className="fixed right-5 top-5 z-[95] flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-warm transition hover:border-brand-light hover:text-brand-light"
         aria-label="Close and return to the website"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">

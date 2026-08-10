@@ -4,6 +4,7 @@ import { ContactForm } from '@/components/public/ContactForm';
 import { Photo, hasPhotograph } from '@/components/media/Photo';
 import { Plate, Band } from '@/components/media/Plate';
 import { FeatureSection } from '@/components/public/FeatureSection';
+import { RingNumber, SeedRule, Ribbon } from '@/components/brand/Marks';
 import { SectionHeading } from '@/components/ui/Layout';
 import { EmptyState } from '@/components/ui/Feedback';
 import { PHOTOGRAPHY } from '@/lib/media';
@@ -76,13 +77,13 @@ export default async function HomePage() {
               className="absolute inset-0 hidden lg:block"
               style={{
                 background:
-                  'linear-gradient(to right, #0A1410 0%, rgba(10,20,16,0.2) 30%, transparent 58%)',
+                  'linear-gradient(to right, #141414 0%, rgba(20,20,20,0.2) 30%, transparent 58%)',
               }}
             />
             <div
               aria-hidden="true"
               className="absolute inset-x-0 bottom-0 h-32 lg:hidden"
-              style={{ background: 'linear-gradient(to top, #0A1410 0%, transparent 100%)' }}
+              style={{ background: 'linear-gradient(to top, #141414 0%, transparent 100%)' }}
             />
           </div>
         </section>
@@ -95,7 +96,7 @@ export default async function HomePage() {
             className="absolute inset-0"
             style={{
               backgroundImage:
-                'radial-gradient(90% 70% at 78% 26%, rgba(35,140,105,0.28) 0%, rgba(10,20,16,0) 58%), radial-gradient(70% 60% at 96% 8%, rgba(217,182,101,0.16) 0%, rgba(10,20,16,0) 60%), linear-gradient(160deg, #142019 0%, #0A1410 52%, #040907 100%)',
+                'radial-gradient(90% 70% at 78% 26%, rgba(210,27,31,0.28) 0%, rgba(20,20,20,0) 58%), radial-gradient(70% 60% at 96% 8%, rgba(240,74,78,0.16) 0%, rgba(20,20,20,0) 60%), linear-gradient(160deg, #221F1E 0%, #141414 52%, #080706 100%)',
             }}
           />
           <HeroContent variant="full" />
@@ -114,9 +115,9 @@ export default async function HomePage() {
             >
               <Link
                 href={item.href}
-                className="flex items-baseline gap-4 px-1 py-6 transition-colors hover:text-gold lg:px-6"
+                className="flex items-center gap-4 px-1 py-6 transition-colors hover:text-brand-light lg:px-6"
               >
-                <span className="font-display text-[0.75rem] text-gold">{item.number}</span>
+                <RingNumber value={item.number} size={38} tone="light" />
                 <span className="text-[0.9375rem] text-warm/80">{item.label}</span>
               </Link>
             </li>
@@ -129,9 +130,7 @@ export default async function HomePage() {
         <div className="shell grid gap-12 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-24">
           <div data-vortex-item>
             <p className="eyebrow">The school</p>
-            <p className="mt-6 font-display text-[1.5rem] italic leading-tight text-brand">
-              {SCHOOL.motto}
-            </p>
+            <Ribbon className="mt-6">{SCHOOL.motto}</Ribbon>
           </div>
 
           <div data-vortex-item>
@@ -171,8 +170,9 @@ export default async function HomePage() {
       </section>
 
       {/* 4. Commitments. A numbered editorial list, not four boxes. --------- */}
-      <section className="border-t border-ink-100 bg-pure py-24 lg:py-32">
+      <section className="bg-pure py-24 lg:py-32">
         <div className="shell">
+          <SeedRule className="mb-20" />
           <SectionHeading
             eyebrow="What we hold to"
             title="Four commitments that shape the school day."
@@ -186,9 +186,7 @@ export default async function HomePage() {
                 data-vortex-item
                 className="grid gap-4 border-b border-ink-100 py-8 sm:grid-cols-[5rem_16rem_minmax(0,1fr)] sm:gap-10 lg:py-10"
               >
-                <span className="font-display text-[1.75rem] leading-none text-gold-deep">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+                <RingNumber value={index + 1} size={46} />
                 <h3 className="text-[1.25rem] leading-snug">{value.title}</h3>
                 <p className="max-w-[56ch] text-[0.9375rem] leading-[1.8] text-ink-500">
                   {value.body}
@@ -229,7 +227,7 @@ export default async function HomePage() {
 
       {/* 6. Senior Secondary ---------------------------------------------- */}
       <FeatureSection photo={PHOTOGRAPHY.senior} imageSide="right" tone="dark">
-        <p className="eyebrow mb-5 text-gold">Senior Secondary</p>
+        <p className="eyebrow mb-5 text-brand-light">Senior Secondary</p>
         <h2 className="text-[clamp(1.75rem,3.6vw,2.7rem)] leading-[1.1] text-warm">
           SS 1 to SS 3, and a pathway that fits.
         </h2>
@@ -244,7 +242,7 @@ export default async function HomePage() {
               key={pathway.name}
               className="flex flex-wrap gap-x-8 gap-y-2 border-b border-white/10 py-5"
             >
-              <dt className="w-24 shrink-0 font-display text-[1.0625rem] text-gold">
+              <dt className="w-24 shrink-0 font-display text-[1.0625rem] text-brand-light">
                 {pathway.name}
               </dt>
               <dd className="flex-1 text-[0.9375rem] leading-[1.7] text-warm/60">{pathway.body}</dd>
@@ -270,7 +268,7 @@ export default async function HomePage() {
           <div className="relative flex min-h-[78svh] items-end">
             <div className="shell pb-16 lg:pb-20">
               <div data-vortex-item className="max-w-2xl">
-                <p className="eyebrow mb-5 text-gold">School life</p>
+                <p className="eyebrow mb-5 text-brand-light">School life</p>
                 <h2 className="text-[clamp(1.9rem,4.2vw,3rem)] leading-[1.08] text-warm">
                   A school day has more in it than lessons.
                 </h2>
@@ -344,9 +342,7 @@ export default async function HomePage() {
                   data-vortex-item
                   className="grid gap-3 border-b border-ink-100 py-7 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-8"
                 >
-                  <span className="font-display text-[1.5rem] leading-none text-gold-deep">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+                  <RingNumber value={index + 1} size={40} />
                   <div>
                     <h3 className="text-[1.125rem] leading-snug">{item.title}</h3>
                     <p className="mt-3 text-[0.9375rem] leading-[1.75] text-ink-500">{item.body}</p>
@@ -391,9 +387,7 @@ export default async function HomePage() {
                 'On approval, an admission number and class are issued and the full portal opens.',
               ].map((step, index) => (
                 <li key={step} className="flex gap-6 border-b border-ink-200 py-4">
-                  <span className="font-display text-[0.875rem] text-gold-deep">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+                  <RingNumber value={index + 1} size={30} />
                   <span className="text-[0.9375rem] leading-[1.7] text-ink-700">{step}</span>
                 </li>
               ))}
@@ -474,7 +468,7 @@ export default async function HomePage() {
       <section id="contact" className="scroll-mt-24 bg-ink py-24 text-warm lg:py-32">
         <div className="shell grid gap-14 lg:grid-cols-[0.8fr_1fr] lg:gap-20">
           <div data-vortex-item>
-            <p className="eyebrow mb-5 text-gold">Contact</p>
+            <p className="eyebrow mb-5 text-brand-light">Contact</p>
             <h2 className="text-[clamp(1.75rem,3.6vw,2.6rem)] leading-[1.1] text-warm">
               Speak to the school office.
             </h2>
