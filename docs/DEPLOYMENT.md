@@ -42,6 +42,38 @@ entirely rather than showing an invented number. Fill them in and they appear.
 
 ---
 
+## Which terminal
+
+Two steps in this runbook need a command line with Node: applying the
+migrations, and creating the administrator account. Everything else is done in
+a browser.
+
+**If you do not have Node set up on your own machine, use GitHub Codespaces.**
+It gives you a terminal in the browser, on this repository, with Node already
+installed and `npm install` already run.
+
+1. Open the repository on github.com.
+2. Green **Code** button, **Codespaces** tab, **Create codespace on**
+   `claude/palmseed-school-website-portal-jip1fw`.
+3. Wait for it to finish setting up. A terminal panel appears at the bottom.
+   That is the terminal every command below refers to.
+
+The codespace is disposable. Delete it when you are finished and nothing is
+left behind.
+
+**Do not put a connection string in a file.** Export it in the terminal
+instead, so it lives only for that session:
+
+```bash
+export MIGRATION_DATABASE_URL='postgresql://...'
+```
+
+For something you will reuse, add it under **Settings, Secrets and variables,
+Codespaces** on the repository, and it arrives as an environment variable
+without ever being written down in the project.
+
+---
+
 ## 1. Create the database
 
 Supabase, or any managed PostgreSQL 14 or newer.

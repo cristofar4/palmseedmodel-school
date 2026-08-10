@@ -1,0 +1,29 @@
+{
+  "name": "Palmseed Model School",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+
+  // Everything the deployment runbook asks you to run works in this terminal.
+  // Nothing has to be installed on your own machine.
+  "postCreateCommand": "npm install",
+
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Palmseed", "onAutoForward": "notify" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  },
+
+  // Secrets belong in Codespaces secrets or in an exported shell variable,
+  // never in a file the repository tracks.
+  "remoteEnv": {
+    "NEXT_PUBLIC_SITE_URL": "http://localhost:3000"
+  }
+}
