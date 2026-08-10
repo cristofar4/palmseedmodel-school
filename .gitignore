@@ -1,0 +1,30 @@
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+*.pem
+
+# local env files
+.env
+.env.local
+.env*.local
+
+# testing
+coverage/
+playwright-report/
+test-results/
+.playwright/
+
+# runtime email capture used when no Resend key is configured
+.mail-outbox/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# vercel
+.vercel
+
+# local database cluster used by the integration tests
+/pgdata/
