@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Logo } from '@/components/brand/Logo';
 import { SCHOOL } from '@/lib/school';
-import { PHOTOGRAPHY, photographyCredits } from '@/lib/media';
+import { PHOTOGRAPHY, PHOTOGRAPHY_NOTE } from '@/lib/media';
 import { anyPhotographyInstalled } from '@/components/media/Photo';
 
 const COLUMNS = [
@@ -125,18 +125,12 @@ export function SiteFooter() {
         </div>
 
         {/* Whichever imagery is installed, the page says what it is. Nobody
-            should have to guess whether a picture here shows the real school. */}
-        {showCredits ? (
-          <p className="mt-6 text-[0.6875rem] leading-relaxed text-warm/30">
-            Photography by {photographyCredits().join(', ')}. These are licensed stock photographs
-            used to illustrate this website. They do not show Palmseed students or staff.
-          </p>
-        ) : (
-          <p className="mt-6 text-[0.6875rem] leading-relaxed text-warm/30">
-            The images on this website are original illustrations drawn for Palmseed. They are not
-            photographs of the school, its students or its staff.
-          </p>
-        )}
+            should have to guess what a picture here is showing them. */}
+        <p className="mt-6 text-[0.6875rem] leading-relaxed text-warm/30">
+          {showCredits
+            ? PHOTOGRAPHY_NOTE
+            : 'The images on this website are placeholder panels, not photographs. Palmseed has not yet supplied its own photography.'}
+        </p>
       </div>
     </footer>
   );

@@ -4,20 +4,46 @@ import Image from 'next/image';
 import type { Photograph } from '@/lib/media';
 
 /**
- * Whether a declared photograph has actually been downloaded yet.
+ * Formats accepted for an installed photograph, in the order they are tried.
  *
- * Checked once per path and remembered, because this runs during render on the
- * server and the filesystem does not change between requests.
+ * The manifest declares one path per slot, but nobody should have to convert a
+ * file just to install it. Whatever the school actually has, under the right
+ * name, is used. WebP and AVIF come first because they are already compressed
+ * better than a JPEG of the same quality.
  */
-const presence = new Map<string, boolean>();
+const EXTENSIONS = ['.avif', '.webp', '.jpg', '.jpeg', '.png'] as const;
 
-function isPresent(src: string): boolean {
-  const cached = presence.get(src);
+/**
+ * The file on disk for a declared slot, or null when none has been installed.
+ *
+ * Resolved once per path and remembered, because this runs during render on
+ * the server and the filesystem does not change between requests.
+ */
+const resolved = new Map<string, string | null>();
+
+function resolveSource(src: string): string | null {
+  const cached = resolved.get(src);
   if (cached !== undefined) return cached;
 
-  const onDisk = existsSync(path.join(process.cwd(), 'public', src.replace(/^\//, '')));
-  presence.set(src, onDisk);
-  return onDisk;
+  const withoutExtension = src.replace(/\.[^./]+$/, '');
+  const declared = path.extname(src);
+  const candidates = declared ? [declared, ...EXTENSIONS] : [...EXTENSIONS];
+
+  let hit: string | null = null;
+  for (const extension of candidates) {
+    const candidate = `${withoutExtension}${extension}`;
+    if (existsSync(path.join(process.cwd(), 'public', candidate.replace(/^\//, '')))) {
+      hit = candidate;
+      break;
+    }
+  }
+
+  resolved.set(src, hit);
+  return hit;
+}
+
+function isPresent(src: string): boolean {
+  return resolveSource(src) !== null;
 }
 
 interface PhotoProps {
@@ -45,7 +71,9 @@ export function Photo({
   className = '',
   toneClassName = '',
 }: PhotoProps) {
-  if (!isPresent(photo.src)) {
+  const installed = resolveSource(photo.src);
+
+  if (installed === null) {
     /* Original artwork, drawn by scripts/generate-artwork.ts and served from
        public/artwork. A plain img rather than next/image because the source is
        an SVG, which the optimiser would only pass through anyway.
@@ -72,7 +100,7 @@ export function Photo({
 
   return (
     <Image
-      src={photo.src}
+      src={installed}
       alt={photo.alt}
       fill
       priority={priority}

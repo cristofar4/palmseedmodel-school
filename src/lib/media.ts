@@ -118,3 +118,21 @@ export type PhotographKey = keyof typeof PHOTOGRAPHY;
 export function photographyCredits(): string[] {
   return Array.from(new Set(Object.values(PHOTOGRAPHY).map((p) => p.photographer))).sort();
 }
+
+/**
+ * The footer line used when photographs are installed that did not come from
+ * the stock manifest above, which is the normal case once the school has
+ * supplied its own files.
+ *
+ * It deliberately claims nothing about who is pictured. The school knows the
+ * provenance of its own images and this build does not, so the wording states
+ * only what is certain. Two cases need it changed by hand:
+ *
+ *   - If these are genuine photographs of Palmseed students or staff, say so,
+ *     and make sure written consent is held for every identifiable person.
+ *   - If they were generated rather than taken, say that too. Presenting a
+ *     generated image as a photograph of a real school misleads families, and
+ *     the disclosure belongs on the page rather than in a commit message.
+ */
+export const PHOTOGRAPHY_NOTE =
+  'Photographs on this website are used for illustration. They are not a record of any named individual.';
