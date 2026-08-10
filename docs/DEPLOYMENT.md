@@ -7,6 +7,41 @@ secret is entered directly into the provider that needs it.
 
 ---
 
+## 0. Decide these before you deploy
+
+Four things are not bugs and not blockers to a build, but they are visible to
+every family that reaches the site. Settle them first, because they are far
+cheaper to fix before a domain is announced than after.
+
+**The photography note.** `PHOTOGRAPHY_NOTE` in `src/lib/media.ts` is the line
+in the page footer that tells a visitor what the pictures are. It currently
+claims nothing about who is pictured, which is safe but vague. Replace it with
+the truth:
+
+- If the photographs show real Palmseed students and staff, say so, and hold
+  written consent from every identifiable person, and from a parent or guardian
+  for anyone under eighteen, before the site is public.
+- If they were generated rather than taken, say that. A generated image
+  presented as a photograph of a real school misleads the families deciding
+  whether to send a child there.
+
+**The logo.** `public/brand/palmseed-logo.svg` is a plain placeholder monogram
+and says so in its own source. Replace it with the school's real mark, and add
+a raster copy at `public/brand/palmseed-logo.png` for email clients. Nothing in
+the code changes: every surface reads those two paths.
+
+**The remaining photographs.** `npm run media:check` prints which of the seven
+image slots are filled. The hero and school life slots drive the top of the
+landing page. Sections without a photograph arrange themselves as type instead
+of showing an empty frame, so the site is presentable either way, but the
+landing page is much stronger with them.
+
+**Address and telephone.** `SCHOOL.streetAddress` and `SCHOOL.phone` in
+`src/lib/school.ts` are `null`, so the contact page and footer omit them
+entirely rather than showing an invented number. Fill them in and they appear.
+
+---
+
 ## 1. Create the database
 
 Supabase, or any managed PostgreSQL 14 or newer.
@@ -34,7 +69,7 @@ export DATABASE_URL="$MIGRATION_DATABASE_URL"
 npm run db:migrate
 ```
 
-The seven migrations are applied in order, each in its own transaction, and
+The eight migrations are applied in order, each in its own transaction, and
 recorded in `schema_migrations` with a checksum. Re running is safe. Editing an
 applied migration is refused, so schema drift cannot go unnoticed.
 
@@ -179,7 +214,7 @@ Until the domain is ready the site is live on the Vercel production address.
 
 Work down this list. Every line is checkable in a browser.
 
-- [ ] Migrations applied, `schema_migrations` holds seven rows
+- [ ] Migrations applied, `schema_migrations` holds eight rows
 - [ ] `palmseed_app` has a password and `DATABASE_URL` uses it
 - [ ] All required environment variables set in Vercel Production
 - [ ] Production deploy is green
@@ -199,6 +234,10 @@ Work down this list. Every line is checkable in a browser.
 - [ ] CSV export downloads
 - [ ] Test data removed
 - [ ] `ADMIN_BOOTSTRAP_PASSWORD` removed from every environment
+- [ ] `PHOTOGRAPHY_NOTE` states truthfully what the images are, and consent is
+      held for every identifiable person if they are real photographs
+- [ ] The real logo has replaced the placeholder monogram
+- [ ] `npm run media:check` shows the slots you intend to fill are filled
 
 ---
 
