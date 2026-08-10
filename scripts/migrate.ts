@@ -11,6 +11,7 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { Client } from 'pg';
+import { assertUsableConnectionString } from '../src/lib/db/connection';
 import { loadEnvFiles } from './load-env';
 
 const MIGRATIONS_DIR = path.join(process.cwd(), 'db', 'migrations');
@@ -22,6 +23,11 @@ async function main(): Promise<void> {
   if (!connectionString) {
     throw new Error('Set DATABASE_URL (or MIGRATION_DATABASE_URL) before running migrations');
   }
+
+  assertUsableConnectionString(
+    connectionString,
+    process.env.MIGRATION_DATABASE_URL ? 'MIGRATION_DATABASE_URL' : 'DATABASE_URL',
+  );
 
   const needsSsl = /supabase|neon|render|railway|amazonaws/.test(connectionString);
   const client = new Client({

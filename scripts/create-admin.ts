@@ -15,6 +15,7 @@
 import { createHash, randomBytes, scrypt as scryptCallback } from 'node:crypto';
 import { promisify } from 'node:util';
 import { Client } from 'pg';
+import { assertUsableConnectionString } from '../src/lib/db/connection';
 import { loadEnvFiles } from './load-env';
 
 const scrypt = promisify(scryptCallback) as (
@@ -56,6 +57,10 @@ async function main(): Promise<void> {
   const resetPassword = process.argv.includes('--reset-password');
 
   if (!connectionString) throw new Error('DATABASE_URL is not set');
+  assertUsableConnectionString(
+    connectionString,
+    process.env.MIGRATION_DATABASE_URL ? 'MIGRATION_DATABASE_URL' : 'DATABASE_URL',
+  );
   if (!email) throw new Error('ADMIN_BOOTSTRAP_EMAIL is not set');
   if (!password) throw new Error('ADMIN_BOOTSTRAP_PASSWORD is not set');
 
