@@ -1,8 +1,15 @@
 import { requireAdmin } from '@/lib/auth/guards';
-import { teachers } from '@/lib/data/admin';
+import {
+  assignments,
+  classOptions,
+  sessionOptions,
+  subjectOptions,
+  teachers,
+} from '@/lib/data/admin';
 import { Panel } from '@/components/ui/Layout';
 import { EmptyState, StatusPill } from '@/components/ui/Feedback';
 import { CreateTeacherForm } from '@/components/admin/CreateTeacherForm';
+import { AssignTeacherForm } from '@/components/admin/AssignTeacherForm';
 import { csrfToken } from '@/lib/security/csrf';
 import { formatDateTime, statusLabel } from '@/lib/format';
 
@@ -10,7 +17,14 @@ export const dynamic = 'force-dynamic';
 
 export default async function TeachersPage() {
   const { principal } = await requireAdmin();
-  const [rows, token] = await Promise.all([teachers(principal), csrfToken()]);
+  const [rows, allAssignments, classes, subjects, sessions, token] = await Promise.all([
+    teachers(principal),
+    assignments(principal),
+    classOptions(principal),
+    subjectOptions(principal),
+    sessionOptions(principal),
+    csrfToken(),
+  ]);
 
   return (
     <div className="flex flex-col gap-7">
@@ -69,6 +83,48 @@ export default async function TeachersPage() {
             </table>
           </div>
         )}
+      </Panel>
+
+      <Panel
+        title="Assignments"
+        description="A teaching account reaches nothing until it is assigned. Access follows the assignment, not the role."
+      >
+        {allAssignments.length === 0 ? (
+          <EmptyState
+            title="No assignments yet."
+            description="Assign a teacher to a class below. Until then their portal shows no classes, which is correct rather than broken."
+          />
+        ) : (
+          <ul className="divide-y divide-ink-100">
+            {allAssignments.map((row) => (
+              <li key={row.id} className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
+                <div>
+                  <p className="text-[0.9375rem]">{row.teacher_name}</p>
+                  <p className="mt-0.5 text-[0.75rem] text-ink-400">
+                    {row.class_label}
+                    {row.subject_name ? `, ${row.subject_name}` : ', all subjects'}
+                    {`, ${row.session_name}`}
+                  </p>
+                </div>
+                {row.is_form_teacher ? (
+                  <span className="border border-palm-red/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-palm-red">
+                    Form teacher
+                  </span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+      </Panel>
+
+      <Panel title="Assign a teacher to a class">
+        <AssignTeacherForm
+          csrfToken={token}
+          teachers={rows}
+          classes={classes}
+          subjects={subjects}
+          sessions={sessions}
+        />
       </Panel>
 
       <Panel title="Add a teaching account">

@@ -64,6 +64,14 @@ interface VortexProviderProps {
 export function VortexProvider({ children, panel }: VortexProviderProps) {
   const [mode, setMode] = useState<AuthMode | null>(null);
   const [busy, setBusy] = useState(false);
+  /**
+   * Viewport position the collapse started from.
+   *
+   * Held in state rather than a ref because the panel has to mount already
+   * clipped to nothing at that point. Setting it afterwards would let the
+   * panel paint over the page for a frame before the clip applied.
+   */
+  const [panelOrigin, setPanelOrigin] = useState<{ x: number; y: number } | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -130,10 +138,13 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
       const pageX = viewportX + window.scrollX;
       const pageY = viewportY + window.scrollY;
 
+      // Reduced motion gets no clip, so the panel simply appears.
+      const animating = !prefersReducedMotion() && !!stage && !!clip && !!canvas;
+      setPanelOrigin(animating ? { x: viewportX, y: viewportY } : null);
       setMode(nextMode);
 
       // Reduced motion: no collapse, no field. Just present the panel.
-      if (prefersReducedMotion() || !stage || !clip || !canvas) {
+      if (!animating) {
         if (panelRef.current) {
           gsap.fromTo(
             panelRef.current,
@@ -271,17 +282,22 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
       timeline.to(field, { flash: 1, duration: 0.22, ease: 'power2.out' }, 1.5);
       timeline.to(field, { flash: 0, duration: 0.4, ease: 'power2.in' }, 1.72);
 
-      timeline.fromTo(
-        panelRef.current,
-        {
-          autoAlpha: 1,
-          clipPath: `circle(0px at ${viewportX}px ${viewportY}px)`,
+      /* The panel is mounted by React in response to setMode, which has not
+         happened yet at this point, so panelRef is still empty. Tweening it
+         here would silently do nothing and the panel would sit fully open
+         over the collapsing page. Instead the panel mounts already clipped to
+         nothing at the origin, and this call opens it when the core releases. */
+      timeline.call(
+        () => {
+          const panel = panelRef.current;
+          if (!panel) return;
+          gsap.to(panel, {
+            clipPath: `circle(${diagonal * 1.2}px at ${viewportX}px ${viewportY}px)`,
+            duration: 0.6,
+            ease: 'power3.out',
+          });
         },
-        {
-          clipPath: `circle(${diagonal * 1.2}px at ${viewportX}px ${viewportY}px)`,
-          duration: 0.6,
-          ease: 'power3.out',
-        },
+        undefined,
         1.56,
       );
 
@@ -307,6 +323,7 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
     const finish = () => {
       document.documentElement.classList.remove('vortex-locked');
       delete document.documentElement.dataset.vortexState;
+      setPanelOrigin(null);
       resetStage();
       setMode(null);
       runningRef.current = false;
@@ -383,7 +400,7 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
       />
 
       {mode !== null ? (
-        <VortexPanelHost panelRef={panelRef} mode={mode} onClose={close}>
+        <VortexPanelHost panelRef={panelRef} mode={mode} onClose={close} origin={panelOrigin}>
           {panel(mode)}
         </VortexPanelHost>
       ) : null}
@@ -401,11 +418,14 @@ function VortexPanelHost({
   mode,
   onClose,
   children,
+  origin,
 }: {
   panelRef: React.RefObject<HTMLDivElement | null>;
   mode: AuthMode;
   onClose: () => void;
   children: React.ReactNode;
+  /** When set, the panel mounts clipped to nothing at this point. */
+  origin: { x: number; y: number } | null;
 }) {
   return (
     <div
@@ -416,6 +436,7 @@ function VortexPanelHost({
       tabIndex={-1}
       className="fixed inset-0 z-[90] overflow-y-auto bg-ink outline-none"
       data-vortex-panel={mode}
+      style={origin ? { clipPath: `circle(0px at ${origin.x}px ${origin.y}px)` } : undefined}
     >
       {children}
       <button

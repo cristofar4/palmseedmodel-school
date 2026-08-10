@@ -413,3 +413,45 @@ export async function adminAnnouncements(principal: Principal): Promise<Announce
     ),
   );
 }
+
+export interface AssignmentRow {
+  id: string;
+  teacher_id: string;
+  teacher_name: string;
+  class_label: string;
+  subject_name: string | null;
+  session_name: string;
+  is_form_teacher: boolean;
+}
+
+/** Every teaching assignment, which is what opens a class to a teacher. */
+export async function assignments(principal: Principal): Promise<AssignmentRow[]> {
+  return withPrincipal(principal, (tx) =>
+    tx.rows<AssignmentRow>(
+      `select ta.id, ta.teacher_id, ta.is_form_teacher,
+              u.full_name as teacher_name,
+              palmseed_class_label(c.level, c.stream, c.arm) as class_label,
+              sub.name as subject_name,
+              s.name as session_name
+         from teacher_assignments ta
+         join teachers t            on t.id = ta.teacher_id
+         join users u               on u.id = t.user_id
+         join classes c             on c.id = ta.class_id
+         join academic_sessions s   on s.id = ta.session_id
+         left join subjects sub     on sub.id = ta.subject_id
+        order by u.full_name, c.level, c.arm`,
+    ),
+  );
+}
+
+export interface SubjectOption {
+  id: string;
+  name: string;
+  code: string;
+}
+
+export async function subjectOptions(principal: Principal): Promise<SubjectOption[]> {
+  return withPrincipal(principal, (tx) =>
+    tx.rows<SubjectOption>('select id, name, code from subjects order by name'),
+  );
+}

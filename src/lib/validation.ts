@@ -146,6 +146,25 @@ export const createTeacherSchema = z.object({
   specialism: trimmed(120).optional().or(z.literal('')),
 });
 
+export const assignTeacherSchema = z
+  .object({
+    teacherId: z.uuid('Choose a teacher.'),
+    classId: z.uuid('Choose a class.'),
+    sessionId: z.uuid('Choose an academic session.'),
+    // Empty means a form teacher assignment, which covers the whole class
+    // rather than one subject.
+    subjectId: z.uuid().optional().or(z.literal('')),
+    isFormTeacher: z.boolean().default(false),
+  })
+  .refine((value) => value.isFormTeacher || (value.subjectId ?? '') !== '', {
+    message: 'Choose a subject, or mark this as the form teacher assignment.',
+    path: ['subjectId'],
+  });
+
+export const removeAssignmentSchema = z.object({
+  assignmentId: z.uuid(),
+});
+
 export const updateStatusSchema = z.object({
   userId: z.uuid(),
   status: z.enum(['pending_review', 'active', 'suspended', 'graduated', 'rejected']),

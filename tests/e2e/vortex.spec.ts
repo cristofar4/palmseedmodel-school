@@ -56,6 +56,38 @@ test.describe('gravity vortex', () => {
     await expect(page.locator('html')).toHaveClass(/vortex-locked/);
   });
 
+  test('the panel stays inside the core until the collapse has finished', async ({ page }) => {
+    await page.goto('/');
+    await openAuthFromHeader(page, 'signin');
+
+    // Part way through the collapse the panel must still be clipped to
+    // essentially nothing at the origin. It is in the DOM from the first
+    // frame, so without the clip it would simply cover the page and the
+    // collapse would never be seen.
+    await page.waitForTimeout(800);
+
+    const readRadius = () =>
+      page.evaluate(() => {
+        const panel = document.querySelector('[data-vortex-panel]');
+        if (!panel) return null;
+        const clip = getComputedStyle(panel).clipPath;
+        const match = clip.match(/circle\(([\d.]+)px/);
+        return match ? Number(match[1]) : null;
+      });
+
+    const midRadius = await readRadius();
+    expect(midRadius, 'the panel should be clipped during the collapse').not.toBeNull();
+    expect(midRadius!).toBeLessThan(60);
+
+    await expect(page.locator('html')).toHaveAttribute('data-vortex-state', 'open', {
+      timeout: 8_000,
+    });
+
+    // Once the core releases, it has grown to cover the viewport.
+    const openRadius = await readRadius();
+    expect(openRadius!).toBeGreaterThan(500);
+  });
+
   test('opens the create account experience when that control is tapped', async ({ page }) => {
     await page.goto('/');
 
