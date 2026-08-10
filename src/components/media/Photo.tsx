@@ -84,6 +84,18 @@ export function Photo({
   );
 }
 
+/**
+ * Whether a real photograph has been installed for this slot.
+ *
+ * Layouts branch on this. A section built around a picture looks unfinished
+ * when half of it is a holding panel, so those sections fall back to a type
+ * led arrangement until the photograph arrives, and switch back on their own
+ * once it does.
+ */
+export function hasPhotograph(photo: Photograph): boolean {
+  return isPresent(photo.src);
+}
+
 /** True when at least one photograph is installed, used to decide on credits. */
 export function anyPhotographyInstalled(photos: Photograph[]): boolean {
   return photos.some((p) => isPresent(p.src));

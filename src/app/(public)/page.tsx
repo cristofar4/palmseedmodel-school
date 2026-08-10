@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { HeroContent } from '@/components/public/Hero';
 import { ContactForm } from '@/components/public/ContactForm';
-import { Photo } from '@/components/media/Photo';
+import { Photo, hasPhotograph } from '@/components/media/Photo';
 import { Plate, Band } from '@/components/media/Plate';
+import { FeatureSection } from '@/components/public/FeatureSection';
 import { SectionHeading } from '@/components/ui/Layout';
 import { EmptyState } from '@/components/ui/Feedback';
 import { PHOTOGRAPHY } from '@/lib/media';
@@ -50,33 +51,56 @@ const PATHWAYS = [
 export default async function HomePage() {
   const [announcements, token] = await Promise.all([publicAnnouncements(4), csrfToken()]);
 
+  /* Sections built around a picture arrange themselves differently until the
+     school installs one. See FeatureSection. */
+  const heroHasPhoto = hasPhotograph(PHOTOGRAPHY.hero);
+  const digitalHasPhoto = hasPhotograph(PHOTOGRAPHY.digital);
+  const admissionsHasPhoto = hasPhotograph(PHOTOGRAPHY.admissions);
+
   return (
     <>
-      {/* 1. Hero. The image runs full height beside the type, not behind it. */}
-      <section className="relative isolate grid bg-ink lg:min-h-[92svh] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)]">
-        <div className="order-2 flex items-center lg:order-1">
-          <HeroContent />
-        </div>
+      {/* 1. Hero. Split around the photograph when there is one, and a single
+          full measure column of type when there is not. */}
+      {heroHasPhoto ? (
+        <section className="relative isolate grid bg-ink lg:min-h-[92svh] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)]">
+          <div className="order-2 flex items-center lg:order-1">
+            <HeroContent />
+          </div>
 
-        <div className="relative order-1 min-h-[46svh] overflow-hidden lg:order-2 lg:min-h-full">
-          <Photo photo={PHOTOGRAPHY.hero} priority sizes="(max-width: 1024px) 100vw, 55vw" />
-          {/* Seats the image against the type column. Only across the seam, so
-              the picture itself is left alone. */}
+          <div className="relative order-1 min-h-[46svh] overflow-hidden lg:order-2 lg:min-h-full">
+            <Photo photo={PHOTOGRAPHY.hero} priority sizes="(max-width: 1024px) 100vw, 55vw" />
+            {/* Seats the image against the type column. Only across the seam,
+                so the picture itself is left alone. */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 hidden lg:block"
+              style={{
+                background:
+                  'linear-gradient(to right, #0A1410 0%, rgba(10,20,16,0.2) 30%, transparent 58%)',
+              }}
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-32 lg:hidden"
+              style={{ background: 'linear-gradient(to top, #0A1410 0%, transparent 100%)' }}
+            />
+          </div>
+        </section>
+      ) : (
+        <section className="relative isolate flex items-center overflow-hidden bg-ink lg:min-h-[88svh]">
+          {/* A deep field rather than a drawing. It carries the light without
+              claiming to be a picture of anywhere. */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 hidden lg:block"
+            className="absolute inset-0"
             style={{
-              background:
-                'linear-gradient(to right, #0A1410 0%, rgba(10,20,16,0.2) 30%, transparent 58%)',
+              backgroundImage:
+                'radial-gradient(90% 70% at 78% 26%, rgba(35,140,105,0.28) 0%, rgba(10,20,16,0) 58%), radial-gradient(70% 60% at 96% 8%, rgba(217,182,101,0.16) 0%, rgba(10,20,16,0) 60%), linear-gradient(160deg, #142019 0%, #0A1410 52%, #040907 100%)',
             }}
           />
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-32 lg:hidden"
-            style={{ background: 'linear-gradient(to top, #0A1410 0%, transparent 100%)' }}
-          />
-        </div>
-      </section>
+          <HeroContent variant="full" />
+        </section>
+      )}
 
       {/* 2. Index strip ---------------------------------------------------- */}
       <nav aria-label="Page sections" className="border-y border-white/10 bg-ink">
@@ -175,94 +199,70 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. Junior Secondary. Image half the screen, edge to edge. ---------- */}
-      <section className="grid bg-warm lg:grid-cols-2">
-        <div data-vortex-item className="relative min-h-[52svh] overflow-hidden bg-ink lg:min-h-[80svh]">
-          <Photo photo={PHOTOGRAPHY.junior} sizes="(max-width: 1024px) 100vw, 50vw" />
-        </div>
+      {/* 5. Junior Secondary --------------------------------------------- */}
+      <FeatureSection photo={PHOTOGRAPHY.junior} imageSide="left">
+        <p className="eyebrow mb-5">Junior Secondary</p>
+        <h2 className="text-[clamp(1.75rem,3.6vw,2.7rem)] leading-[1.1]">
+          JSS 1 to JSS 3, where the habits are set.
+        </h2>
+        <p className="mt-7 text-[1.0625rem] leading-[1.8] text-ink-600">
+          The junior school builds the foundation the senior years depend on. Students take the full
+          basic education curriculum, and the emphasis is on reading closely, writing clearly and
+          reasoning in numbers.
+        </p>
+        <p className="mt-5 text-[1.0625rem] leading-[1.8] text-ink-600">
+          Junior Secondary ends with the Basic Education Certificate Examination, which also informs
+          the pathway a student takes into the senior school.
+        </p>
 
-        <div data-vortex-item className="flex items-center px-6 py-20 sm:px-10 lg:px-14 xl:px-20">
-          <div className="max-w-[34rem]">
-            <p className="eyebrow mb-5">Junior Secondary</p>
-            <h2 className="text-[clamp(1.75rem,3.6vw,2.7rem)] leading-[1.1]">
-              JSS 1 to JSS 3, where the habits are set.
-            </h2>
-            <p className="mt-7 text-[1.0625rem] leading-[1.8] text-ink-600">
-              The junior school builds the foundation the senior years depend on. Students take the
-              full basic education curriculum, and the emphasis is on reading closely, writing
-              clearly and reasoning in numbers.
-            </p>
-            <p className="mt-5 text-[1.0625rem] leading-[1.8] text-ink-600">
-              Junior Secondary ends with the Basic Education Certificate Examination, which also
-              informs the pathway a student takes into the senior school.
-            </p>
+        <ul className="mt-10 flex flex-wrap gap-2.5">
+          {JUNIOR_LEVELS.map((level) => (
+            <li
+              key={level}
+              className="border border-ink-200 px-4 py-2 text-[0.8125rem] font-medium tracking-wide text-ink-700"
+            >
+              {level}
+            </li>
+          ))}
+        </ul>
+      </FeatureSection>
 
-            <ul className="mt-10 flex flex-wrap gap-2.5">
-              {JUNIOR_LEVELS.map((level) => (
-                <li
-                  key={level}
-                  className="border border-ink-200 px-4 py-2 text-[0.8125rem] font-medium tracking-wide text-ink-700"
-                >
-                  {level}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
+      {/* 6. Senior Secondary ---------------------------------------------- */}
+      <FeatureSection photo={PHOTOGRAPHY.senior} imageSide="right" tone="dark">
+        <p className="eyebrow mb-5 text-gold">Senior Secondary</p>
+        <h2 className="text-[clamp(1.75rem,3.6vw,2.7rem)] leading-[1.1] text-warm">
+          SS 1 to SS 3, and a pathway that fits.
+        </h2>
+        <p className="mt-7 text-[1.0625rem] leading-[1.8] text-warm/65">
+          Senior students choose one of three pathways. The choice is made with the school after
+          looking at junior results, aptitude and what the student intends to study next.
+        </p>
 
-      {/* 6. Senior Secondary ------------------------------------------------ */}
-      <section className="grid bg-ink text-warm lg:grid-cols-2">
-        <div
-          data-vortex-item
-          className="order-2 flex items-center px-6 py-20 sm:px-10 lg:order-1 lg:px-14 xl:px-20"
-        >
-          <div className="max-w-[34rem]">
-            <p className="eyebrow mb-5 text-gold">Senior Secondary</p>
-            <h2 className="text-[clamp(1.75rem,3.6vw,2.7rem)] leading-[1.1] text-warm">
-              SS 1 to SS 3, and a pathway that fits.
-            </h2>
-            <p className="mt-7 text-[1.0625rem] leading-[1.8] text-warm/65">
-              Senior students choose one of three pathways. The choice is made with the school after
-              looking at junior results, aptitude and what the student intends to study next.
-            </p>
+        <dl className="mt-10 border-t border-white/10">
+          {PATHWAYS.map((pathway) => (
+            <div
+              key={pathway.name}
+              className="flex flex-wrap gap-x-8 gap-y-2 border-b border-white/10 py-5"
+            >
+              <dt className="w-24 shrink-0 font-display text-[1.0625rem] text-gold">
+                {pathway.name}
+              </dt>
+              <dd className="flex-1 text-[0.9375rem] leading-[1.7] text-warm/60">{pathway.body}</dd>
+            </div>
+          ))}
+        </dl>
 
-            <dl className="mt-10 border-t border-white/10">
-              {PATHWAYS.map((pathway) => (
-                <div
-                  key={pathway.name}
-                  className="flex flex-wrap gap-x-8 gap-y-2 border-b border-white/10 py-5"
-                >
-                  <dt className="w-24 shrink-0 font-display text-[1.0625rem] text-gold">
-                    {pathway.name}
-                  </dt>
-                  <dd className="flex-1 text-[0.9375rem] leading-[1.7] text-warm/60">
-                    {pathway.body}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-
-            <ul className="mt-10 flex flex-wrap gap-2.5">
-              {SENIOR_LEVELS.map((level) => (
-                <li
-                  key={level}
-                  className="border border-white/20 px-4 py-2 text-[0.8125rem] font-medium tracking-wide text-warm/80"
-                >
-                  {level}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div
-          data-vortex-item
-          className="relative order-1 min-h-[52svh] overflow-hidden bg-ink lg:order-2 lg:min-h-[80svh]"
-        >
-          <Photo photo={PHOTOGRAPHY.senior} sizes="(max-width: 1024px) 100vw, 50vw" />
-        </div>
-      </section>
+        <ul className="mt-10 flex flex-wrap gap-2.5">
+          {SENIOR_LEVELS.map((level) => (
+            <li
+              key={level}
+              className="border border-white/20 px-4 py-2 text-[0.8125rem] font-medium tracking-wide text-warm/80"
+            >
+              {level}
+            </li>
+          ))}
+        </ul>
+      </FeatureSection>
 
       {/* 7. School life. One full bleed band, the image at full strength. --- */}
       <section className="relative">
@@ -319,7 +319,11 @@ export default async function HomePage() {
             className="mb-16"
           />
 
-          <div className="grid gap-12 lg:grid-cols-[1fr_0.82fr] lg:gap-20">
+          <div
+            className={`grid gap-12 lg:gap-20 ${
+              digitalHasPhoto ? 'lg:grid-cols-[1fr_0.82fr]' : ''
+            }`}
+          >
             <ol className="border-t border-ink-100">
               {[
                 {
@@ -363,7 +367,11 @@ export default async function HomePage() {
 
       {/* 9. Admissions ------------------------------------------------------ */}
       <section className="bg-warm py-24 lg:py-32">
-        <div className="shell grid items-center gap-14 lg:grid-cols-[1fr_0.8fr] lg:gap-20">
+        <div
+          className={`shell grid items-center gap-14 lg:gap-20 ${
+            admissionsHasPhoto ? 'lg:grid-cols-[1fr_0.8fr]' : ''
+          }`}
+        >
           <div data-vortex-item>
             <p className="eyebrow mb-5">Admissions</p>
             <h2 className="text-[clamp(1.85rem,4vw,2.9rem)] leading-[1.08]">

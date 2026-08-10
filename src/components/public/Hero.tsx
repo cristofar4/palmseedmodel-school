@@ -12,7 +12,7 @@ import { useVortex } from '@/components/vortex/VortexProvider';
  * Motion is one short entrance timeline, with a static presentation for anyone
  * who has asked for reduced motion.
  */
-export function HeroContent() {
+export function HeroContent({ variant = 'split' }: { variant?: 'split' | 'full' }) {
   const { open, busy } = useVortex();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const applyRef = useRef<HTMLButtonElement | null>(null);
@@ -40,9 +40,19 @@ export function HeroContent() {
     return () => context.revert();
   }, []);
 
+  /* In the split layout this column sits against the picture, so its measure
+     is narrow and it hugs the seam. Standing alone it takes the page grid and
+     a wider measure, because a 34rem column adrift in a full width band reads
+     as a mistake. */
+  const outer =
+    variant === 'split'
+      ? 'w-full px-6 py-20 sm:px-10 lg:py-24 lg:pl-10 lg:pr-14 xl:pl-16'
+      : 'shell w-full py-24 lg:py-32';
+  const inner = variant === 'split' ? 'mx-auto max-w-[34rem] lg:mx-0 lg:ml-auto' : 'max-w-[44rem]';
+
   return (
-    <div ref={rootRef} className="w-full px-6 py-20 sm:px-10 lg:py-24 lg:pl-10 lg:pr-14 xl:pl-16">
-      <div className="mx-auto max-w-[34rem] lg:mx-0 lg:ml-auto">
+    <div ref={rootRef} className={`relative z-10 ${outer}`}>
+      <div className={inner}>
         <p data-hero-line className="eyebrow mb-7 text-gold">
           Nigerian Secondary Education
         </p>
@@ -50,7 +60,11 @@ export function HeroContent() {
         <h1
           data-hero-line
           data-vortex-item
-          className="text-[clamp(2.5rem,6.2vw,4.4rem)] font-medium leading-[0.99] tracking-[-0.03em] text-warm"
+          className={`font-medium leading-[0.99] tracking-[-0.03em] text-warm ${
+            variant === 'split'
+              ? 'text-[clamp(2.5rem,6.2vw,4.4rem)]'
+              : 'text-[clamp(2.6rem,7vw,5.2rem)]'
+          }`}
         >
           A school that takes
           <span className="block text-gold">every mind seriously.</span>

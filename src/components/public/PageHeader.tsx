@@ -1,4 +1,4 @@
-import { Photo } from '@/components/media/Photo';
+import { Photo, hasPhotograph } from '@/components/media/Photo';
 import type { Photograph } from '@/lib/media';
 
 /**
@@ -38,7 +38,9 @@ export function PageHeader({
     </div>
   );
 
-  if (!photo) {
+  // A masthead beside a holding panel reads as a picture that failed to load,
+  // so the plain masthead is used until a real photograph is installed.
+  if (!photo || !hasPhotograph(photo)) {
     return (
       <header className="bg-ink text-warm">
         <div className="shell py-20 lg:py-24">
