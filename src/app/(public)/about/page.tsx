@@ -77,7 +77,7 @@ export default function AboutPage() {
             Enquiries reach the school office at{' '}
             <a
               href={`mailto:${SCHOOL.replyEmail}`}
-              className="text-palm-red underline underline-offset-4"
+              className="text-brand underline underline-offset-4"
             >
               {SCHOOL.replyEmail}
             </a>

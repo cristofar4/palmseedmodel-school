@@ -25,7 +25,7 @@ export function SignOutButton({ csrfToken }: { csrfToken: string }) {
       type="button"
       onClick={signOut}
       disabled={pending}
-      className="text-[0.8125rem] text-ink-500 underline underline-offset-4 transition-colors hover:text-palm-red disabled:opacity-60"
+      className="text-[0.8125rem] text-ink-500 underline underline-offset-4 transition-colors hover:text-brand disabled:opacity-60"
     >
       {pending ? 'Signing out' : 'Sign out'}
     </button>

@@ -42,7 +42,6 @@ const PULLABLE = '[data-vortex-item]';
 
 interface Grabbed {
   el: HTMLElement;
-  /** Distance from the vortex origin, in viewport pixels. */
   distance: number;
   dx: number;
   dy: number;
@@ -53,38 +52,59 @@ interface VortexProviderProps {
   /**
    * The authentication experience that grows out of the vortex. Supplied by
    * the page so this component stays independent of the sign in forms.
-   *
-   * It receives the mode only. Anything inside that needs to dismiss the panel
-   * reads `close` from the context, which keeps this render free of a callback
-   * that touches refs.
    */
   panel: (mode: AuthMode) => React.ReactNode;
 }
 
+/**
+ * The gravity transition.
+ *
+ * A hole punches open where the visitor tapped, everything is drawn into it,
+ * and the authentication experience grows back out of the same point.
+ *
+ * Three decisions carry the performance, and all three are structural rather
+ * than tuning:
+ *
+ * 1. The page is windowed to the viewport before it moves. Scaling the whole
+ *    document asks the compositor to rasterise a layer several thousand pixels
+ *    tall. The page cannot scroll during the transition, so only one viewport
+ *    is ever visible, and clipping to it first makes the animated layer
+ *    viewport sized.
+ *
+ * 2. Nothing inside the page changes while the page itself is moving. A scaled
+ *    layer whose contents are static is a texture transform, which costs the
+ *    compositor almost nothing. If a child animates at the same time, the
+ *    layer has to be rasterised again on every frame. So the elements are
+ *    drawn in first, and the collapse begins once they have settled.
+ *
+ * 3. The authentication forms mount late. Mounting them on the click put a
+ *    full React render, style and layout pass into the first frame of the
+ *    animation, which measured as a single stall of about a third of a second.
+ *    They mount while the page is still collapsing, and are ready well before
+ *    they are revealed.
+ */
 export function VortexProvider({ children, panel }: VortexProviderProps) {
   const [mode, setMode] = useState<AuthMode | null>(null);
   const [busy, setBusy] = useState(false);
-  /**
-   * Viewport position the collapse started from.
-   *
-   * Held in state rather than a ref because the panel has to mount already
-   * clipped to nothing at that point. Setting it afterwards would let the
-   * panel paint over the page for a frame before the clip applied.
-   */
+  /** Viewport point the collapse started from, so the panel can mount clipped. */
   const [panelOrigin, setPanelOrigin] = useState<{ x: number; y: number } | null>(null);
+  /** Gates the heavy form content, see decision 3 above. */
+  const [panelMounted, setPanelMounted] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
-  const clipRef = useRef<HTMLDivElement | null>(null);
+  const windowRef = useRef<HTMLDivElement | null>(null);
+  /** Deep space behind the page, so the hole is not read against ivory. */
+  const backdropRef = useRef<HTMLDivElement | null>(null);
 
   const fieldRef = useRef<GravityField | null>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
-  // Guards against a second tap while a transition is already running.
   const runningRef = useRef(false);
+  /** Scroll position to restore when the page comes back. */
+  const scrollRef = useRef(0);
 
-  /* Resize handling keeps the canvas backing store correct on rotation. */
   useEffect(() => {
     const onResize = () => fieldRef.current?.resize();
     window.addEventListener('resize', onResize);
@@ -104,17 +124,18 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
     [],
   );
 
-  /** Clears every inline style the timeline wrote. */
+  /** Clears every inline style the timeline wrote and unwindows the page. */
   const resetStage = useCallback(() => {
     const stage = stageRef.current;
-    const clip = clipRef.current;
+    const viewportWindow = windowRef.current;
 
     if (stage) {
       gsap.set(stage, { clearProps: 'all' });
-      const items = stage.querySelectorAll<HTMLElement>(PULLABLE);
-      gsap.set(items, { clearProps: 'all' });
+      gsap.set(stage.querySelectorAll<HTMLElement>(PULLABLE), { clearProps: 'all' });
     }
-    if (clip) gsap.set(clip, { clearProps: 'all' });
+    if (viewportWindow) gsap.set(viewportWindow, { clearProps: 'all' });
+
+    window.scrollTo(0, scrollRef.current);
   }, []);
 
   const open = useCallback(
@@ -125,33 +146,21 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
       returnFocusRef.current = source;
 
       const stage = stageRef.current;
-      const clip = clipRef.current;
+      const viewportWindow = windowRef.current;
       const canvas = canvasRef.current;
 
-      /* Origin of the collapse.
-         Viewport coordinates drive the canvas, which is fixed. Page
-         coordinates drive the clip path and the transform origin, because the
-         stage sits in the document flow and scrolls with it. */
+      // Everything is measured in viewport coordinates, because the page is
+      // about to be clipped to the viewport.
       const rect = source?.getBoundingClientRect();
-      const viewportX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-      const viewportY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
-      const pageX = viewportX + window.scrollX;
-      const pageY = viewportY + window.scrollY;
+      const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+      const originY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
 
-      // Reduced motion gets no clip, so the panel simply appears.
-      const animating = !prefersReducedMotion() && !!stage && !!clip && !!canvas;
-      setPanelOrigin(animating ? { x: viewportX, y: viewportY } : null);
+      const animating = !prefersReducedMotion() && !!stage && !!viewportWindow && !!canvas;
+      setPanelOrigin(animating ? { x: originX, y: originY } : null);
       setMode(nextMode);
 
-      // Reduced motion: no collapse, no field. Just present the panel.
       if (!animating) {
-        if (panelRef.current) {
-          gsap.fromTo(
-            panelRef.current,
-            { autoAlpha: 0 },
-            { autoAlpha: 1, duration: 0.2, ease: 'none' },
-          );
-        }
+        setPanelMounted(true);
         document.documentElement.classList.add('vortex-locked');
         document.documentElement.dataset.vortexState = 'open';
         runningRef.current = false;
@@ -159,60 +168,72 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
         return;
       }
 
-      document.documentElement.classList.add('vortex-locked');
+      /* Read everything first, then write. Interleaving the two would force a
+         synchronous layout for each element in turn. */
+      const scrollY = window.scrollY;
+      scrollRef.current = scrollY;
 
-      const field = new GravityField(canvas, {
-        originX: viewportX,
-        originY: viewportY,
-        reach: Math.hypot(window.innerWidth, window.innerHeight) * 0.62,
-      });
-      fieldRef.current = field;
-      field.start();
-
-      /* Measure everything the field can grab, and order it by distance so the
-         closest elements begin to deform first. */
-      const grabbed: Grabbed[] = Array.from(
-        stage.querySelectorAll<HTMLElement>(PULLABLE),
-      )
+      const grabbed: Grabbed[] = Array.from(stage.querySelectorAll<HTMLElement>(PULLABLE))
         .map((el) => {
           const box = el.getBoundingClientRect();
-          // Skip anything scrolled well outside the viewport: it cannot be seen
-          // bending, and animating it wastes frames.
-          if (box.bottom < -200 || box.top > window.innerHeight + 200) return null;
+          if (box.bottom < -120 || box.top > window.innerHeight + 120) return null;
 
           const cx = box.left + box.width / 2;
           const cy = box.top + box.height / 2;
           return {
             el,
-            dx: viewportX - cx,
-            dy: viewportY - cy,
-            distance: Math.hypot(viewportX - cx, viewportY - cy),
+            dx: originX - cx,
+            dy: originY - cy,
+            distance: Math.hypot(originX - cx, originY - cy),
           };
         })
         .filter((item): item is Grabbed => item !== null)
         .sort((a, b) => a.distance - b.distance)
-        .slice(0, 44);
+        .slice(0, 22);
 
       const maxDistance = grabbed.at(-1)?.distance ?? 1;
       const diagonal = Math.hypot(window.innerWidth, window.innerHeight);
 
-      gsap.set(canvas, { autoAlpha: 1 });
-      gsap.set(stage, {
-        transformOrigin: `${pageX}px ${pageY}px`,
-        willChange: 'transform, filter, opacity',
+      /* Window the page to the viewport. The document keeps its scroll
+         position, the stage is lifted by it, and the layer about to be
+         transformed is now one screen tall rather than the whole document. */
+      document.documentElement.classList.add('vortex-locked');
+      gsap.set(viewportWindow, {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        transformOrigin: `${originX}px ${originY}px`,
+        willChange: 'transform',
+        force3D: true,
       });
-      gsap.set(clip, {
-        clipPath: `circle(${diagonal * 1.6}px at ${pageX}px ${pageY}px)`,
-      });
+      gsap.set(stage, { y: -scrollY });
 
-      // Published on the document so the state of the transition is observable
-      // from outside the component, by CSS and by the end to end tests.
+      const field = new GravityField(canvas, {
+        originX,
+        originY,
+        reach: Math.hypot(window.innerWidth, window.innerHeight) * 0.62,
+      });
+      fieldRef.current = field;
+      field.start();
+
+      gsap.set(canvas, { autoAlpha: 1 });
       document.documentElement.dataset.vortexState = 'collapsing';
 
+      /* The page is about to shrink away from the edges of the screen. Without
+         this the ivory body shows through and the hole reads as a dark shape on
+         paper rather than as space. One opacity tween on a solid colour, which
+         the compositor handles without a repaint. */
+      const backdrop = backdropRef.current;
+
       const timeline = gsap.timeline({
+        defaults: { force3D: true },
         onComplete: () => {
           field.stop();
           gsap.set(canvas, { autoAlpha: 0 });
+          gsap.set(viewportWindow, { willChange: 'auto' });
           runningRef.current = false;
           setBusy(false);
           document.documentElement.dataset.vortexState = 'open';
@@ -221,109 +242,93 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
       });
       timelineRef.current = timeline;
 
-      /* Phase 1. The field forms and the page holds still. */
-      timeline.to(field, { intensity: 0.6, duration: 0.34, ease: 'power2.in' }, 0);
+      if (backdrop) timeline.to(backdrop, { autoAlpha: 1, duration: 0.34, ease: 'power2.out' }, 0);
 
-      /* Phase 2. Matter bends. Each element is drawn along its own vector to
-         the core, stretched along that vector and spun as it goes. */
+      /* Phase 1, 0 to 0.24s. The hole punches open, wide and immediate. */
+      timeline.to(field, { open: 0.9, duration: 0.24, ease: 'power3.out' }, 0);
+      timeline.to(field, { intensity: 0.8, duration: 0.28, ease: 'power2.out' }, 0);
+
+      /* Phase 2, 0.08 to 0.6s. Everything nearby is taken first, closest
+         soonest. This finishes before the page itself starts to move. */
       grabbed.forEach((item) => {
         const nearness = 1 - item.distance / (maxDistance || 1);
-        const delay = 0.16 + (1 - nearness) * 0.42;
         const angle = (Math.atan2(item.dy, item.dx) * 180) / Math.PI;
-        const reach = 0.55 + nearness * 0.4;
 
         timeline.to(
           item.el,
           {
-            x: item.dx * reach,
-            y: item.dy * reach,
-            rotation: angle * 0.16 + (nearness > 0.5 ? 26 : 12),
-            skewX: nearness * 20,
-            scale: 0.26 + (1 - nearness) * 0.24,
-            opacity: 0.12,
-            filter: `blur(${1.5 + nearness * 4}px)`,
-            duration: 0.78 + (1 - nearness) * 0.2,
-            ease: 'power3.in',
+            x: item.dx * (0.55 + nearness * 0.4),
+            y: item.dy * (0.55 + nearness * 0.4),
+            rotation: angle * 0.12 + (nearness > 0.5 ? 26 : 12),
+            scale: 0.22 + (1 - nearness) * 0.2,
+            opacity: 0.08,
+            duration: 0.42,
+            ease: 'power2.in',
           },
-          delay,
+          0.08 + (1 - nearness) * 0.16,
         );
       });
 
-      /* Phase 3. The whole page follows its own contents in, still visibly
-         attached to the core, while the clip path closes around it. */
+      /* Phase 3, 0.6 to 1.24s. The page goes in as one piece.
+         Its contents are static by now, so this is a texture transform. */
       timeline.to(
-        stage,
-        {
-          rotation: 34,
-          scale: 0.015,
-          skewY: 5,
-          filter: 'blur(7px) brightness(0.35)',
-          duration: 0.92,
-          ease: 'power3.inOut',
-        },
-        0.62,
+        viewportWindow,
+        { rotation: 46, scale: 0.015, duration: 0.64, ease: 'power2.in' },
+        0.6,
       );
+      timeline.to(field, { intensity: 1, duration: 0.45, ease: 'power2.in' }, 0.62);
 
-      timeline.to(
-        clip,
-        {
-          clipPath: `circle(0px at ${pageX}px ${pageY}px)`,
-          duration: 0.86,
-          ease: 'power3.in',
-        },
-        0.66,
-      );
+      /* The forms mount here, while the page is still collapsing and nothing
+         is waiting on them. */
+      timeline.call(() => setPanelMounted(true), undefined, 0.72);
 
-      timeline.to(field, { intensity: 1, duration: 0.6, ease: 'power2.in' }, 0.72);
+      /* Phase 4, 1.2 to 1.5s. Nothing is left outside, so the core implodes. */
+      timeline.set(viewportWindow, { autoAlpha: 0 }, 1.24);
+      timeline.to(field, { open: 0.1, duration: 0.26, ease: 'power3.in' }, 1.2);
+      timeline.to(field, { intensity: 0.12, duration: 0.26, ease: 'power2.out' }, 1.2);
+      timeline.to(field, { flash: 1, duration: 0.14, ease: 'power2.out' }, 1.36);
+      timeline.to(field, { flash: 0, duration: 0.34, ease: 'power2.in' }, 1.5);
 
-      /* Phase 4. Nothing is left outside the core, so it releases and the
-         authentication panel grows out of the same point. */
-      timeline.to(field, { intensity: 0.22, duration: 0.42, ease: 'power2.out' }, 1.5);
-      timeline.to(field, { flash: 1, duration: 0.22, ease: 'power2.out' }, 1.5);
-      timeline.to(field, { flash: 0, duration: 0.4, ease: 'power2.in' }, 1.72);
-
-      /* The panel is mounted by React in response to setMode, which has not
-         happened yet at this point, so panelRef is still empty. Tweening it
-         here would silently do nothing and the panel would sit fully open
-         over the collapsing page. Instead the panel mounts already clipped to
-         nothing at the origin, and this call opens it when the core releases. */
+      /* Phase 5, 1.44s. The panel grows out of the same point.
+         panelRef is empty when the timeline is built, because React has not
+         rendered the host yet, so the reveal is issued from a callback. */
       timeline.call(
         () => {
           const panel = panelRef.current;
           if (!panel) return;
           gsap.to(panel, {
-            clipPath: `circle(${diagonal * 1.2}px at ${viewportX}px ${viewportY}px)`,
-            duration: 0.6,
-            ease: 'power3.out',
+            clipPath: `circle(${diagonal * 1.2}px at ${originX}px ${originY}px)`,
+            duration: 0.42,
+            ease: 'power2.out',
           });
         },
         undefined,
-        1.56,
+        1.44,
       );
 
-      timeline.to(field, { intensity: 0, duration: 0.3, ease: 'power1.out' }, 1.9);
+      timeline.to(field, { open: 0, intensity: 0, duration: 0.24, ease: 'power1.out' }, 1.62);
     },
     [mode],
   );
 
   const close = useCallback(() => {
-    // Closing during the tail of the opening timeline must still work. The
-    // opening run is cut short rather than ignored, otherwise the control
-    // would appear dead for the last few hundred milliseconds.
+    // Closing during the tail of the opening run must still work, so that run
+    // is cut short rather than ignored.
     if (runningRef.current) {
       timelineRef.current?.kill();
       fieldRef.current?.stop();
       runningRef.current = false;
     }
 
+    const viewportWindow = windowRef.current;
     const stage = stageRef.current;
-    const clip = clipRef.current;
     const panel = panelRef.current;
 
     const finish = () => {
       document.documentElement.classList.remove('vortex-locked');
       delete document.documentElement.dataset.vortexState;
       setPanelOrigin(null);
+      setPanelMounted(false);
       resetStage();
       setMode(null);
       runningRef.current = false;
@@ -331,10 +336,11 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
       fieldRef.current?.stop();
       fieldRef.current = null;
       if (canvasRef.current) gsap.set(canvasRef.current, { autoAlpha: 0 });
+      if (backdropRef.current) gsap.set(backdropRef.current, { autoAlpha: 0 });
       returnFocusRef.current?.focus();
     };
 
-    if (prefersReducedMotion() || !stage || !clip || !panel) {
+    if (prefersReducedMotion() || !viewportWindow || !stage || !panel) {
       finish();
       return;
     }
@@ -343,17 +349,19 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
     setBusy(true);
     document.documentElement.dataset.vortexState = 'closing';
 
-    // The reverse runs at about two thirds of the opening duration. Coming back
-    // should feel like a release, not a second event.
+    // The way back is shorter than the way in. Returning should feel like a
+    // release, not a second event.
     const timeline = gsap.timeline({ onComplete: finish });
     timelineRef.current = timeline;
 
-    timeline.to(panel, { autoAlpha: 0, duration: 0.26, ease: 'power2.in' }, 0);
-    timeline.to(clip, { clipPath: 'circle(150% at 50% 50%)', duration: 0.5, ease: 'power2.out' }, 0.1);
+    timeline.to(panel, { autoAlpha: 0, duration: 0.2, ease: 'power2.in' }, 0);
+    if (backdropRef.current) {
+      timeline.to(backdropRef.current, { autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, 0.14);
+    }
     timeline.to(
-      stage,
-      { rotation: 0, scale: 1, skewY: 0, filter: 'blur(0px) brightness(1)', duration: 0.62, ease: 'power3.out' },
-      0.1,
+      viewportWindow,
+      { autoAlpha: 1, rotation: 0, scale: 1, duration: 0.46, ease: 'power3.out' },
+      0.06,
     );
     timeline.to(
       stage.querySelectorAll<HTMLElement>(PULLABLE),
@@ -361,19 +369,16 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
         x: 0,
         y: 0,
         rotation: 0,
-        skewX: 0,
         scale: 1,
         opacity: 1,
-        filter: 'blur(0px)',
-        duration: 0.5,
+        duration: 0.38,
         ease: 'power2.out',
-        stagger: { amount: 0.18, from: 'end' },
+        stagger: { amount: 0.14, from: 'end' },
       },
-      0.18,
+      0.12,
     );
   }, [resetStage]);
 
-  /* Escape closes the panel, which is expected of anything modal. */
   useEffect(() => {
     if (mode === null) return;
     const onKey = (event: KeyboardEvent) => {
@@ -387,9 +392,17 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
 
   return (
     <VortexContext.Provider value={api}>
-      {/* Clip layer. Never transformed, so the clip circle stays anchored to
-          the page coordinates the collapse was measured in. */}
-      <div ref={clipRef}>
+      {/* Deep space. Sits behind the window in paint order, so it is only seen
+          once the page has shrunk away from the edges of the screen. */}
+      <div
+        ref={backdropRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 bg-[#030705] opacity-0"
+      />
+
+      {/* The window. Clipped to the viewport and transformed during the
+          collapse, so the compositor never handles a document tall layer. */}
+      <div ref={windowRef}>
         <div ref={stageRef}>{children}</div>
       </div>
 
@@ -401,18 +414,13 @@ export function VortexProvider({ children, panel }: VortexProviderProps) {
 
       {mode !== null ? (
         <VortexPanelHost panelRef={panelRef} mode={mode} onClose={close} origin={panelOrigin}>
-          {panel(mode)}
+          {panelMounted ? panel(mode) : null}
         </VortexPanelHost>
       ) : null}
     </VortexContext.Provider>
   );
 }
 
-/**
- * Host for the authentication experience. The forms themselves are injected by
- * the page through VortexPanelSlot, which keeps this file free of any
- * dependency on the authentication UI.
- */
 function VortexPanelHost({
   panelRef,
   mode,
@@ -442,7 +450,7 @@ function VortexPanelHost({
       <button
         type="button"
         onClick={onClose}
-        className="fixed right-5 top-5 z-[95] flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-warm transition hover:border-palm-red hover:text-palm-red-soft"
+        className="fixed right-5 top-5 z-[95] flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-warm transition hover:border-gold hover:text-gold"
         aria-label="Close and return to the website"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">

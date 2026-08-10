@@ -203,11 +203,11 @@ export function ApplicationForm({ csrfToken }: { csrfToken: string }) {
           label={
             <>
               I accept the{' '}
-              <Link href="/portal-terms" target="_blank" className="text-palm-red underline underline-offset-2">
+              <Link href="/portal-terms" target="_blank" className="text-brand underline underline-offset-2">
                 portal terms
               </Link>{' '}
               and the{' '}
-              <Link href="/privacy" target="_blank" className="text-palm-red underline underline-offset-2">
+              <Link href="/privacy" target="_blank" className="text-brand underline underline-offset-2">
                 privacy policy
               </Link>
               .

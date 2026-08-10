@@ -54,7 +54,7 @@ export default async function StudentsPage({
               type="search"
               defaultValue={query.search ?? ''}
               placeholder="Search the roll"
-              className="w-full border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-palm-red"
+              className="w-full border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-brand"
             />
           </div>
 
@@ -69,7 +69,7 @@ export default async function StudentsPage({
               id="student-status"
               name="status"
               defaultValue={query.status ?? ''}
-              className="border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-palm-red"
+              className="border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-brand"
             >
               <option value="">Any status</option>
               {STATUSES.map((status) => (
@@ -91,7 +91,7 @@ export default async function StudentsPage({
               id="student-class"
               name="classId"
               defaultValue={query.classId ?? ''}
-              className="border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-palm-red"
+              className="border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-brand"
             >
               <option value="">Any class</option>
               {classes.map((option) => (
@@ -173,7 +173,7 @@ export default async function StudentsPage({
                     <td className="px-3 py-3.5 text-right">
                       <Link
                         href={`/admin/students/${row.user_id}`}
-                        className="text-[0.8125rem] font-medium text-palm-red underline underline-offset-4"
+                        className="text-[0.8125rem] font-medium text-brand underline underline-offset-4"
                       >
                         Open
                       </Link>

@@ -46,29 +46,27 @@ export function Photo({
   toneClassName = '',
 }: PhotoProps) {
   if (!isPresent(photo.src)) {
+    /* Original artwork, drawn by scripts/generate-artwork.ts and served from
+       public/artwork. A plain img rather than next/image because the source is
+       an SVG, which the optimiser would only pass through anyway.
+
+       This is a finished image, not a placeholder, so the page is complete
+       whether or not photography has been installed. */
     return (
-      <div
+      // next/image cannot optimise an SVG, and turning on dangerouslyAllowSVG
+      // to route it through the optimiser would loosen that setting for every
+      // image in the project to gain nothing here.
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={photo.artwork}
+        alt=""
         aria-hidden="true"
-        className={`absolute inset-0 overflow-hidden bg-ink ${toneClassName} ${className}`}
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(120% 90% at 22% 12%, rgba(229,31,43,0.30) 0%, transparent 58%),' +
-              'radial-gradient(90% 70% at 88% 92%, rgba(229,31,43,0.14) 0%, transparent 62%),' +
-              'linear-gradient(168deg, #16161A 0%, #0B0B0C 55%, #000000 100%)',
-          }}
-        />
-        {/* Fine rule structure, echoing the editorial grid used across the site. */}
-        <div
-          className="absolute inset-0 opacity-[0.16]"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(90deg, rgba(246,241,234,0.9) 0px, rgba(246,241,234,0.9) 1px, transparent 1px, transparent 88px)',
-          }}
-        />
-      </div>
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
+        decoding="async"
+        className={`absolute inset-0 h-full w-full object-cover ${toneClassName} ${className}`}
+        style={{ objectPosition: photo.position ?? '50% 50%' }}
+      />
     );
   }
 

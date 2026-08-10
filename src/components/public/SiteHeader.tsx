@@ -66,7 +66,7 @@ export function SiteHeader() {
                 href={link.href}
                 aria-current={active ? 'page' : undefined}
                 className={`relative text-[0.8125rem] font-medium tracking-[0.01em] transition-colors ${
-                  active ? 'text-palm-red' : 'text-ink-600 hover:text-ink'
+                  active ? 'text-brand' : 'text-ink-600 hover:text-ink'
                 }`}
               >
                 {link.label}
@@ -81,7 +81,7 @@ export function SiteHeader() {
             type="button"
             disabled={busy}
             onClick={() => open('signin', signinRef.current)}
-            className="px-4 py-2.5 text-[0.8125rem] font-medium text-ink transition-colors hover:text-palm-red disabled:opacity-50"
+            className="px-4 py-2.5 text-[0.8125rem] font-medium text-ink transition-colors hover:text-brand disabled:opacity-50"
           >
             Sign in
           </button>
@@ -90,7 +90,7 @@ export function SiteHeader() {
             type="button"
             disabled={busy}
             onClick={() => open('signup', signupRef.current)}
-            className="bg-palm-red px-5 py-2.5 text-[0.8125rem] font-medium text-white transition-colors hover:bg-palm-red-deep disabled:opacity-50"
+            className="bg-brand px-5 py-2.5 text-[0.8125rem] font-medium text-white transition-colors hover:bg-brand-deep disabled:opacity-50"
           >
             Create account
           </button>
@@ -149,7 +149,7 @@ export function SiteHeader() {
                 setMenuOpen(false);
                 open('signup', event.currentTarget);
               }}
-              className="bg-palm-red px-5 py-3.5 text-sm font-medium text-white"
+              className="bg-brand px-5 py-3.5 text-sm font-medium text-white"
             >
               Create account
             </button>

@@ -11,7 +11,7 @@ export function PageHeader({
   return (
     <header className="border-b border-ink-100 bg-ink pb-20 pt-20 text-warm lg:pb-24 lg:pt-28">
       <div className="shell">
-        <p className="eyebrow mb-6 text-palm-red-soft">{eyebrow}</p>
+        <p className="eyebrow mb-6 text-gold">{eyebrow}</p>
         <h1
           data-vortex-item
           className="max-w-[20ch] text-[clamp(2.1rem,6vw,3.8rem)] leading-[1.04] tracking-[-0.025em] text-warm"

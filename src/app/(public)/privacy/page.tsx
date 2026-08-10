@@ -128,7 +128,7 @@ export default function PrivacyPage() {
             wrong, and ask about deletion where the school is not obliged to keep it. Write to{' '}
             <a
               href={`mailto:${SCHOOL.replyEmail}`}
-              className="text-palm-red underline underline-offset-4"
+              className="text-brand underline underline-offset-4"
             >
               {SCHOOL.replyEmail}
             </a>{' '}
@@ -143,7 +143,7 @@ export default function PrivacyPage() {
 
           <p>
             See also the{' '}
-            <Link href="/portal-terms" className="text-palm-red underline underline-offset-4">
+            <Link href="/portal-terms" className="text-brand underline underline-offset-4">
               portal terms
             </Link>
             .

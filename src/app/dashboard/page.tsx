@@ -109,7 +109,7 @@ export default async function StudentOverviewPage() {
               action={
                 <Link
                   href="/signup/details"
-                  className="bg-palm-red px-5 py-2.5 text-[0.8125rem] font-medium text-white"
+                  className="bg-brand px-5 py-2.5 text-[0.8125rem] font-medium text-white"
                 >
                   Complete the admission details
                 </Link>
@@ -150,7 +150,7 @@ export default async function StudentOverviewPage() {
         action={
           <Link
             href="/dashboard/messages"
-            className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-palm-red"
+            className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-brand"
           >
             All notices
           </Link>

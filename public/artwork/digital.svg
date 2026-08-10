@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250" role="presentation">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#142019"/>
+      <stop offset="0.55" stop-color="#0A1410"/>
+      <stop offset="1" stop-color="#050B08"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.28" cy="0.33" r="0.78">
+      <stop offset="0" stop-color="#17604A" stop-opacity="0.68"/>
+      <stop offset="0.55" stop-color="#17604A" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#17604A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warm" cx="0.84" cy="0.86" r="0.6">
+      <stop offset="0" stop-color="#D9B665" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#D9B665" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="1000" height="1250" fill="url(#ground)"/>
+  <rect width="1000" height="1250" fill="url(#glow)"/>
+  <rect width="1000" height="1250" fill="url(#warm)"/>
+  <line x1="88" y1="0" x2="88" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="176" y1="0" x2="176" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="264" y1="0" x2="264" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="352" y1="0" x2="352" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="440" y1="0" x2="440" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="528" y1="0" x2="528" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="616" y1="0" x2="616" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="704" y1="0" x2="704" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="792" y1="0" x2="792" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="880" y1="0" x2="880" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="968" y1="0" x2="968" y2="1250" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/>
+  <line x1="296.7" y1="1093.1" x2="866.8" y2="1058.8"
+          stroke="#D9B665" stroke-width="1.03" opacity="0.126"/><line x1="273.7" y1="50.6" x2="850.6" y2="16.0"
+          stroke="#D9B665" stroke-width="1.02" opacity="0.106"/><line x1="244.7" y1="858.0" x2="644.0" y2="834.0"
+          stroke="#D9B665" stroke-width="1.43" opacity="0.152"/><line x1="151.5" y1="897.8" x2="852.3" y2="855.8"
+          stroke="#D9B665" stroke-width="0.67" opacity="0.071"/><line x1="39.5" y1="648.2" x2="782.0" y2="603.6"
+          stroke="#D9B665" stroke-width="0.75" opacity="0.102"/>
+
+  <!-- Horizon arc, the constant across every plate. -->
+  <path d="M -150 762.5 Q 500.0 312.5 1150.0 762.5"
+        fill="none" stroke="#D9B665" stroke-width="1.5" opacity="0.5"/>
+  <path d="M -150 837.5 Q 500.0 400.0 1150.0 837.5"
+        fill="none" stroke="#238C69" stroke-width="1" opacity="0.35"/>
+
+  <g><rect x="240.9" y="487.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="90.9" y="562.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="165.9" y="637.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="165.9" y="637.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="390.9" y="337.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="540.9" y="487.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="90.9" y="412.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="165.9" y="487.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="690.9" y="562.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="540.9" y="487.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="615.9" y="862.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="390.9" y="337.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="690.9" y="412.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="90.9" y="787.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="315.9" y="862.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="240.9" y="337.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="90.9" y="487.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="165.9" y="787.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="240.9" y="337.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="240.9" y="712.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="315.9" y="637.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="315.9" y="262.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="165.9" y="862.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="90.9" y="562.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="90.9" y="637.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="90.9" y="487.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="240.9" y="412.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="315.9" y="412.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="615.9" y="412.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="165.9" y="412.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="540.9" y="337.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="540.9" y="412.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="465.9" y="712.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="390.9" y="787.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="540.9" y="787.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="465.9" y="412.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="615.9" y="337.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="390.9" y="862.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="165.9" y="412.5" width="46.5" height="46.5"
+              fill="#D9B665" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/><rect x="390.9" y="712.5" width="46.5" height="46.5"
+              fill="none" fill-opacity="0.55"
+              stroke="#238C69" stroke-width="0.7" stroke-opacity="0.34"/></g>
+
+  <rect width="1000" height="1250" filter="url(#grain)" opacity="0.055" style="mix-blend-mode:overlay"/>
+</svg>

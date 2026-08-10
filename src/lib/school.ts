@@ -39,13 +39,16 @@ export function isSeniorLevel(level: string): boolean {
 
 /** Brand palette, taken from the school logo. Mirrors the CSS custom properties. */
 export const BRAND = {
-  red: '#E51F2B',
-  redDeep: '#B0151F',
-  ink: '#0B0B0C',
-  warm: '#F6F1EA',
+  /** Emerald, used for headings and primary actions. */
+  brand: '#17604A',
+  brandDeep: '#0E4335',
+  /** Brass, the accent that reads on the dark surfaces. */
+  gold: '#D9B665',
+  ink: '#0A1410',
+  warm: '#F7F4EC',
   white: '#FFFFFF',
-  muted: '#5B5B66',
-  hairline: '#E8E4DD',
+  muted: '#5C6B62',
+  hairline: '#E6EAE4',
 } as const;
 
 export function siteUrl(): string {

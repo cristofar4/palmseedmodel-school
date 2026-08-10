@@ -108,12 +108,12 @@ export function SignInForm({
           <button
             type="button"
             onClick={onSwitchToSignup}
-            className="font-medium text-palm-red-soft underline underline-offset-4"
+            className="font-medium text-gold underline underline-offset-4"
           >
             Create an account
           </button>
         ) : (
-          <Link href="/signup" className="font-medium text-palm-red underline underline-offset-4">
+          <Link href="/signup" className="font-medium text-brand underline underline-offset-4">
             Create an account
           </Link>
         )}

@@ -94,7 +94,7 @@ export function Stat({
       </p>
       <p
         className={`mt-3 font-display text-[2rem] leading-none tabular-nums ${
-          accent ? 'text-palm-red' : 'text-ink'
+          accent ? 'text-brand' : 'text-ink'
         }`}
       >
         {value}
@@ -146,7 +146,7 @@ export function Avatar({
     <span
       aria-hidden="true"
       className={`inline-flex shrink-0 items-center justify-center rounded-full font-display font-semibold ${
-        tone === 'red' ? 'bg-palm-red text-white' : 'bg-ink text-warm'
+        tone === 'red' ? 'bg-brand text-white' : 'bg-ink text-warm'
       }`}
       style={{ width: size, height: size, fontSize: size * 0.36 }}
     >

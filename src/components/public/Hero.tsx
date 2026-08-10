@@ -42,7 +42,7 @@ export function HeroContent() {
 
   return (
     <div ref={rootRef} className="relative z-10 shell pb-20 pt-28 sm:pb-28 lg:pb-32 lg:pt-36">
-      <p data-hero-line className="eyebrow mb-6 text-palm-red-soft">
+      <p data-hero-line className="eyebrow mb-6 text-gold">
         Nigerian Secondary Education
       </p>
 
@@ -52,7 +52,7 @@ export function HeroContent() {
         className="max-w-[19ch] text-[clamp(2.6rem,8vw,5.25rem)] font-medium leading-[0.98] tracking-[-0.028em] text-warm"
       >
         A school that takes
-        <span className="block text-palm-red-soft">every mind seriously.</span>
+        <span className="block text-gold">every mind seriously.</span>
       </h1>
 
       <p
@@ -71,7 +71,7 @@ export function HeroContent() {
           type="button"
           disabled={busy}
           onClick={() => open('signup', applyRef.current)}
-          className="bg-palm-red px-8 py-4 text-[0.9375rem] font-medium text-white transition-colors hover:bg-palm-red-deep disabled:opacity-60"
+          className="bg-brand px-8 py-4 text-[0.9375rem] font-medium text-white transition-colors hover:bg-brand-deep disabled:opacity-60"
         >
           Begin a registration
         </button>

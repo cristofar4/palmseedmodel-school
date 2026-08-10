@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="presentation">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#142019"/>
+      <stop offset="0.55" stop-color="#0A1410"/>
+      <stop offset="1" stop-color="#050B08"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.28" cy="0.38" r="0.78">
+      <stop offset="0" stop-color="#17604A" stop-opacity="0.71"/>
+      <stop offset="0.55" stop-color="#17604A" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#17604A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warm" cx="0.84" cy="0.86" r="0.6">
+      <stop offset="0" stop-color="#D9B665" stop-opacity="0.21"/>
+      <stop offset="1" stop-color="#D9B665" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#ground)"/>
+  <rect width="1200" height="900" fill="url(#glow)"/>
+  <rect width="1200" height="900" fill="url(#warm)"/>
+  <line x1="88" y1="0" x2="88" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="176" y1="0" x2="176" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="264" y1="0" x2="264" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="352" y1="0" x2="352" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="440" y1="0" x2="440" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="528" y1="0" x2="528" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="616" y1="0" x2="616" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="704" y1="0" x2="704" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="792" y1="0" x2="792" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="880" y1="0" x2="880" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="968" y1="0" x2="968" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1056" y1="0" x2="1056" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1144" y1="0" x2="1144" y2="900" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/>
+  <line x1="92.9" y1="93.0" x2="973.0" y2="40.2"
+          stroke="#D9B665" stroke-width="0.86" opacity="0.153"/><line x1="536.3" y1="763.9" x2="1121.6" y2="728.8"
+          stroke="#D9B665" stroke-width="1.46" opacity="0.092"/><line x1="424.8" y1="596.4" x2="1043.5" y2="559.2"
+          stroke="#D9B665" stroke-width="0.68" opacity="0.098"/><line x1="243.9" y1="702.0" x2="959.4" y2="659.1"
+          stroke="#D9B665" stroke-width="1.23" opacity="0.076"/><line x1="471.4" y1="45.5" x2="897.6" y2="19.9"
+          stroke="#D9B665" stroke-width="1.21" opacity="0.132"/>
+
+  <!-- Horizon arc, the constant across every plate. -->
+  <path d="M -180 594.0 Q 600.0 270.0 1380.0 594.0"
+        fill="none" stroke="#D9B665" stroke-width="1.5" opacity="0.5"/>
+  <path d="M -180 648.0 Q 600.0 333.0 1380.0 648.0"
+        fill="none" stroke="#238C69" stroke-width="1" opacity="0.35"/>
+
+  <g><line x1="786.8" y1="354.1" x2="663.0" y2="375.0" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="786.8" y1="354.1" x2="677.8" y2="469.4" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="786.8" y1="354.1" x2="714.9" y2="284.8" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="786.8" y1="354.1" x2="728.6" y2="444.9" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="663.0" y1="375.0" x2="677.8" y2="469.4" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="663.0" y1="375.0" x2="714.9" y2="284.8" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="663.0" y1="375.0" x2="728.6" y2="444.9" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="663.0" y1="375.0" x2="502.5" y2="322.5" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="257.3" y1="269.1" x2="502.5" y2="322.5" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="677.8" y1="469.4" x2="754.8" y2="637.6" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="677.8" y1="469.4" x2="714.9" y2="284.8" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="677.8" y1="469.4" x2="728.6" y2="444.9" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="677.8" y1="469.4" x2="502.5" y2="322.5" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="754.8" y1="637.6" x2="728.6" y2="444.9" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="714.9" y1="284.8" x2="728.6" y2="444.9" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="714.9" y1="284.8" x2="502.5" y2="322.5" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><line x1="728.6" y1="444.9" x2="502.5" y2="322.5" stroke="#238C69" stroke-width="0.9" opacity="0.4"/><circle cx="786.8" cy="354.1" r="4.6" fill="#D9B665" opacity="0.75"/><circle cx="663.0" cy="375.0" r="3.4" fill="#D9B665" opacity="0.75"/><circle cx="257.3" cy="269.1" r="4.3" fill="#D9B665" opacity="0.75"/><circle cx="677.8" cy="469.4" r="3.8" fill="#D9B665" opacity="0.75"/><circle cx="244.8" cy="649.9" r="5.7" fill="#D9B665" opacity="0.75"/><circle cx="754.8" cy="637.6" r="5.7" fill="#D9B665" opacity="0.75"/><circle cx="714.9" cy="284.8" r="5.8" fill="#D9B665" opacity="0.75"/><circle cx="728.6" cy="444.9" r="5.4" fill="#D9B665" opacity="0.75"/><circle cx="502.5" cy="322.5" r="7.0" fill="#D9B665" opacity="0.75"/></g>
+
+  <rect width="1200" height="900" filter="url(#grain)" opacity="0.055" style="mix-blend-mode:overlay"/>
+</svg>

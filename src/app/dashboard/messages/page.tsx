@@ -68,7 +68,7 @@ export default async function StudentMessagesPage() {
                     {formatDate(item.published_at)}
                   </time>
                   {item.is_pinned ? (
-                    <span className="border border-palm-red/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-palm-red">
+                    <span className="border border-brand/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-brand">
                       Pinned
                     </span>
                   ) : null}

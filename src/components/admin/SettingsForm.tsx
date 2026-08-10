@@ -77,7 +77,7 @@ export function SettingsForm({
           <label
             key={option.value}
             className={`flex cursor-pointer gap-3 border p-4 transition-colors ${
-              selected === option.value ? 'border-palm-red bg-palm-red/[0.04]' : 'border-ink-100'
+              selected === option.value ? 'border-brand bg-brand/[0.04]' : 'border-ink-100'
             }`}
           >
             <input
@@ -86,7 +86,7 @@ export function SettingsForm({
               value={option.value}
               checked={selected === option.value}
               onChange={() => setSelected(option.value)}
-              className="mt-1 h-4 w-4 shrink-0 accent-[#E51F2B]"
+              className="mt-1 h-4 w-4 shrink-0 accent-[#17604A]"
             />
             <span>
               <span className="block text-[0.9375rem] font-medium">{option.label}</span>

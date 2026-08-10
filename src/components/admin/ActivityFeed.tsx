@@ -38,7 +38,7 @@ export function ActivityFeed({
                   <StatusPill status={row.account_status} label={statusLabel(row.account_status)} />
                 ) : null}
                 {row.is_new_device ? (
-                  <span className="border border-palm-red/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-palm-red">
+                  <span className="border border-brand/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-brand">
                     New device
                   </span>
                 ) : null}

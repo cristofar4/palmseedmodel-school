@@ -49,7 +49,7 @@ export default function PortalTermsPage() {
               Tell the school at once if you think somebody else has reached the account. Write to{' '}
               <a
                 href={`mailto:${SCHOOL.replyEmail}`}
-                className="text-palm-red underline underline-offset-4"
+                className="text-brand underline underline-offset-4"
               >
                 {SCHOOL.replyEmail}
               </a>
@@ -101,7 +101,7 @@ export default function PortalTermsPage() {
             The school may suspend or close an account where these terms are broken, where a
             registration is rejected, or where a student leaves the school. A record of the account
             is retained in line with the{' '}
-            <Link href="/privacy" className="text-palm-red underline underline-offset-4">
+            <Link href="/privacy" className="text-brand underline underline-offset-4">
               privacy policy
             </Link>
             .

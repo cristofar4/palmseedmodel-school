@@ -1,27 +1,32 @@
 /**
- * The gravity field renderer.
+ * The gravity well renderer.
  *
- * A 2D canvas painting of a collapsing singularity: a black core, a rotating
- * accretion structure in the school red, white hot shear at the inner edge,
- * and matter streaming inward along spirals. GSAP drives a single `intensity`
- * value from 0 to 1 and back, and everything here is derived from it, so the
- * animation and the painting can never drift apart.
+ * A hole punches open at the point that was tapped, grows fast and wide, and
+ * everything falls into it. Painted on a 2D canvas driven entirely by three
+ * numbers the GSAP timeline animates, so the painting and the page collapse
+ * can never drift apart.
  *
- * 2D canvas rather than WebGL on purpose. The whole field is radial gradients
- * and arcs, which the compositor handles well, and it removes an entire class
- * of context loss and shader compilation failures on mid range Android.
+ * Performance is the whole design here, because a transition that stutters is
+ * worse than no transition:
+ *
+ *  - No gradient is created per particle. The previous version built one
+ *    CanvasGradient per streak per frame, which is hundreds of allocations at
+ *    60 frames a second and was the main source of jank. Streaks are now solid
+ *    strokes with a varying globalAlpha, which the rasteriser handles cheaply.
+ *  - Only four radial gradients exist per frame, all centred on the origin.
+ *  - Particle budget and device pixel ratio are both capped harder on a phone.
+ *  - Nothing here reads layout, so it never forces a reflow.
  */
 
 interface Particle {
-  /** Polar coordinates around the vortex origin. */
   angle: number;
   radius: number;
-  /** Inward speed, scaled by intensity at draw time. */
   fall: number;
   spin: number;
   length: number;
   weight: number;
-  hue: number;
+  /** 0 emerald, 1 brass, 2 white hot. */
+  tone: 0 | 1 | 2;
 }
 
 export interface FieldOptions {
@@ -33,6 +38,14 @@ export interface FieldOptions {
 
 const TAU = Math.PI * 2;
 
+/* Matching the site palette, as plain channel triples so alpha can vary
+   without rebuilding a colour string on every draw. */
+const TONE = [
+  '35,140,105', // emerald
+  '217,182,101', // brass
+  '255,248,236', // white hot
+] as const;
+
 export class GravityField {
   private readonly canvas: HTMLCanvasElement;
   private readonly ctx: CanvasRenderingContext2D;
@@ -42,10 +55,13 @@ export class GravityField {
   private clock = 0;
   private lastTime = 0;
   private dpr = 1;
+  private readonly compact: boolean;
 
-  /** Driven by the GSAP timeline. 0 is dormant, 1 is full collapse. */
+  /** How far the hole has punched open, 0 to 1. Drives the core radius. */
+  open = 0;
+  /** Pull strength on the matter streams, 0 to 1. */
   intensity = 0;
-  /** Rises at the end, when the page has been swallowed and light escapes. */
+  /** Release flash as the core lets go and the panel arrives. */
   flash = 0;
 
   private options: FieldOptions;
@@ -53,6 +69,7 @@ export class GravityField {
   constructor(canvas: HTMLCanvasElement, options: FieldOptions) {
     this.canvas = canvas;
     this.options = options;
+    this.compact = window.innerWidth < 820;
 
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) throw new Error('Canvas 2D is not available');
@@ -67,39 +84,42 @@ export class GravityField {
     this.options.originY = y;
   }
 
-  /** Caps the backing store at 2x so large phones do not shade 9 megapixels. */
+  /**
+   * The field is drawn below native resolution and stretched back up by CSS.
+   *
+   * Every shape here is a soft radial gradient or a thin streak, so the
+   * detail lost is not detail anyone can see, while the pixel count per frame
+   * falls by about half. On a full screen effect that is the difference
+   * between comfortably holding 60 frames a second and not.
+   */
   resize(): void {
-    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const quality = this.compact ? 0.6 : 0.72;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2) * quality;
     const { innerWidth: w, innerHeight: h } = window;
 
-    this.canvas.width = Math.floor(w * this.dpr);
-    this.canvas.height = Math.floor(h * this.dpr);
+    this.canvas.width = Math.max(1, Math.floor(w * this.dpr));
+    this.canvas.height = Math.max(1, Math.floor(h * this.dpr));
     this.canvas.style.width = `${w}px`;
     this.canvas.style.height = `${h}px`;
   }
 
   private seed(): void {
-    // Particle budget scales with the viewport, so a phone does far less work
-    // than a desktop while the field looks equally dense.
-    const area = window.innerWidth * window.innerHeight;
-    const count = Math.round(Math.min(420, Math.max(120, area / 3600)));
-
+    const count = this.compact ? 70 : 120;
     this.particles = Array.from({ length: count }, () => this.spawn(true));
   }
 
   private spawn(initial = false): Particle {
     const { reach } = this.options;
+    const roll = Math.random();
+
     return {
       angle: Math.random() * TAU,
-      // On the first fill, spread across the whole reach. Later respawns come
-      // from the outer edge, so the stream keeps feeding inward.
-      radius: initial ? Math.random() * reach : reach * (0.75 + Math.random() * 0.45),
-      fall: 0.55 + Math.random() * 1.5,
-      spin: 0.8 + Math.random() * 2.4,
-      length: 8 + Math.random() * 46,
-      weight: 0.4 + Math.random() * 1.5,
-      // Mostly the school red, with a few white hot grains.
-      hue: Math.random() < 0.16 ? 1 : 0,
+      radius: initial ? Math.random() * reach : reach * (0.7 + Math.random() * 0.5),
+      fall: 0.7 + Math.random() * 1.6,
+      spin: 1.0 + Math.random() * 2.6,
+      length: 14 + Math.random() * 54,
+      weight: 0.5 + Math.random() * 1.8,
+      tone: roll < 0.62 ? 0 : roll < 0.92 ? 1 : 2,
     };
   }
 
@@ -119,8 +139,8 @@ export class GravityField {
   private tick = (now: number): void => {
     if (!this.running) return;
 
-    // Delta is clamped so a backgrounded tab does not teleport every particle
-    // into the core on the first frame after it returns.
+    // Clamped so a backgrounded tab does not teleport every particle into the
+    // core on the first frame after it comes back.
     const delta = Math.min((now - this.lastTime) / 16.667, 3);
     this.lastTime = now;
     this.clock += delta;
@@ -135,14 +155,15 @@ export class GravityField {
     const pull = this.intensity;
     if (pull <= 0.001) return;
 
-    for (const p of this.particles) {
-      // Inverse falloff: matter accelerates as it nears the core, which is
-      // what gives the stream its whipping motion at the inner edge.
-      const proximity = 1 - Math.min(p.radius / this.options.reach, 1);
-      const accel = 1 + proximity * proximity * 7;
+    const { reach } = this.options;
 
-      p.radius -= p.fall * accel * pull * delta * 2.6;
-      p.angle += (p.spin * 0.012 * accel * pull + 0.002) * delta;
+    for (const p of this.particles) {
+      // Inverse falloff, so matter whips as it reaches the inner edge.
+      const proximity = 1 - (p.radius < reach ? p.radius / reach : 1);
+      const accel = 1 + proximity * proximity * 8;
+
+      p.radius -= p.fall * accel * pull * delta * 3.1;
+      p.angle += (p.spin * 0.014 * accel * pull + 0.002) * delta;
 
       if (p.radius <= 2) Object.assign(p, this.spawn());
     }
@@ -151,87 +172,82 @@ export class GravityField {
   private draw(): void {
     const { ctx, dpr } = this;
     const { originX: ox, originY: oy, reach } = this.options;
-    const t = this.intensity;
+    const openness = this.open;
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    if (t <= 0.001 && this.flash <= 0.001) return;
+    if (openness <= 0.001 && this.flash <= 0.001) return;
 
-    const coreRadius = 6 + t * reach * 0.17;
-    const diskRadius = coreRadius * (2.6 + t * 1.5);
+    /* The hole. Opens fast and wide: this is the shape the whole effect is
+       built around, so it is generous rather than a polite dot. */
+    const core = reach * 0.34 * openness;
+    const disk = core * 1.9;
 
     ctx.save();
     ctx.translate(ox, oy);
 
-    /* 1. Gravitational well. A wide, soft darkening that reads as space being
-          pulled in, sitting under everything else. */
-    const well = ctx.createRadialGradient(0, 0, coreRadius * 0.5, 0, 0, reach * (0.55 + t * 0.5));
-    well.addColorStop(0, `rgba(0,0,0,${0.96 * t})`);
-    well.addColorStop(0.22, `rgba(6,4,5,${0.82 * t})`);
-    well.addColorStop(0.55, `rgba(11,11,12,${0.4 * t})`);
-    well.addColorStop(1, 'rgba(11,11,12,0)');
+    /* 1. The well. A wide darkening that reads as space being drawn in. */
+    const wellOuter = reach * (0.5 + openness * 0.75);
+    const well = ctx.createRadialGradient(0, 0, core * 0.6, 0, 0, wellOuter);
+    well.addColorStop(0, `rgba(0,0,0,${0.97 * openness})`);
+    well.addColorStop(0.3, `rgba(4,10,8,${0.8 * openness})`);
+    well.addColorStop(0.68, `rgba(10,20,16,${0.32 * openness})`);
+    well.addColorStop(1, 'rgba(10,20,16,0)');
     ctx.fillStyle = well;
     ctx.beginPath();
-    ctx.arc(0, 0, reach * (0.55 + t * 0.5), 0, TAU);
+    ctx.arc(0, 0, wellOuter, 0, TAU);
     ctx.fill();
 
-    /* 2. Matter streams. Drawn as tapered arcs along the direction of travel,
-          which reads as motion blur without costing a blur filter. */
+    /* 2. Matter streams. Solid strokes, alpha varied per particle. No gradient
+          is allocated in this loop, which is what keeps the frame cheap. */
     ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round';
+
     for (const p of this.particles) {
       if (p.radius > reach) continue;
 
-      const proximity = 1 - Math.min(p.radius / reach, 1);
-      const alpha = Math.min(1, proximity * 1.5) * t * 0.85;
-      if (alpha < 0.012) continue;
+      const proximity = 1 - p.radius / reach;
+      const alpha = proximity * proximity * 1.6 * this.intensity;
+      if (alpha < 0.015) continue;
 
-      const trail = (p.length * (0.35 + proximity * 1.5) * t) / Math.max(p.radius, 12);
-      const x1 = Math.cos(p.angle) * p.radius;
-      const y1 = Math.sin(p.angle) * p.radius;
-      const x2 = Math.cos(p.angle - trail) * (p.radius + p.length * proximity * 0.9);
-      const y2 = Math.sin(p.angle - trail) * (p.radius + p.length * proximity * 0.9);
+      const trail = (p.length * (0.4 + proximity * 1.7)) / (p.radius < 14 ? 14 : p.radius);
+      const cosA = Math.cos(p.angle);
+      const sinA = Math.sin(p.angle);
+      const outer = p.radius + p.length * proximity;
 
-      const streak = ctx.createLinearGradient(x1, y1, x2, y2);
-      if (p.hue === 1) {
-        streak.addColorStop(0, `rgba(255,248,246,${alpha})`);
-        streak.addColorStop(1, 'rgba(255,240,236,0)');
-      } else {
-        streak.addColorStop(0, `rgba(255,${90 + proximity * 140},${70 + proximity * 90},${alpha})`);
-        streak.addColorStop(1, 'rgba(229,31,43,0)');
-      }
+      ctx.globalAlpha = alpha > 1 ? 1 : alpha;
+      ctx.strokeStyle = `rgb(${TONE[p.tone]})`;
+      ctx.lineWidth = p.weight * (0.5 + proximity * 2.3);
 
-      ctx.strokeStyle = streak;
-      ctx.lineWidth = p.weight * (0.6 + proximity * 2.1);
-      ctx.lineCap = 'round';
       ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
+      ctx.moveTo(cosA * p.radius, sinA * p.radius);
+      ctx.lineTo(Math.cos(p.angle - trail) * outer, Math.sin(p.angle - trail) * outer);
       ctx.stroke();
     }
 
-    /* 3. Accretion rings. Three ellipses at different tilts and speeds, so the
-          structure reads as three dimensional rather than as flat circles. */
+    ctx.globalAlpha = 1;
+
+    /* 3. Accretion rings. Two tilted ellipses turning at different rates, so
+          the structure reads as three dimensional rather than as flat circles. */
     const rings = [
-      { r: diskRadius * 1.00, squash: 0.30, speed: 0.020, width: 2.6, alpha: 0.95 },
-      { r: diskRadius * 1.42, squash: 0.16, speed: -0.013, width: 1.7, alpha: 0.62 },
-      { r: diskRadius * 1.94, squash: 0.44, speed: 0.008, width: 1.1, alpha: 0.36 },
+      { r: disk, squash: 0.3, speed: 0.022, width: 3.0, alpha: 1 },
+      { r: disk * 1.5, squash: 0.15, speed: -0.014, width: 1.8, alpha: 0.55 },
     ];
 
     for (const ring of rings) {
-      const spin = this.clock * ring.speed;
       ctx.save();
-      ctx.rotate(spin);
+      ctx.rotate(this.clock * ring.speed);
       ctx.scale(1, ring.squash);
 
-      const glow = ctx.createRadialGradient(0, 0, ring.r * 0.72, 0, 0, ring.r * 1.12);
-      glow.addColorStop(0, 'rgba(229,31,43,0)');
-      glow.addColorStop(0.55, `rgba(255,120,110,${ring.alpha * t * 0.5})`);
-      glow.addColorStop(0.8, `rgba(255,236,232,${ring.alpha * t * 0.85})`);
-      glow.addColorStop(1, 'rgba(229,31,43,0)');
+      const glow = ctx.createRadialGradient(0, 0, ring.r * 0.7, 0, 0, ring.r * 1.14);
+      glow.addColorStop(0, 'rgba(23,96,74,0)');
+      glow.addColorStop(0.5, `rgba(35,150,110,${ring.alpha * openness * 0.55})`);
+      glow.addColorStop(0.82, `rgba(217,182,101,${ring.alpha * openness * 0.9})`);
+      glow.addColorStop(1, 'rgba(217,182,101,0)');
 
       ctx.strokeStyle = glow;
-      ctx.lineWidth = ring.width * (1 + t * 2.4);
+      ctx.lineWidth = ring.width * (1 + openness * 2.2);
       ctx.beginPath();
       ctx.arc(0, 0, ring.r, 0, TAU);
       ctx.stroke();
@@ -239,39 +255,40 @@ export class GravityField {
     }
 
     /* 4. Shear at the inner edge, the hottest part of the field. */
-    const shear = ctx.createRadialGradient(0, 0, coreRadius * 0.94, 0, 0, coreRadius * 1.9);
-    shear.addColorStop(0, `rgba(255,255,255,${0.9 * t})`);
-    shear.addColorStop(0.35, `rgba(255,140,120,${0.55 * t})`);
-    shear.addColorStop(1, 'rgba(229,31,43,0)');
+    const shear = ctx.createRadialGradient(0, 0, core * 0.95, 0, 0, core * 1.55);
+    shear.addColorStop(0, `rgba(255,250,240,${0.95 * openness})`);
+    shear.addColorStop(0.4, `rgba(217,182,101,${0.6 * openness})`);
+    shear.addColorStop(1, 'rgba(35,150,110,0)');
     ctx.fillStyle = shear;
     ctx.beginPath();
-    ctx.arc(0, 0, coreRadius * 1.9, 0, TAU);
+    ctx.arc(0, 0, core * 1.55, 0, TAU);
     ctx.fill();
 
-    /* 5. The core. Painted last and opaque, so nothing survives inside it. */
+    /* 5. The core itself. Opaque and painted last, so nothing survives inside. */
     ctx.globalCompositeOperation = 'source-over';
     ctx.fillStyle = '#000000';
     ctx.beginPath();
-    ctx.arc(0, 0, coreRadius, 0, TAU);
+    ctx.arc(0, 0, core, 0, TAU);
     ctx.fill();
 
-    // A thin bright rim keeps the core edge crisp against the disk.
-    ctx.strokeStyle = `rgba(255,214,208,${0.5 * t})`;
-    ctx.lineWidth = 1 + t;
+    // A thin bright rim keeps the edge of the hole crisp against the disk.
+    ctx.strokeStyle = `rgba(255,246,225,${0.7 * openness})`;
+    ctx.lineWidth = 1 + openness * 1.6;
     ctx.beginPath();
-    ctx.arc(0, 0, coreRadius, 0, TAU);
+    ctx.arc(0, 0, core, 0, TAU);
     ctx.stroke();
 
-    /* 6. Release flash, used as the authentication panel opens out. */
+    /* 6. Release flash, as the core lets go and the panel arrives. */
     if (this.flash > 0.001) {
-      const burst = ctx.createRadialGradient(0, 0, 0, 0, 0, reach * 0.9 * this.flash);
-      burst.addColorStop(0, `rgba(255,255,255,${0.85 * this.flash})`);
-      burst.addColorStop(0.4, `rgba(255,120,110,${0.35 * this.flash})`);
-      burst.addColorStop(1, 'rgba(229,31,43,0)');
+      const burst = reach * 0.95 * this.flash;
+      const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, burst);
+      glow.addColorStop(0, `rgba(255,252,245,${0.9 * this.flash})`);
+      glow.addColorStop(0.35, `rgba(217,182,101,${0.4 * this.flash})`);
+      glow.addColorStop(1, 'rgba(23,96,74,0)');
       ctx.globalCompositeOperation = 'lighter';
-      ctx.fillStyle = burst;
+      ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(0, 0, reach * 0.9 * this.flash, 0, TAU);
+      ctx.arc(0, 0, burst, 0, TAU);
       ctx.fill();
     }
 

@@ -40,7 +40,7 @@ export default async function StudentDetailPage({
     <div className="flex flex-col gap-7">
       <Link
         href="/admin/students"
-        className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-palm-red"
+        className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-brand"
       >
         Back to students
       </Link>

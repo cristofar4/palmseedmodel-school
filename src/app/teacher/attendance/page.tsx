@@ -90,7 +90,7 @@ export default async function TeacherAttendancePage({
               id="attendance-class"
               name="classId"
               defaultValue={selectedClassId}
-              className="border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-palm-red"
+              className="border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-brand"
             >
               {classes.map((row) => (
                 <option key={row.class_id} value={row.class_id}>
@@ -113,7 +113,7 @@ export default async function TeacherAttendancePage({
               type="date"
               defaultValue={date}
               max={todayInLagos()}
-              className="border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-palm-red"
+              className="border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-brand"
             />
           </div>
 
@@ -132,7 +132,7 @@ export default async function TeacherAttendancePage({
         action={
           <Link
             href="/teacher"
-            className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-palm-red"
+            className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-brand"
           >
             My classes
           </Link>

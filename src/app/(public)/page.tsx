@@ -47,13 +47,13 @@ export default async function HomePage() {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(102deg, rgba(11,11,12,0.94) 0%, rgba(11,11,12,0.78) 38%, rgba(11,11,12,0.34) 68%, rgba(11,11,12,0.55) 100%)',
+              'linear-gradient(102deg, rgba(10,20,16,0.94) 0%, rgba(10,20,16,0.78) 38%, rgba(10,20,16,0.34) 68%, rgba(10,20,16,0.55) 100%)',
           }}
         />
         <div
           aria-hidden="true"
           className="absolute inset-x-0 bottom-0 h-56"
-          style={{ background: 'linear-gradient(to top, #0B0B0C 0%, transparent 100%)' }}
+          style={{ background: 'linear-gradient(to top, #0A1410 0%, transparent 100%)' }}
         />
 
         <div className="relative flex min-h-[92svh] items-center">
@@ -69,7 +69,7 @@ export default async function HomePage() {
             <h2 className="text-[clamp(1.9rem,4.4vw,3.1rem)] leading-[1.08] tracking-[-0.02em]">
               Palmseed Model School
             </h2>
-            <p className="mt-5 font-display text-[1.35rem] italic text-palm-red">Always Useful</p>
+            <p className="mt-5 font-display text-[1.35rem] italic text-brand">Always Useful</p>
           </div>
 
           <div data-vortex-item className="max-w-[58ch]">
@@ -97,7 +97,7 @@ export default async function HomePage() {
               </Link>
               <Link
                 href="/academics"
-                className="px-6 py-3.5 text-sm font-medium text-ink underline underline-offset-4 transition-colors hover:text-palm-red"
+                className="px-6 py-3.5 text-sm font-medium text-ink underline underline-offset-4 transition-colors hover:text-brand"
               >
                 See the academic programme
               </Link>
@@ -118,7 +118,7 @@ export default async function HomePage() {
           <ul className="grid gap-px border border-ink-100 bg-ink-100 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map((value, index) => (
               <li key={value.title} data-vortex-item className="bg-white p-8">
-                <span className="font-display text-[0.8125rem] text-palm-red">
+                <span className="font-display text-[0.8125rem] text-brand">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <h3 className="mt-5 text-[1.1875rem] leading-snug">{value.title}</h3>
@@ -194,7 +194,7 @@ export default async function HomePage() {
                 },
               ].map((pathway) => (
                 <div key={pathway.name} className="flex flex-wrap gap-x-8 gap-y-2 py-5">
-                  <dt className="w-28 shrink-0 font-display text-[1.0625rem] text-palm-red-soft">
+                  <dt className="w-28 shrink-0 font-display text-[1.0625rem] text-gold">
                     {pathway.name}
                   </dt>
                   <dd className="flex-1 text-[0.9375rem] leading-[1.7] text-warm/60">
@@ -273,7 +273,7 @@ export default async function HomePage() {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(96deg, rgba(11,11,12,0.95) 0%, rgba(11,11,12,0.8) 45%, rgba(11,11,12,0.62) 100%)',
+              'linear-gradient(96deg, rgba(10,20,16,0.95) 0%, rgba(10,20,16,0.8) 45%, rgba(10,20,16,0.62) 100%)',
           }}
         />
 
@@ -337,7 +337,7 @@ export default async function HomePage() {
                 'On approval, an admission number and class are issued and the full portal opens.',
               ].map((step, index) => (
                 <li key={step} className="flex gap-5 py-4">
-                  <span className="font-display text-[0.8125rem] text-palm-red">
+                  <span className="font-display text-[0.8125rem] text-brand">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <span className="text-[0.9375rem] leading-[1.7] text-ink-700">{step}</span>
@@ -348,7 +348,7 @@ export default async function HomePage() {
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/signup"
-                className="bg-palm-red px-7 py-4 text-[0.9375rem] font-medium text-white transition-colors hover:bg-palm-red-deep"
+                className="bg-brand px-7 py-4 text-[0.9375rem] font-medium text-white transition-colors hover:bg-brand-deep"
               >
                 Begin a registration
               </Link>
@@ -374,7 +374,7 @@ export default async function HomePage() {
             <SectionHeading eyebrow="Notice board" title="News and announcements" />
             <Link
               href="/news"
-              className="text-sm font-medium text-ink underline underline-offset-4 transition-colors hover:text-palm-red"
+              className="text-sm font-medium text-ink underline underline-offset-4 transition-colors hover:text-brand"
             >
               All announcements
             </Link>
@@ -397,7 +397,7 @@ export default async function HomePage() {
                       {formatDate(item.published_at)}
                     </time>
                     {item.is_pinned ? (
-                      <span className="border border-palm-red/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-palm-red">
+                      <span className="border border-brand/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-brand">
                         Pinned
                       </span>
                     ) : null}

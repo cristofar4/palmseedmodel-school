@@ -32,7 +32,7 @@ export default async function ApplicationDetailPage({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link
           href="/admin/applications"
-          className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-palm-red"
+          className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-brand"
         >
           Back to registrations
         </Link>

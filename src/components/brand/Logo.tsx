@@ -23,7 +23,7 @@ export function Logo({
   className = '',
 }: LogoProps) {
   const nameColour = tone === 'light' ? 'text-warm' : 'text-ink';
-  const mottoColour = tone === 'light' ? 'text-palm-red-soft' : 'text-palm-red';
+  const mottoColour = tone === 'light' ? 'text-gold' : 'text-brand';
 
   return (
     <span className={`inline-flex items-center gap-3 ${className}`}>

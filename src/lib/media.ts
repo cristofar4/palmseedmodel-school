@@ -17,6 +17,12 @@
 export interface Photograph {
   /** Local path under public/. */
   src: string;
+  /**
+   * Original artwork drawn by scripts/generate-artwork.ts, shown when no
+   * photograph has been installed. It is a finished image in its own right,
+   * not a grey placeholder.
+   */
+  artwork: string;
   /** Source page, kept for attribution and licence checking. */
   sourceUrl: string;
   photographer: string;
@@ -32,6 +38,7 @@ const PEXELS = (id: string, size = 1920) =>
 
 export const PHOTOGRAPHY = {
   hero: {
+    artwork: '/artwork/hero.svg',
     src: '/photography/hero-assembly.jpg',
     sourceUrl: 'https://www.pexels.com/photo/8926648/',
     photographer: 'Kampus Production',
@@ -40,6 +47,7 @@ export const PHOTOGRAPHY = {
     position: '50% 35%',
   },
   junior: {
+    artwork: '/artwork/junior.svg',
     src: '/photography/junior-classroom.jpg',
     sourceUrl: 'https://www.pexels.com/photo/8500352/',
     photographer: 'Kampus Production',
@@ -48,6 +56,7 @@ export const PHOTOGRAPHY = {
     position: '50% 40%',
   },
   senior: {
+    artwork: '/artwork/senior.svg',
     src: '/photography/senior-laboratory.jpg',
     sourceUrl: 'https://www.pexels.com/photo/8471835/',
     photographer: 'RF._.studio',
@@ -56,6 +65,7 @@ export const PHOTOGRAPHY = {
     position: '50% 45%',
   },
   teaching: {
+    artwork: '/artwork/teaching.svg',
     src: '/photography/teacher-guidance.jpg',
     sourceUrl: 'https://www.pexels.com/photo/8617542/',
     photographer: 'Kampus Production',
@@ -64,6 +74,7 @@ export const PHOTOGRAPHY = {
     position: '50% 40%',
   },
   digital: {
+    artwork: '/artwork/digital.svg',
     src: '/photography/digital-learning.jpg',
     sourceUrl: 'https://www.pexels.com/photo/5905445/',
     photographer: 'Katerina Holmes',
@@ -72,6 +83,7 @@ export const PHOTOGRAPHY = {
     position: '50% 40%',
   },
   schoolLife: {
+    artwork: '/artwork/school-life.svg',
     src: '/photography/school-life.jpg',
     sourceUrl: 'https://www.pexels.com/photo/8613089/',
     photographer: 'Kampus Production',
@@ -80,6 +92,7 @@ export const PHOTOGRAPHY = {
     position: '50% 40%',
   },
   admissions: {
+    artwork: '/artwork/admissions.svg',
     src: '/photography/admissions.jpg',
     sourceUrl: 'https://www.pexels.com/photo/8199562/',
     photographer: 'Kampus Production',

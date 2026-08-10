@@ -82,14 +82,14 @@ export default async function VerifyPage({
         {user ? (
           <Link
             href={homeFor(user.role)}
-            className="bg-palm-red px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-palm-red-deep"
+            className="bg-brand px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-brand-deep"
           >
             Go to my portal
           </Link>
         ) : (
           <Link
             href="/signin"
-            className="bg-palm-red px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-palm-red-deep"
+            className="bg-brand px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-brand-deep"
           >
             Sign in
           </Link>

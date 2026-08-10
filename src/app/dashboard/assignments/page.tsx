@@ -35,7 +35,7 @@ export default async function StudentAssignmentsPage() {
               <li key={item.id} className="py-5 first:pt-0 last:pb-0">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-palm-red">
+                    <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-brand">
                       {item.subject_name}
                     </p>
                     <h3 className="mt-1.5 font-display text-[1.0625rem]">{item.title}</h3>
@@ -47,7 +47,7 @@ export default async function StudentAssignmentsPage() {
                   <div className="shrink-0 text-right">
                     <p className="text-[0.6875rem] uppercase tracking-[0.1em] text-ink-400">Due</p>
                     <p
-                      className={`mt-1 text-[0.8125rem] ${overdue ? 'font-medium text-palm-red' : 'text-ink-700'}`}
+                      className={`mt-1 text-[0.8125rem] ${overdue ? 'font-medium text-brand' : 'text-ink-700'}`}
                     >
                       {formatDateTime(item.due_at)}
                     </p>
@@ -58,7 +58,7 @@ export default async function StudentAssignmentsPage() {
                     ) : item.submitted_at ? (
                       <p className="mt-3 text-[0.75rem] text-ink-400">Submitted, awaiting marking</p>
                     ) : overdue ? (
-                      <p className="mt-3 text-[0.75rem] font-medium text-palm-red">Not submitted</p>
+                      <p className="mt-3 text-[0.75rem] font-medium text-brand">Not submitted</p>
                     ) : null}
                   </div>
                 </div>

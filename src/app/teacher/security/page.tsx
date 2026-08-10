@@ -45,7 +45,7 @@ export default async function TeacherSecurityPage() {
                 <span className="text-[0.9375rem]">
                   {session.device_label ?? 'Unrecognised device'}
                   {session.id === user.sessionId ? (
-                    <span className="ml-2 text-[0.75rem] text-palm-red">This device</span>
+                    <span className="ml-2 text-[0.75rem] text-brand">This device</span>
                   ) : null}
                 </span>
                 <span className="text-[0.75rem] text-ink-400">

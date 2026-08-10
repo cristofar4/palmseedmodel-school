@@ -55,7 +55,7 @@ export default async function TeacherOverviewPage() {
                     </p>
                   </div>
                   {row.is_form_teacher ? (
-                    <span className="border border-palm-red/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-palm-red">
+                    <span className="border border-brand/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-brand">
                       Form
                     </span>
                   ) : null}
@@ -68,14 +68,14 @@ export default async function TeacherOverviewPage() {
                 <div className="mt-4 flex flex-wrap gap-4">
                   <Link
                     href={`/teacher/attendance?classId=${row.class_id}`}
-                    className="text-[0.8125rem] font-medium text-palm-red underline underline-offset-4"
+                    className="text-[0.8125rem] font-medium text-brand underline underline-offset-4"
                   >
                     Take attendance
                   </Link>
                   {row.subject_id ? (
                     <Link
                       href={`/teacher/results?classId=${row.class_id}&subjectId=${row.subject_id}`}
-                      className="text-[0.8125rem] font-medium text-palm-red underline underline-offset-4"
+                      className="text-[0.8125rem] font-medium text-brand underline underline-offset-4"
                     >
                       Enter results
                     </Link>

@@ -37,7 +37,7 @@ export default async function SecurityPage() {
                   <p className="text-[0.9375rem]">
                     {session.device_label ?? 'Unrecognised device'}
                     {session.id === user.sessionId ? (
-                      <span className="ml-2 border border-palm-red/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-palm-red">
+                      <span className="ml-2 border border-brand/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-brand">
                         This device
                       </span>
                     ) : null}

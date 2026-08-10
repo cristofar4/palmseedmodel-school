@@ -163,7 +163,7 @@ export function ResultsGrid({
                       step="0.5"
                       value={entry.ca}
                       onChange={(event) => update(student.profile_id, 'ca', event.target.value)}
-                      className="w-20 border border-ink-200 px-2 py-2 text-[0.875rem] tabular-nums outline-none focus:border-palm-red"
+                      className="w-20 border border-ink-200 px-2 py-2 text-[0.875rem] tabular-nums outline-none focus:border-brand"
                     />
                   </td>
 
@@ -179,7 +179,7 @@ export function ResultsGrid({
                       step="0.5"
                       value={entry.exam}
                       onChange={(event) => update(student.profile_id, 'exam', event.target.value)}
-                      className="w-20 border border-ink-200 px-2 py-2 text-[0.875rem] tabular-nums outline-none focus:border-palm-red"
+                      className="w-20 border border-ink-200 px-2 py-2 text-[0.875rem] tabular-nums outline-none focus:border-brand"
                     />
                   </td>
 
@@ -202,7 +202,7 @@ export function ResultsGrid({
                       maxLength={300}
                       value={entry.remark}
                       onChange={(event) => update(student.profile_id, 'remark', event.target.value)}
-                      className="w-full min-w-[10rem] border border-ink-200 px-2 py-2 text-[0.875rem] outline-none focus:border-palm-red"
+                      className="w-full min-w-[10rem] border border-ink-200 px-2 py-2 text-[0.875rem] outline-none focus:border-brand"
                     />
                   </td>
                 </tr>

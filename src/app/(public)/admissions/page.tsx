@@ -52,7 +52,7 @@ export default function AdmissionsPage() {
             <ol className="divide-y divide-ink-100 border-y border-ink-100">
               {STEPS.map((step, index) => (
                 <li key={step.title} data-vortex-item className="flex gap-6 py-7">
-                  <span className="w-8 shrink-0 font-display text-[0.875rem] text-palm-red">
+                  <span className="w-8 shrink-0 font-display text-[0.875rem] text-brand">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div>
@@ -68,7 +68,7 @@ export default function AdmissionsPage() {
             <div className="mt-12 flex flex-wrap gap-4">
               <Link
                 href="/signup"
-                className="bg-palm-red px-7 py-4 text-[0.9375rem] font-medium text-white transition-colors hover:bg-palm-red-deep"
+                className="bg-brand px-7 py-4 text-[0.9375rem] font-medium text-white transition-colors hover:bg-brand-deep"
               >
                 Begin a registration
               </Link>
@@ -149,7 +149,7 @@ export default function AdmissionsPage() {
             Anything else, write to{' '}
             <a
               href={`mailto:${SCHOOL.replyEmail}`}
-              className="text-palm-red underline underline-offset-4"
+              className="text-brand underline underline-offset-4"
             >
               {SCHOOL.replyEmail}
             </a>

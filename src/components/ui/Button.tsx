@@ -12,10 +12,10 @@ const base =
   'disabled:cursor-not-allowed disabled:opacity-55 select-none';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-palm-red text-white hover:bg-palm-red-deep',
+  primary: 'bg-brand text-white hover:bg-brand-deep',
   secondary: 'border border-ink text-ink hover:bg-ink hover:text-warm',
-  ghost: 'text-ink hover:text-palm-red',
-  danger: 'border border-palm-red text-palm-red hover:bg-palm-red hover:text-white',
+  ghost: 'text-ink hover:text-brand',
+  danger: 'border border-brand text-brand hover:bg-brand hover:text-white',
   onDark: 'border border-warm/35 text-warm hover:border-warm hover:bg-warm hover:text-ink',
 };
 

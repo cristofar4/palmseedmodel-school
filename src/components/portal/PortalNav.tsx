@@ -47,13 +47,13 @@ export function PortalNav({ items }: { items: NavItem[] }) {
                 aria-current={active ? 'page' : undefined}
                 className={`flex items-center justify-between gap-3 whitespace-nowrap px-3 py-2.5 text-[0.875rem] transition-colors lg:border-l-2 ${
                   active
-                    ? 'border-palm-red bg-white font-medium text-ink lg:bg-transparent'
+                    ? 'border-brand bg-white font-medium text-ink lg:bg-transparent'
                     : 'border-transparent text-ink-500 hover:text-ink'
                 }`}
               >
                 {item.label}
                 {item.badge !== undefined && item.badge > 0 ? (
-                  <span className="inline-flex min-w-[1.375rem] items-center justify-center bg-palm-red px-1.5 py-0.5 text-[0.6875rem] font-semibold tabular-nums text-white">
+                  <span className="inline-flex min-w-[1.375rem] items-center justify-center bg-brand px-1.5 py-0.5 text-[0.6875rem] font-semibold tabular-nums text-white">
                     {item.badge}
                   </span>
                 ) : null}

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="presentation">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#142019"/>
+      <stop offset="0.55" stop-color="#0A1410"/>
+      <stop offset="1" stop-color="#050B08"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.28" cy="0.50" r="0.78">
+      <stop offset="0" stop-color="#17604A" stop-opacity="0.67"/>
+      <stop offset="0.55" stop-color="#17604A" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#17604A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warm" cx="0.84" cy="0.86" r="0.6">
+      <stop offset="0" stop-color="#D9B665" stop-opacity="0.19"/>
+      <stop offset="1" stop-color="#D9B665" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#ground)"/>
+  <rect width="1600" height="1000" fill="url(#glow)"/>
+  <rect width="1600" height="1000" fill="url(#warm)"/>
+  <line x1="88" y1="0" x2="88" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="176" y1="0" x2="176" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="264" y1="0" x2="264" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="352" y1="0" x2="352" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="440" y1="0" x2="440" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="528" y1="0" x2="528" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="616" y1="0" x2="616" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="704" y1="0" x2="704" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="792" y1="0" x2="792" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="880" y1="0" x2="880" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="968" y1="0" x2="968" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1056" y1="0" x2="1056" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1144" y1="0" x2="1144" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1232" y1="0" x2="1232" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1320" y1="0" x2="1320" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1408" y1="0" x2="1408" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1496" y1="0" x2="1496" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1584" y1="0" x2="1584" y2="1000" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/>
+  <line x1="92.3" y1="288.8" x2="1120.9" y2="227.1"
+          stroke="#D9B665" stroke-width="1.03" opacity="0.115"/><line x1="902.9" y1="549.9" x2="1524.0" y2="512.6"
+          stroke="#D9B665" stroke-width="1.03" opacity="0.124"/><line x1="389.4" y1="395.9" x2="966.3" y2="361.3"
+          stroke="#D9B665" stroke-width="1.16" opacity="0.142"/><line x1="120.8" y1="307.8" x2="761.2" y2="269.4"
+          stroke="#D9B665" stroke-width="1.16" opacity="0.132"/><line x1="642.7" y1="591.1" x2="1146.5" y2="560.9"
+          stroke="#D9B665" stroke-width="0.71" opacity="0.085"/>
+
+  <!-- Horizon arc, the constant across every plate. -->
+  <path d="M -240 780.0 Q 800.0 420.0 1840.0 780.0"
+        fill="none" stroke="#D9B665" stroke-width="1.5" opacity="0.5"/>
+  <path d="M -240 840.0 Q 800.0 490.0 1840.0 840.0"
+        fill="none" stroke="#238C69" stroke-width="1" opacity="0.35"/>
+
+  
+    <g transform="translate(701.2 620.0)">
+      <path d="M0 -170.0 C 153.0 -59.5, 153.0 59.5, 0 170.0
+               C -153.0 59.5, -153.0 -59.5, 0 -170.0 Z"
+            fill="none" stroke="#D9B665" stroke-width="1.6" opacity="0.85"/>
+      <path d="M0 170.0 L 0 -357.0" stroke="#238C69" stroke-width="1.2" opacity="0.6"/>
+      <path d="M0 -204.0 C 119.0 -255.0, 136.0 -357.0, 42.5 -408.0"
+            fill="none" stroke="#238C69" stroke-width="1.2" opacity="0.5"/>
+      <circle cx="0" cy="0" r="27.2" fill="#D9B665" opacity="0.9"/>
+    </g>
+
+  <rect width="1600" height="1000" filter="url(#grain)" opacity="0.055" style="mix-blend-mode:overlay"/>
+</svg>

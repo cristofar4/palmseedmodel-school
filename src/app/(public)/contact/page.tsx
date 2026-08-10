@@ -35,7 +35,7 @@ export default async function ContactPage() {
                 <dd className="mt-2 text-[0.9375rem]">
                   <a
                     href={`mailto:${SCHOOL.replyEmail}`}
-                    className="text-ink underline underline-offset-4 hover:text-palm-red"
+                    className="text-ink underline underline-offset-4 hover:text-brand"
                   >
                     {SCHOOL.replyEmail}
                   </a>

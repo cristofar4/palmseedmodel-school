@@ -52,7 +52,7 @@ export function button(label: string, href: string): EmailBlock {
   return {
     html: `
       <table role="presentation" cellpadding="0" cellspacing="0" style="margin:6px 0 24px;">
-        <tr><td style="background:${BRAND.red};border-radius:3px;">
+        <tr><td style="background:${BRAND.brand};border-radius:3px;">
           <a href="${escapeHtml(href)}"
              style="display:inline-block;padding:14px 30px;font-size:14px;font-weight:600;letter-spacing:0.02em;color:${BRAND.white};text-decoration:none;font-family:Arial,Helvetica,sans-serif;">
             ${escapeHtml(label)}
@@ -89,7 +89,7 @@ export function notice(content: string): EmailBlock {
   return {
     html: `
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px;">
-        <tr><td style="padding:15px 18px;background:${BRAND.warm};border-left:3px solid ${BRAND.red};">
+        <tr><td style="padding:15px 18px;background:${BRAND.warm};border-left:3px solid ${BRAND.brand};">
           <p style="margin:0;font-size:13px;line-height:1.6;color:${BRAND.ink};font-family:Arial,Helvetica,sans-serif;">${content}</p>
         </td></tr>
       </table>`,
@@ -155,7 +155,7 @@ export function renderEmail(options: {
                   </td>
                   <td style="vertical-align:middle;">
                     <div style="font-family:Georgia,'Times New Roman',serif;font-size:17px;font-weight:600;color:${BRAND.ink};letter-spacing:-0.01em;">${escapeHtml(SCHOOL.name)}</div>
-                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:${BRAND.red};margin-top:3px;">${escapeHtml(SCHOOL.motto)}</div>
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:${BRAND.brand};margin-top:3px;">${escapeHtml(SCHOOL.motto)}</div>
                   </td>
                 </tr>
               </table>

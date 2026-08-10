@@ -52,7 +52,7 @@ export default async function AcademicSetupPage() {
                 <li key={session.id} className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
                   <span className="text-[0.9375rem]">{session.name}</span>
                   {session.is_current ? (
-                    <span className="border border-palm-red/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-palm-red">
+                    <span className="border border-brand/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-brand">
                       Current
                     </span>
                   ) : null}

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" role="presentation">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#142019"/>
+      <stop offset="0.55" stop-color="#0A1410"/>
+      <stop offset="1" stop-color="#050B08"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.28" cy="0.46" r="0.78">
+      <stop offset="0" stop-color="#17604A" stop-opacity="0.60"/>
+      <stop offset="0.55" stop-color="#17604A" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#17604A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warm" cx="0.84" cy="0.86" r="0.6">
+      <stop offset="0" stop-color="#D9B665" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#D9B665" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="800" fill="url(#ground)"/>
+  <rect width="1400" height="800" fill="url(#glow)"/>
+  <rect width="1400" height="800" fill="url(#warm)"/>
+  <line x1="88" y1="0" x2="88" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="176" y1="0" x2="176" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="264" y1="0" x2="264" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="352" y1="0" x2="352" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="440" y1="0" x2="440" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="528" y1="0" x2="528" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="616" y1="0" x2="616" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="704" y1="0" x2="704" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="792" y1="0" x2="792" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="880" y1="0" x2="880" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="968" y1="0" x2="968" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1056" y1="0" x2="1056" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1144" y1="0" x2="1144" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1232" y1="0" x2="1232" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/><line x1="1320" y1="0" x2="1320" y2="800" stroke="#F7F4EC" stroke-width="1" opacity="0.05"/>
+  <line x1="13.0" y1="598.1" x2="788.4" y2="551.6"
+          stroke="#D9B665" stroke-width="1.27" opacity="0.114"/><line x1="462.9" y1="282.4" x2="1141.0" y2="241.7"
+          stroke="#D9B665" stroke-width="1.00" opacity="0.145"/><line x1="167.4" y1="175.4" x2="1187.2" y2="114.2"
+          stroke="#D9B665" stroke-width="1.33" opacity="0.076"/><line x1="526.7" y1="107.4" x2="1274.0" y2="62.5"
+          stroke="#D9B665" stroke-width="0.61" opacity="0.081"/><line x1="635.8" y1="122.9" x2="1092.6" y2="95.5"
+          stroke="#D9B665" stroke-width="1.42" opacity="0.105"/>
+
+  <!-- Horizon arc, the constant across every plate. -->
+  <path d="M -210 592.0 Q 700.0 304.0 1610.0 592.0"
+        fill="none" stroke="#D9B665" stroke-width="1.5" opacity="0.5"/>
+  <path d="M -210 640.0 Q 700.0 360.0 1610.0 640.0"
+        fill="none" stroke="#238C69" stroke-width="1" opacity="0.35"/>
+
+  <g><path d="M 597.0 464.0 A 128.0 128.0 0 0 1 853.0 464.0"
+             fill="none" stroke="#D9B665" stroke-width="1.50" opacity="0.70"/><path d="M 525.0 464.0 A 200.0 200.0 0 0 1 925.0 464.0"
+             fill="none" stroke="#238C69" stroke-width="1.35" opacity="0.61"/><path d="M 453.0 464.0 A 272.0 272.0 0 0 1 997.0 464.0"
+             fill="none" stroke="#D9B665" stroke-width="1.20" opacity="0.52"/><path d="M 381.0 464.0 A 344.0 344.0 0 0 1 1069.0 464.0"
+             fill="none" stroke="#238C69" stroke-width="1.05" opacity="0.43"/><path d="M 309.0 464.0 A 416.0 416.0 0 0 1 1141.0 464.0"
+             fill="none" stroke="#D9B665" stroke-width="0.90" opacity="0.34"/><path d="M 237.0 464.0 A 488.0 488.0 0 0 1 1213.0 464.0"
+             fill="none" stroke="#238C69" stroke-width="0.75" opacity="0.25"/></g>
+
+  <rect width="1400" height="800" filter="url(#grain)" opacity="0.055" style="mix-blend-mode:overlay"/>
+</svg>

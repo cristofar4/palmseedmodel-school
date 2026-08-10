@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 const STATUS_STYLES: Record<string, string> = {
   sent: 'text-[#12603A]',
   simulated: 'text-[#8A5711]',
-  failed: 'text-palm-red',
+  failed: 'text-brand',
   queued: 'text-ink-500',
 };
 
@@ -97,7 +97,7 @@ export default async function AdminEmailPage() {
                         {log.status}
                       </span>
                       {log.error ? (
-                        <span className="mt-0.5 block max-w-[16rem] truncate text-[0.6875rem] text-palm-red">
+                        <span className="mt-0.5 block max-w-[16rem] truncate text-[0.6875rem] text-brand">
                           {log.error}
                         </span>
                       ) : null}

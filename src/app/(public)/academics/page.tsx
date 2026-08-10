@@ -105,7 +105,7 @@ export default function AcademicsPage() {
           <div className="grid gap-px border border-ink-100 bg-ink-100 lg:grid-cols-3">
             {PATHWAYS.map((pathway) => (
               <article key={pathway.name} data-vortex-item className="bg-white p-8 lg:p-10">
-                <h3 className="font-display text-[1.4rem] text-palm-red">{pathway.name}</h3>
+                <h3 className="font-display text-[1.4rem] text-brand">{pathway.name}</h3>
                 <p className="mt-4 text-[0.9375rem] leading-[1.75] text-ink-600">{pathway.lead}</p>
 
                 <p className="mt-8 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink-400">

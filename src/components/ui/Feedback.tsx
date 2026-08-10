@@ -6,14 +6,14 @@ const alertTones: Record<Tone, string> = {
   info: 'border-ink-200 bg-white text-ink',
   success: 'border-[#1B7F4B]/30 bg-[#1B7F4B]/[0.07] text-[#12603A]',
   warning: 'border-[#B4741A]/30 bg-[#B4741A]/[0.08] text-[#8A5711]',
-  error: 'border-palm-red/35 bg-palm-red/[0.07] text-palm-red-deep',
+  error: 'border-brand/35 bg-brand/[0.07] text-brand-deep',
 };
 
 const alertTonesDark: Record<Tone, string> = {
   info: 'border-white/15 bg-white/[0.05] text-warm',
   success: 'border-[#57C98D]/30 bg-[#57C98D]/[0.1] text-[#9BE3BE]',
   warning: 'border-[#E0A64A]/30 bg-[#E0A64A]/[0.1] text-[#F0CB8C]',
-  error: 'border-palm-red/45 bg-palm-red/[0.12] text-[#FFB3B8]',
+  error: 'border-brand/45 bg-brand/[0.12] text-[#FFB3B8]',
 };
 
 export function Alert({
@@ -77,7 +77,7 @@ export function EmptyState({
 const statusTones: Record<string, string> = {
   active: 'border-[#1B7F4B]/35 bg-[#1B7F4B]/10 text-[#12603A]',
   pending_review: 'border-[#B4741A]/35 bg-[#B4741A]/10 text-[#8A5711]',
-  suspended: 'border-palm-red/40 bg-palm-red/10 text-palm-red-deep',
+  suspended: 'border-brand/40 bg-brand/10 text-brand-deep',
   rejected: 'border-ink-300 bg-ink-100 text-ink-600',
   graduated: 'border-ink-700/25 bg-ink-100 text-ink-700',
 };

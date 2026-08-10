@@ -17,8 +17,8 @@ const inputBase =
   'placeholder:text-ink-300 disabled:opacity-60';
 
 const toneClasses = {
-  light: 'border-ink-200 bg-white text-ink focus:border-palm-red',
-  dark: 'border-white/18 bg-white/[0.04] text-warm placeholder:text-white/35 focus:border-palm-red',
+  light: 'border-ink-200 bg-white text-ink focus:border-brand',
+  dark: 'border-white/18 bg-white/[0.04] text-warm placeholder:text-white/35 focus:border-brand',
 } as const;
 
 const labelTone = {
@@ -43,7 +43,7 @@ function FieldFrame({
       >
         {label}
         {required ? (
-          <span className="ml-1 text-palm-red" aria-hidden="true">
+          <span className="ml-1 text-brand" aria-hidden="true">
             *
           </span>
         ) : null}
@@ -57,7 +57,7 @@ function FieldFrame({
 
       {/* Announced the moment it appears, without stealing focus. */}
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-palm-red">
+        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-brand">
           {error}
         </p>
       ) : null}
@@ -82,7 +82,7 @@ export function TextField({
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
         required={required}
-        className={`${inputBase} ${toneClasses[tone]} ${error ? 'border-palm-red' : ''} ${className}`}
+        className={`${inputBase} ${toneClasses[tone]} ${error ? 'border-brand' : ''} ${className}`}
         {...rest}
       />
     </FieldFrame>
@@ -107,7 +107,7 @@ export function SelectField({
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
         required={required}
-        className={`${inputBase} ${toneClasses[tone]} ${error ? 'border-palm-red' : ''} ${className}`}
+        className={`${inputBase} ${toneClasses[tone]} ${error ? 'border-brand' : ''} ${className}`}
         {...rest}
       >
         {children}
@@ -133,7 +133,7 @@ export function TextAreaField({
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
         required={required}
-        className={`${inputBase} ${toneClasses[tone]} ${error ? 'border-palm-red' : ''} ${className}`}
+        className={`${inputBase} ${toneClasses[tone]} ${error ? 'border-brand' : ''} ${className}`}
         {...rest}
       />
     </FieldFrame>
@@ -155,7 +155,7 @@ export function CheckboxField({
           type="checkbox"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
-          className="mt-0.5 h-4 w-4 shrink-0 accent-[#E51F2B]"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-[#17604A]"
           {...rest}
         />
         <label
@@ -166,7 +166,7 @@ export function CheckboxField({
         </label>
       </div>
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-palm-red">
+        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-brand">
           {error}
         </p>
       ) : null}

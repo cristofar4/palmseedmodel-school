@@ -145,7 +145,7 @@ export default async function StudentRecordsPage() {
         ) : (
           <ul className="flex flex-col gap-5">
             {remarks.map((remark) => (
-              <li key={remark.term_name} className="border-l-2 border-palm-red pl-5">
+              <li key={remark.term_name} className="border-l-2 border-brand pl-5">
                 <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-ink-400">
                   {remark.term_name}
                 </p>

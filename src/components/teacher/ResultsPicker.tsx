@@ -49,7 +49,7 @@ export function ResultsPicker({
           setValue(event.target.value);
           go(event.target.value);
         }}
-        className="w-full border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-palm-red disabled:opacity-60 sm:max-w-md"
+        className="w-full border border-ink-200 bg-white px-3.5 py-3 text-[0.9375rem] outline-none focus:border-brand disabled:opacity-60 sm:max-w-md"
       >
         {assignments.map((row) => (
           <option key={row.assignment_id} value={`${row.class_id}|${row.subject_id}`}>

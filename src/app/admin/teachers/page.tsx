@@ -107,7 +107,7 @@ export default async function TeachersPage() {
                   </p>
                 </div>
                 {row.is_form_teacher ? (
-                  <span className="border border-palm-red/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-palm-red">
+                  <span className="border border-brand/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-brand">
                     Form teacher
                   </span>
                 ) : null}

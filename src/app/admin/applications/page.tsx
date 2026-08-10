@@ -108,7 +108,7 @@ export default async function ApplicationsPage({
                   <td className="px-3 py-3.5 text-right">
                     <Link
                       href={`/admin/applications/${row.id}`}
-                      className="text-[0.8125rem] font-medium text-palm-red underline underline-offset-4"
+                      className="text-[0.8125rem] font-medium text-brand underline underline-offset-4"
                     >
                       {row.status === 'pending' ? 'Review' : 'Open'}
                     </Link>

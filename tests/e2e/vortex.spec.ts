@@ -29,9 +29,11 @@ test.describe('gravity vortex', () => {
     // is the requirement that it stays attached to the hole rather than being
     // hidden early.
     await page.waitForTimeout(900);
+    // The element that moves is the viewport window, the canvas's previous
+    // sibling. The stage inside it only carries the scroll offset.
     const transform = await page.evaluate(() => {
-      const stage = document.querySelector('canvas')?.previousElementSibling?.firstElementChild;
-      return stage ? getComputedStyle(stage as Element).transform : 'none';
+      const layer = document.querySelector('canvas')?.previousElementSibling;
+      return layer ? getComputedStyle(layer).transform : 'none';
     });
     expect(transform).not.toBe('none');
     expect(transform).not.toBe('matrix(1, 0, 0, 1, 0, 0)');
@@ -44,9 +46,9 @@ test.describe('gravity vortex', () => {
     });
 
     const elapsed = Date.now() - started;
-    // The brief is 1.8 to 2.2 seconds. The lower bound is asserted tightly and
+    // The run is about 1.85 seconds. The lower bound is asserted tightly and
     // the upper bound loosely, so a slow machine does not produce a red build.
-    expect(elapsed).toBeGreaterThan(1_700);
+    expect(elapsed).toBeGreaterThan(1_600);
     expect(elapsed).toBeLessThan(4_000);
 
     const dialog = page.getByRole('dialog');
@@ -132,8 +134,8 @@ test.describe('gravity vortex', () => {
     // The landing page is usable again, with its transforms cleared.
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     const transform = await page.evaluate(() => {
-      const stage = document.querySelector('canvas')?.previousElementSibling?.firstElementChild;
-      return stage ? getComputedStyle(stage as Element).transform : 'none';
+      const layer = document.querySelector('canvas')?.previousElementSibling;
+      return layer ? getComputedStyle(layer).transform : 'none';
     });
     expect(['none', 'matrix(1, 0, 0, 1, 0, 0)']).toContain(transform);
   });

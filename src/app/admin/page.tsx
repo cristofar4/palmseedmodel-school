@@ -58,7 +58,7 @@ export default async function AdminOverviewPage() {
         action={
           <Link
             href="/admin/applications"
-            className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-palm-red"
+            className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-brand"
           >
             Open the queue
           </Link>
@@ -112,7 +112,7 @@ export default async function AdminOverviewPage() {
             action={
               <Link
                 href="/admin/academics"
-                className="bg-palm-red px-5 py-2.5 text-[0.8125rem] font-medium text-white"
+                className="bg-brand px-5 py-2.5 text-[0.8125rem] font-medium text-white"
               >
                 Open academic setup
               </Link>
@@ -137,7 +137,7 @@ export default async function AdminOverviewPage() {
                   {row.capacity ? (
                     <div className="mt-2.5 h-1 w-full bg-ink-100">
                       <div
-                        className="h-1 bg-palm-red"
+                        className="h-1 bg-brand"
                         style={{ width: `${fill}%` }}
                         role="presentation"
                       />
@@ -167,7 +167,7 @@ export default async function AdminOverviewPage() {
         action={
           <Link
             href="/admin/security"
-            className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-palm-red"
+            className="text-[0.8125rem] text-ink-500 underline underline-offset-4 hover:text-brand"
           >
             Full security log
           </Link>
@@ -181,7 +181,7 @@ export default async function AdminOverviewPage() {
           <ol className="flex flex-col gap-3 text-[0.9375rem] text-ink-600">
             <li>
               1. Create the academic session, its terms and at least one class under{' '}
-              <Link href="/admin/academics" className="text-palm-red underline underline-offset-4">
+              <Link href="/admin/academics" className="text-brand underline underline-offset-4">
                 Academic setup
               </Link>
               .
@@ -189,7 +189,7 @@ export default async function AdminOverviewPage() {
             <li>2. Add the subjects the school teaches.</li>
             <li>
               3. Create teacher accounts under{' '}
-              <Link href="/admin/teachers" className="text-palm-red underline underline-offset-4">
+              <Link href="/admin/teachers" className="text-brand underline underline-offset-4">
                 Teachers
               </Link>
               . Each one receives an activation email.
