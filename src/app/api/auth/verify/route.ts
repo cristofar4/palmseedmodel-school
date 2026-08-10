@@ -3,7 +3,6 @@ import { AUTHENTICATOR, withPrincipal } from '@/lib/db/pool';
 import { recordAuthEvent } from '@/lib/auth/events';
 import { requestContext } from '@/lib/security/request-context';
 import { hashToken } from '@/lib/security/tokens';
-import { siteUrl } from '@/lib/school';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -16,11 +15,21 @@ export const dynamic = 'force-dynamic';
  * is confirmed rather than failing.
  */
 export async function GET(request: Request): Promise<Response> {
-  const token = new URL(request.url).searchParams.get('token');
-  const base = siteUrl();
+  const requestUrl = new URL(request.url);
+  const token = requestUrl.searchParams.get('token');
+
+  /**
+   * Resolved against the incoming request rather than NEXT_PUBLIC_SITE_URL.
+   *
+   * This is a same origin redirect, so it should land wherever the visitor
+   * already is. Building it from configuration means a stale or mistyped site
+   * URL breaks email confirmation for everybody, which is exactly the kind of
+   * failure that is hard to notice until families start complaining.
+   */
+  const back = (state: string) => new URL(`/verify?state=${state}`, requestUrl).toString();
 
   if (!token) {
-    return NextResponse.redirect(`${base}/verify?state=missing`, { status: 303 });
+    return NextResponse.redirect(back('missing'), { status: 303 });
   }
 
   const result = await withPrincipal(AUTHENTICATOR, async (tx) => {
@@ -64,5 +73,5 @@ export async function GET(request: Request): Promise<Response> {
     });
   }
 
-  return NextResponse.redirect(`${base}/verify?state=${result.state}`, { status: 303 });
+  return NextResponse.redirect(back(result.state), { status: 303 });
 }

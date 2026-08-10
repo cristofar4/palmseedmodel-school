@@ -137,6 +137,9 @@ export interface PendingApplication {
   reviewed_at: Date | null;
   student_profile_id: string | null;
   email_verified_at: Date | null;
+  /** Issued at approval. Null while the registration is still pending. */
+  admission_number: string | null;
+  class_label: string | null;
 }
 
 export async function applications(
@@ -149,9 +152,14 @@ export async function applications(
               a.class_applying_for, a.stream_preference,
               a.guardian_name, a.guardian_email, a.guardian_phone, a.guardian_relationship,
               a.submitted_at, a.status, a.date_of_birth, a.previous_school, a.home_address,
-              a.gender, a.review_note, a.reviewed_at, a.student_profile_id
+              a.gender, a.review_note, a.reviewed_at, a.student_profile_id,
+              sp.admission_number,
+              case when c.id is null then null
+                   else palmseed_class_label(c.level, c.stream, c.arm) end as class_label
          from applications a
          join users u on u.id = a.user_id
+         left join student_profiles sp on sp.user_id = u.id
+         left join classes c on c.id = sp.class_id
         where ($1 = 'all' or a.status = $1)
         order by a.submitted_at desc`,
       [status],
@@ -169,9 +177,14 @@ export async function applicationById(
               a.class_applying_for, a.stream_preference,
               a.guardian_name, a.guardian_email, a.guardian_phone, a.guardian_relationship,
               a.submitted_at, a.status, a.date_of_birth, a.previous_school, a.home_address,
-              a.gender, a.review_note, a.reviewed_at, a.student_profile_id
+              a.gender, a.review_note, a.reviewed_at, a.student_profile_id,
+              sp.admission_number,
+              case when c.id is null then null
+                   else palmseed_class_label(c.level, c.stream, c.arm) end as class_label
          from applications a
          join users u on u.id = a.user_id
+         left join student_profiles sp on sp.user_id = u.id
+         left join classes c on c.id = sp.class_id
         where a.id = $1`,
       [id],
     ),

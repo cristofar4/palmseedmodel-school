@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openAuthFromHeader } from './helpers';
 
 /**
  * The gravity vortex transition.
@@ -13,14 +14,8 @@ test.describe('gravity vortex', () => {
   test('collapses the page and opens sign in from the tapped control', async ({ page }) => {
     await page.goto('/');
 
-    const trigger = page.getByRole('button', { name: 'Sign in' }).first();
-    await trigger.scrollIntoViewIfNeeded();
-
-    const box = await trigger.boundingBox();
-    expect(box).not.toBeNull();
-
     const started = Date.now();
-    await trigger.click();
+    await openAuthFromHeader(page, 'signin');
 
     // The field paints on a canvas that only exists while the effect runs.
     await expect(page.locator('canvas')).toHaveCount(1);
@@ -74,10 +69,10 @@ test.describe('gravity vortex', () => {
   test('repeated taps cannot break the transition', async ({ page }) => {
     await page.goto('/');
 
-    const trigger = page.getByRole('button', { name: 'Sign in' }).first();
+    await openAuthFromHeader(page, 'signin');
 
     // Hammer the control. The guard should ignore everything after the first.
-    await trigger.click();
+    const trigger = page.getByRole('button', { name: 'Sign in' }).locator('visible=true').first();
     for (let index = 0; index < 5; index += 1) {
       await trigger.click({ force: true, timeout: 2_000 }).catch(() => undefined);
     }
@@ -91,7 +86,7 @@ test.describe('gravity vortex', () => {
   test('closing reverses the effect and restores the page', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByRole('button', { name: 'Sign in' }).first().click();
+    await openAuthFromHeader(page, 'signin');
     await expect(page.locator('html')).toHaveAttribute('data-vortex-state', 'open', {
       timeout: 8_000,
     });
@@ -114,7 +109,7 @@ test.describe('gravity vortex', () => {
   test('closing during the opening run still works', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByRole('button', { name: 'Sign in' }).first().click();
+    await openAuthFromHeader(page, 'signin');
 
     // Deliberately interrupt part way through the collapse. The control must
     // not be dead for the tail of the animation.
@@ -132,7 +127,7 @@ test.describe('gravity vortex', () => {
     await page.goto('/');
 
     const started = Date.now();
-    await page.getByRole('button', { name: 'Sign in' }).first().click();
+    await openAuthFromHeader(page, 'signin');
 
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible({ timeout: 4_000 });

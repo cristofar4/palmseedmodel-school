@@ -93,6 +93,12 @@ export default async function ApplicationDetailPage({
         <Panel title="Decision">
           <dl>
             <DetailRow label="Outcome" value={statusLabel(application.status)} />
+            {application.admission_number ? (
+              <DetailRow label="Admission number" value={application.admission_number} />
+            ) : null}
+            {application.class_label ? (
+              <DetailRow label="Class assigned" value={application.class_label} />
+            ) : null}
             <DetailRow
               label="Decided"
               value={application.reviewed_at ? formatDateTime(application.reviewed_at) : 'Not recorded'}

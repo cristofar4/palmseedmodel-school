@@ -50,7 +50,7 @@ export async function POST(request: Request): Promise<Response> {
     relatedUserId: user.id,
     document: verificationEmail({
       fullName: user.fullName,
-      verifyUrl: `${siteUrl()}/verify?token=${token}`,
+      verifyUrl: `${siteUrl()}/api/auth/verify?token=${token}`,
     }),
   });
 

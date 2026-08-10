@@ -43,6 +43,20 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
     },
     {
+      // A phone sized viewport without device emulation. This is the project
+      // that proves the responsive layout, and it is the one to trust when the
+      // two disagree.
+      name: 'small-screen',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 412, height: 915 } },
+    },
+    {
+      // Full Android emulation, including touch. Useful, but the metrics it
+      // reports depend on the Chromium build being matched to the Playwright
+      // version. Where a browser is supplied by the image rather than
+      // downloaded, window.innerHeight can disagree with the configured
+      // viewport, which throws off synthetic click coordinates on long forms.
+      // Layout problems show up in small-screen; treat a failure that appears
+      // only here as suspect until it reproduces there.
       name: 'android-phone',
       use: { ...devices['Pixel 7'] },
     },
@@ -51,7 +65,13 @@ export default defineConfig({
   webServer: {
     command: `npx next start -p ${PORT}`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    // Links inside emails are built from this, so it has to match the server
+    // the tests are actually talking to.
+    env: { NEXT_PUBLIC_SITE_URL: baseURL },
+    // Never reuse a server that happens to be listening. A leftover process
+    // from an earlier build will happily serve stale code and produce failures
+    // that have nothing to do with the current source.
+    reuseExistingServer: false,
     timeout: 120_000,
     stdout: 'ignore',
     stderr: 'pipe',

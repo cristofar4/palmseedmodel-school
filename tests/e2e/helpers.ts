@@ -111,15 +111,28 @@ export function resetCodeFrom(html: string): string | null {
 
 /** Pulls the confirmation link out of a rendered verification email. */
 export function verificationLinkFrom(html: string): string | null {
-  const match = html.match(/href="([^"]*\/verify\?token=[^"]+)"/);
-  return match?.[1]?.replace(/&amp;/g, '&') ?? null;
+  const match = html.match(/href="([^"]*\/api\/auth\/verify\?token=[^"]+)"/);
+  const href = match?.[1]?.replace(/&amp;/g, '&');
+  if (!href) return null;
+
+  // Returned as a path rather than an absolute address. NEXT_PUBLIC_SITE_URL is
+  // inlined when the application is built, so a link produced by a build made
+  // for another origin still has to be followed against the server under test.
+  try {
+    const url = new URL(href);
+    return `${url.pathname}${url.search}`;
+  } catch {
+    return href;
+  }
 }
 
 /** Signs an account in through the standalone page and waits for the portal. */
 export async function signIn(page: Page, identifier: string, password: string) {
   await page.goto('/signin');
   await page.getByLabel('Email address or admission number').fill(identifier);
-  await page.getByLabel('Password', { exact: true }).fill(password);
+  // Not an exact match: a required field carries a visual asterisk inside its
+  // label, so the label text is "Password *" rather than "Password".
+  await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Sign in' }).click();
 }
 
@@ -150,4 +163,39 @@ export async function registerStudent(
 
   await page.getByRole('button', { name: 'Submit registration' }).click();
   await page.waitForURL('**/dashboard', { timeout: 20_000 });
+}
+
+/**
+ * Opens the authentication panel from the header.
+ *
+ * On a phone the header controls live behind the menu toggle, so the menu is
+ * opened first. Only visible controls are considered, because the desktop pair
+ * stays in the DOM at small widths and is merely hidden.
+ */
+export async function openAuthFromHeader(page: Page, mode: 'signin' | 'signup'): Promise<void> {
+  const label = mode === 'signin' ? 'Sign in' : 'Create account';
+  const control = () => page.getByRole('button', { name: label }).locator('visible=true').first();
+
+  if ((await control().count()) === 0) {
+    await page.getByRole('button', { name: 'Open menu' }).click();
+  }
+
+  await control().click();
+}
+
+/**
+ * Turns off scroll animation for a test page.
+ *
+ * The site scrolls smoothly, which is right for a person: they scroll, the
+ * page settles, then they tap. A synthetic click does not wait, so it computes
+ * a coordinate while the page is still moving and lands on whatever has slid
+ * under the pointer. This removes the animation for the tests only. It does
+ * not change what any test is asserting.
+ */
+export async function disableScrollAnimation(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    const style = document.createElement('style');
+    style.textContent = 'html { scroll-behavior: auto !important; }';
+    document.addEventListener('DOMContentLoaded', () => document.head.append(style));
+  });
 }

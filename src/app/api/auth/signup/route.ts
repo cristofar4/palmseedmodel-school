@@ -101,7 +101,10 @@ export async function POST(request: Request): Promise<Response> {
     context,
   });
 
-  const verifyUrl = `${siteUrl()}/verify?token=${verificationToken}`;
+  // Points at the route handler, which is what consumes the token and then
+  // redirects to the /verify page with the outcome. Linking straight to the
+  // page would show a status screen without ever confirming the address.
+  const verifyUrl = `${siteUrl()}/api/auth/verify?token=${verificationToken}`;
 
   // Delivery problems are recorded in the ledger and must not fail the signup.
   await sendEmail({

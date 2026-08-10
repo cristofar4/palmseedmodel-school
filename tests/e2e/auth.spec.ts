@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import {
   clearRateLimits,
+  disableScrollAnimation,
   latestOutboxMessage,
   newIdentity,
   registerStudent,
@@ -12,8 +13,9 @@ import {
 
 // The suite signs in far more often than a person would, from one address.
 // Resetting the buckets keeps the production limits at their real values.
-test.beforeEach(async () => {
+test.beforeEach(async ({ page }) => {
   await clearRateLimits();
+  await disableScrollAnimation(page);
 });
 
 test.describe('registration and sign in', () => {
@@ -135,12 +137,12 @@ test.describe('password recovery', () => {
 
     // A wrong code is refused and says how many attempts remain.
     await page.getByLabel('Six digit code').fill('000000');
-    await page.getByLabel('New password').fill('a brand new password 7');
+    await page.getByLabel('New password').fill('kaduna harbour 2026 vx');
     await page.getByRole('button', { name: 'Set new password' }).click();
     await expect(page.getByText(/not correct|not valid/i).first()).toBeVisible();
 
     await page.getByLabel('Six digit code').fill(code!);
-    await page.getByLabel('New password').fill('a brand new password 7');
+    await page.getByLabel('New password').fill('kaduna harbour 2026 vx');
     await page.getByRole('button', { name: 'Set new password' }).click();
 
     await page.waitForURL('**/signin**', { timeout: 20_000 });
@@ -150,7 +152,7 @@ test.describe('password recovery', () => {
     await signIn(page, identity.email, identity.password);
     await expect(page.getByRole('alert').first()).toBeVisible();
 
-    await signIn(page, identity.email, 'a brand new password 7');
+    await signIn(page, identity.email, 'kaduna harbour 2026 vx');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
   });
 

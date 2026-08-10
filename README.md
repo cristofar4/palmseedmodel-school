@@ -90,6 +90,14 @@ The integration tests run against a real PostgreSQL instance and prove the
 security policies hold, rather than mocking them away. The end to end tests run
 against the production build with nothing stubbed.
 
+Three end to end projects run:
+
+| Project | What it is for |
+| --- | --- |
+| `desktop-windows` | 1440 by 900, the common Windows desktop |
+| `small-screen` | 412 pixels wide with no device emulation. This is the project that proves the responsive layout, and the one to trust when the two disagree. |
+| `android-phone` | Full Pixel 7 emulation including touch. Its viewport metrics depend on the Chromium build matching the Playwright version, so a failure that appears only here is suspect until it reproduces in `small-screen`. |
+
 ---
 
 ## Deployment

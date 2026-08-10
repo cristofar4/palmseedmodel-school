@@ -42,7 +42,7 @@ test.describe('public website', () => {
     for (const [route, eyebrow] of routes) {
       const response = await page.goto(route);
       expect(response?.status(), `${route} should return 200`).toBe(200);
-      await expect(page.getByText(eyebrow).first()).toBeVisible();
+      await expect(page.locator('#main').getByText(eyebrow).first()).toBeVisible();
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     }
   });

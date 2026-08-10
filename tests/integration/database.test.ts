@@ -185,6 +185,113 @@ describe('row level security', () => {
   });
 });
 
+describe('teacher scoping', () => {
+  it('limits a teacher to the classes they are assigned to', async () => {
+    const teacherEmail = `teacher.${marker}@example.test`;
+    const hash = await hashPassword('teacher test password 1');
+
+    // A second class the teacher is deliberately not assigned to.
+    const otherClassId = await withPrincipal(
+      { kind: 'user', userId: created.studentA, role: 'admin' },
+      async (tx) => {
+        const row = await tx.one<{ id: string }>(
+          `insert into classes (level, arm) values ('JSS 3', 'Y') returning id`,
+        );
+        // Move student B into it, so the two students sit in different classes.
+        await tx.exec('update student_profiles set class_id = $2 where id = $1', [
+          created.profileB,
+          row.id,
+        ]);
+        return row.id;
+      },
+    );
+
+    // A teaching account can only be made by an administrator. The
+    // authenticator policy allows student accounts and nothing else, which is
+    // what stops public signup from ever minting a teacher.
+    await expect(
+      withPrincipal(AUTHENTICATOR, (tx) =>
+        tx.exec(
+          `insert into users (email, full_name, password_hash, role, status)
+           values ($1, 'Sneaky Teacher', $2, 'teacher', 'active')`,
+          [`sneaky.${marker}@example.test`, hash],
+        ),
+      ),
+    ).rejects.toThrow(/row-level security/);
+
+    const teacherUserId = await withPrincipal(
+      { kind: 'user', userId: created.studentA, role: 'admin' },
+      async (tx) => {
+        const row = await tx.one<{ id: string }>(
+          `insert into users (email, full_name, password_hash, role, status)
+           values ($1, 'Test Teacher', $2, 'teacher', 'active') returning id`,
+          [teacherEmail, hash],
+        );
+        return row.id;
+      },
+    );
+    created.teacherUser = teacherUserId;
+
+    await withPrincipal({ kind: 'user', userId: created.studentA, role: 'admin' }, async (tx) => {
+      const teacher = await tx.one<{ id: string }>(
+        `insert into teachers (user_id, staff_number) values ($1, $2) returning id`,
+        [teacherUserId, `STF-${marker}`],
+      );
+      created.teacherId = teacher.id;
+
+      await tx.exec(
+        `insert into teacher_assignments (teacher_id, class_id, subject_id, session_id)
+         values ($1, $2, $3, $4)`,
+        [teacher.id, created.classId, created.subjectId, created.sessionId],
+      );
+    });
+
+    const teacherPrincipal = { kind: 'user' as const, userId: teacherUserId, role: 'teacher' as const };
+
+    // The assigned class is reachable.
+    const assigned = await withPrincipal(teacherPrincipal, (tx) =>
+      tx.rows<{ id: string }>('select id from student_profiles where id = $1', [created.profileA]),
+    );
+    expect(assigned).toHaveLength(1);
+
+    // The class they do not hold is not, even when named directly.
+    const unassigned = await withPrincipal(teacherPrincipal, (tx) =>
+      tx.rows<{ id: string }>('select id from student_profiles where id = $1', [created.profileB]),
+    );
+    expect(unassigned).toHaveLength(0);
+
+    // The whole roll is filtered the same way, so a query without a predicate
+    // cannot be used to walk around the restriction.
+    const everything = await withPrincipal(teacherPrincipal, (tx) =>
+      tx.rows<{ id: string }>('select id from student_profiles'),
+    );
+    expect(everything.map((row) => row.id)).toEqual([created.profileA]);
+
+    // Attendance for a class they do not hold is refused on write.
+    const written = await withPrincipal(teacherPrincipal, (tx) =>
+      tx
+        .exec(
+          `insert into attendance (student_profile_id, class_id, session_id, term_id, attendance_date, status)
+           values ($1,$2,$3,$4, current_date, 'present')`,
+          [created.profileB, otherClassId, created.sessionId, created.termId],
+        )
+        .catch(() => 0),
+    );
+    expect(written).toBe(0);
+
+    // Put student B back before removing the class. A class cannot simply be
+    // deleted out from under a student who holds an admission number, which
+    // the check constraint enforces.
+    await withPrincipal({ kind: 'user', userId: created.studentA, role: 'admin' }, async (tx) => {
+      await tx.exec('update student_profiles set class_id = $2 where id = $1', [
+        created.profileB,
+        created.classId,
+      ]);
+      await tx.exec('delete from classes where id = $1', [otherClassId]);
+    });
+  });
+});
+
 describe('grade computation', () => {
   it('derives the total and the grade from the two entered scores', async () => {
     const cases: Array<[number, number, number, string]> = [

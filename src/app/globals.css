@@ -82,6 +82,14 @@
     text-wrap: pretty;
   }
 
+  /* The public header and the portal header are both sticky. Anything scrolled
+     into view, whether by an anchor link, by keyboard focus or by a script,
+     has to clear them. Without this a heading or a form control lands
+     underneath the header and cannot be read or tapped. */
+  :is(h1, h2, h3, section, a, button, input, select, textarea, summary, [id]) {
+    scroll-margin-top: 6rem;
+  }
+
   /* Visible, high contrast focus for every interactive control. */
   :focus-visible {
     outline: 2px solid var(--color-palm-red);
