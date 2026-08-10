@@ -12,7 +12,7 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
     <div className="min-h-dvh bg-ink text-warm">
       <div className="shell flex h-20 items-center justify-between">
         <Link href="/" aria-label="Palmseed Model School, home">
-          <Logo size={38} tone="light" />
+          <Logo size={46} tone="light" />
         </Link>
         <Link
           href="/"

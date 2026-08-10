@@ -67,17 +67,23 @@ npm run media:check
 Save the file at the path it prints. Nothing else needs to change. There is no
 download step, no upload UI and no code edit: the next build picks it up.
 
-**Artwork.** Until a photograph is installed, a slot renders an original
-illustration drawn by:
+**Tonal panels.** Until a photograph is installed, a slot falls back to a panel
+drawn by:
 
 ```bash
 npm run art:build
 ```
 
-These are scenes rather than patterns, drawn in `scripts/generate-artwork.ts`
-and deterministic, so a rebuild never changes a page silently. People appear
-only as distant featureless silhouettes, and nothing in them carries text,
-because a legible word in a drawing would be a claim about the school.
+These are light studies, not pictures of anything: a graduated field, one
+directional source, a fine rule structure and a little grain. Nothing in them
+depicts a building, a room or a person, so nothing pretends to be a photograph
+and nothing about the school is invented. They are deterministic, so a rebuild
+never changes a page silently.
+
+More often the layout simply rearranges instead. A section built around a
+picture gives half the screen to it, which is the wrong shape for a holding
+panel, so `hasPhotograph` collapses those sections to a single editorial column
+until the photograph arrives. See `src/components/public/FeatureSection.tsx`.
 
 The footer states which of the two kinds of image the page is showing, so a
 visitor is never left to guess whether a picture shows the real school.
@@ -88,12 +94,16 @@ outbound network access to the image host.
 
 ### The logo
 
-`public/brand/palmseed-logo.svg` is currently a plain placeholder monogram, not
-the school mark, because the official artwork was not supplied with this build.
-See `public/brand/README.md` for how to install the real one. No code changes
-are needed.
+`public/brand/palmseed-logo.jpg` is the school's own mark, exactly as supplied.
+It is never redrawn, recoloured or traced in code, so replacing that one file
+updates the navigation, the authentication pages, the dashboards and the
+browser tab at once. `palmseed-logo.png` is a downscaled copy for email
+clients, which mostly cannot render SVG.
 
----
+The supplied file is a JPEG and so has no transparency. On the dark surfaces
+the mark is placed on a small ivory tile rather than altering the artwork. A
+version with a transparent background would remove the need for that tile and
+needs no code change. See `public/brand/README.md`.
 
 ## Checks
 

@@ -35,7 +35,7 @@ export function PortalShell({
       <header className="sticky top-0 z-40 border-b border-ink-100 bg-warm/95 backdrop-blur-md">
         <div className="mx-auto flex h-[4.25rem] w-full max-w-[90rem] items-center justify-between gap-4 px-4 lg:px-8">
           <Link href="/" aria-label="Palmseed Model School, home">
-            <Logo size={34} />
+            <Logo size={40} />
           </Link>
 
           <div className="flex items-center gap-4">

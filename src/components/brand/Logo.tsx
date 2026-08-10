@@ -10,11 +10,23 @@ interface LogoProps {
   className?: string;
 }
 
+/* The supplied artwork is 1017 by 970, very slightly wider than tall. Forcing
+   it square would squash the ring, so the height is derived from the width. */
+const ASPECT = 1017 / 970;
+
 /**
  * The single place the school mark is drawn.
  *
- * The artwork is loaded from /brand/palmseed-logo.svg and is never redrawn in
- * code, so replacing that one file updates every surface at once.
+ * The artwork is the mark the school supplied. It is never redrawn,
+ * recoloured or traced in code, so replacing the file updates every surface at
+ * once.
+ *
+ * It arrived as a JPEG on a white sheet, which would show as a white rectangle
+ * on the dark surfaces. /brand/palmseed-logo.png is the same artwork with only
+ * the background connected to the outer edge cleared, so the white inner ring,
+ * the seed speckles and the motto lettering are all still there. Not a single
+ * pixel of the mark itself is altered, and palmseed-logo.jpg is kept beside it
+ * exactly as supplied.
  */
 export function Logo({
   size = 40,
@@ -25,18 +37,25 @@ export function Logo({
   const nameColour = tone === 'light' ? 'text-warm' : 'text-ink';
   const mottoColour = tone === 'light' ? 'text-gold' : 'text-brand';
 
+  const width = Math.round(size * ASPECT);
+
+  const mark = (
+    <Image
+      src="/brand/palmseed-logo.png"
+      alt={withWordmark ? '' : SCHOOL.name}
+      aria-hidden={withWordmark || undefined}
+      width={width}
+      height={size}
+      priority
+      className="shrink-0"
+      style={{ width, height: size }}
+    />
+  );
+
   return (
     <span className={`inline-flex items-center gap-3 ${className}`}>
-      <Image
-        src="/brand/palmseed-logo.svg"
-        alt={withWordmark ? '' : SCHOOL.name}
-        aria-hidden={withWordmark || undefined}
-        width={size}
-        height={size}
-        priority
-        className="shrink-0"
-        style={{ width: size, height: size }}
-      />
+      {mark}
+
       {withWordmark ? (
         <span className="flex flex-col leading-none">
           <span

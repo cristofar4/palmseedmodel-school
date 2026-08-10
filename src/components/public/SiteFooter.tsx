@@ -42,7 +42,7 @@ export function SiteFooter() {
       <div className="shell py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
-            <Logo size={44} tone="light" />
+            <Logo size={52} tone="light" />
             <p className="mt-6 max-w-xs text-[0.875rem] leading-relaxed text-warm/55">
               A Nigerian secondary school built on careful teaching, clear standards and steady
               communication with families.

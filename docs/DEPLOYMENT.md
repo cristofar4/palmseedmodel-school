@@ -25,10 +25,10 @@ the truth:
   presented as a photograph of a real school misleads the families deciding
   whether to send a child there.
 
-**The logo.** `public/brand/palmseed-logo.svg` is a plain placeholder monogram
-and says so in its own source. Replace it with the school's real mark, and add
-a raster copy at `public/brand/palmseed-logo.png` for email clients. Nothing in
-the code changes: every surface reads those two paths.
+**The logo.** Installed, and it is the school's own mark. It arrived as a JPEG
+with no transparency, so on the dark surfaces it sits on a small ivory tile
+rather than having its background edited out. If a transparent PNG or an SVG
+exists, dropping it in removes the tile and needs no code change.
 
 **The remaining photographs.** `npm run media:check` prints which of the seven
 image slots are filled. The hero and school life slots drive the top of the
@@ -236,7 +236,8 @@ Work down this list. Every line is checkable in a browser.
 - [ ] `ADMIN_BOOTSTRAP_PASSWORD` removed from every environment
 - [ ] `PHOTOGRAPHY_NOTE` states truthfully what the images are, and consent is
       held for every identifiable person if they are real photographs
-- [ ] The real logo has replaced the placeholder monogram
+- [ ] The logo renders correctly in the header, the footer, the portal and
+      the browser tab, and in a real email
 - [ ] `npm run media:check` shows the slots you intend to fill are filled
 
 ---

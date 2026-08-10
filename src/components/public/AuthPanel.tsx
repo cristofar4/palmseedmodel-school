@@ -35,7 +35,7 @@ export function AuthPanel({
           }}
         />
         <div className="relative flex h-full flex-col justify-between p-12 xl:p-16">
-          <Logo size={44} tone="light" />
+          <Logo size={52} tone="light" />
 
           <div className="max-w-md">
             <p className="eyebrow mb-5">The Palmseed portal</p>
@@ -57,7 +57,7 @@ export function AuthPanel({
       <div className="flex items-center justify-center px-5 py-16 sm:px-10 lg:py-20">
         <div className="w-full max-w-[26rem]">
           <div className="mb-9 lg:hidden">
-            <Logo size={40} tone="light" />
+            <Logo size={48} tone="light" />
           </div>
 
           <p className="eyebrow mb-4">

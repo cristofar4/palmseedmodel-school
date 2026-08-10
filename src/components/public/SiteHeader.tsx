@@ -54,7 +54,7 @@ export function SiteHeader() {
     >
       <div className="shell flex h-[4.5rem] items-center justify-between gap-6">
         <Link href="/" aria-label={`${'Palmseed Model School'}, home`} className="shrink-0">
-          <Logo size={38} />
+          <Logo size={46} />
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-8 lg:flex">

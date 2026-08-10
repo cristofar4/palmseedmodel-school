@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     locale: 'en_NG',
   },
   robots: { index: true, follow: true },
-  icons: { icon: '/brand/palmseed-logo.svg' },
+  icons: { icon: '/brand/palmseed-logo.png' },
 };
 
 export const viewport: Viewport = {
