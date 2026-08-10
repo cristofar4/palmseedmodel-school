@@ -1,17 +1,27 @@
 /**
- * Photography manifest.
+ * Image manifest.
  *
- * Every photograph the site uses is declared here and stored locally under
- * public/photography. Nothing is hotlinked.
+ * Every image slot on the public site is declared here. Nothing is hotlinked:
+ * a file either exists under public/ or it does not, and the page adapts.
  *
- * These are licensed stock photographs of African secondary school students
- * and teachers. They illustrate the pages. They are not presented as
- * photographs of Palmseed students, and no caption claims otherwise. When the
- * school supplies its own photography, drop the files in at the same paths and
- * update the credit lines.
+ * Each slot has two sources, in order of preference.
  *
- * Run `npm run media:fetch` to download them. Until then each slot renders a
- * composed brand panel rather than a broken image.
+ *   1. A photograph at `src`, under public/photography. This is what the
+ *      school should install: its own pictures of its own building, its own
+ *      students and its own staff. Save the file at the exact path and it is
+ *      picked up on the next build. No code change, no download step.
+ *      `npm run media:check` prints the paths and the sizes to aim for.
+ *
+ *   2. The original artwork at `artwork`, drawn by scripts/generate-artwork.ts.
+ *      Used whenever no photograph is installed. It is a finished illustration
+ *      rather than a grey placeholder, so the site is complete either way.
+ *
+ * The footer states which of the two the page is showing, so a visitor is
+ * never left to guess whether an image is a photograph of the real school.
+ *
+ * The stock entries below are a licensing record for the `npm run media:fetch`
+ * route, kept so that anyone using it can check the source and the
+ * photographer. They are not a claim that these pictures show Palmseed.
  */
 
 export interface Photograph {

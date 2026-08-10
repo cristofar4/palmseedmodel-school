@@ -42,6 +42,7 @@ export default function AdmissionsPage() {
         eyebrow="Admissions"
         title="Registering at Palmseed."
         standfirst="Registration is online and takes about two minutes to start. Nothing is decided automatically. Every registration is read by the school office."
+              photo={PHOTOGRAPHY.admissions}
       />
 
       <section className="bg-warm py-20 lg:py-28">

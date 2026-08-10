@@ -124,12 +124,19 @@ export function SiteFooter() {
           <p className="text-xs text-warm/40">{SCHOOL.motto}</p>
         </div>
 
+        {/* Whichever imagery is installed, the page says what it is. Nobody
+            should have to guess whether a picture here shows the real school. */}
         {showCredits ? (
           <p className="mt-6 text-[0.6875rem] leading-relaxed text-warm/30">
             Photography by {photographyCredits().join(', ')}. These are licensed stock photographs
             used to illustrate this website. They do not show Palmseed students or staff.
           </p>
-        ) : null}
+        ) : (
+          <p className="mt-6 text-[0.6875rem] leading-relaxed text-warm/30">
+            The images on this website are original illustrations drawn for Palmseed. They are not
+            photographs of the school, its students or its staff.
+          </p>
+        )}
       </div>
     </footer>
   );

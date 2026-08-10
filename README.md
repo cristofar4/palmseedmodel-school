@@ -51,20 +51,40 @@ Set the role password once after the first migration:
 alter role palmseed_app with password '<a long random value>';
 ```
 
-### Photography
+### Images
 
-The photographs are declared in `src/lib/media.ts` and stored locally, never
-hotlinked. Download them with:
+Every image slot is declared in `src/lib/media.ts` and served locally, never
+hotlinked. Each slot has two sources and the page uses whichever is present.
+
+**Photographs.** This is what the school should install: its own pictures of
+its own building, students and staff. To see which slots are filled and which
+are not, and the exact path and size for each:
 
 ```bash
-npm run media:fetch
+npm run media:check
 ```
 
-Until they are present each slot renders a composed brand panel rather than a
-broken image, so the site is complete either way. These are licensed stock
-photographs used to illustrate the site. They are not presented as Palmseed
-students, and the footer credit says so. Replace them with the school's own
-photography by dropping files in at the same paths.
+Save the file at the path it prints. Nothing else needs to change. There is no
+download step, no upload UI and no code edit: the next build picks it up.
+
+**Artwork.** Until a photograph is installed, a slot renders an original
+illustration drawn by:
+
+```bash
+npm run art:build
+```
+
+These are scenes rather than patterns, drawn in `scripts/generate-artwork.ts`
+and deterministic, so a rebuild never changes a page silently. People appear
+only as distant featureless silhouettes, and nothing in them carries text,
+because a legible word in a drawing would be a claim about the school.
+
+The footer states which of the two kinds of image the page is showing, so a
+visitor is never left to guess whether a picture shows the real school.
+
+`npm run media:fetch` remains for the stock photography declared in the
+manifest, complete with source and photographer for licence checking. It needs
+outbound network access to the image host.
 
 ### The logo
 

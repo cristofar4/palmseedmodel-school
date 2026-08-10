@@ -1,31 +1,79 @@
-/** Masthead for every inner public page. Keeps the editorial rhythm consistent. */
+import { Photo } from '@/components/media/Photo';
+import type { Photograph } from '@/lib/media';
+
+/**
+ * Masthead for every inner public page.
+ *
+ * Where a page has an image of its own it runs alongside the title rather than
+ * underneath it, so an inner page opens with a picture instead of a block of
+ * dark colour. Pages with nothing to show keep the plain masthead.
+ */
 export function PageHeader({
   eyebrow,
   title,
   standfirst,
+  photo,
 }: {
   eyebrow: string;
   title: string;
   standfirst?: string;
+  photo?: Photograph;
 }) {
-  return (
-    <header className="border-b border-ink-100 bg-ink pb-20 pt-20 text-warm lg:pb-24 lg:pt-28">
-      <div className="shell">
+  const heading = (
+    <div className="w-full px-6 py-16 sm:px-10 lg:py-24 lg:pl-10 lg:pr-14 xl:pl-16">
+      <div className="mx-auto max-w-[34rem] lg:mx-0 lg:ml-auto">
         <p className="eyebrow mb-6 text-gold">{eyebrow}</p>
         <h1
           data-vortex-item
-          className="max-w-[20ch] text-[clamp(2.1rem,6vw,3.8rem)] leading-[1.04] tracking-[-0.025em] text-warm"
+          className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.05] tracking-[-0.028em] text-warm"
         >
           {title}
         </h1>
         {standfirst ? (
-          <p
-            data-vortex-item
-            className="mt-7 max-w-[58ch] text-[1.0625rem] leading-[1.8] text-warm/60"
-          >
+          <p data-vortex-item className="mt-7 max-w-[52ch] text-[1.0625rem] leading-[1.8] text-warm/60">
             {standfirst}
           </p>
         ) : null}
+      </div>
+    </div>
+  );
+
+  if (!photo) {
+    return (
+      <header className="bg-ink text-warm">
+        <div className="shell py-20 lg:py-24">
+          <div className="max-w-[34rem]">
+            <p className="eyebrow mb-6 text-gold">{eyebrow}</p>
+            <h1
+              data-vortex-item
+              className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.05] tracking-[-0.028em] text-warm"
+            >
+              {title}
+            </h1>
+            {standfirst ? (
+              <p
+                data-vortex-item
+                className="mt-7 max-w-[52ch] text-[1.0625rem] leading-[1.8] text-warm/60"
+              >
+                {standfirst}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </header>
+    );
+  }
+
+  return (
+    <header className="grid bg-ink text-warm lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)]">
+      <div className="order-2 flex items-center lg:order-1">{heading}</div>
+      <div className="relative order-1 min-h-[34svh] overflow-hidden lg:order-2 lg:min-h-[52svh]">
+        <Photo photo={photo} priority sizes="(max-width: 1024px) 100vw, 55vw" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 hidden lg:block"
+          style={{ background: 'linear-gradient(to right, #0A1410 0%, rgba(10,20,16,0.18) 34%, transparent 62%)' }}
+        />
       </div>
     </header>
   );

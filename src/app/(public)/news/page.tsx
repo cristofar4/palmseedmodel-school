@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { PHOTOGRAPHY } from '@/lib/media';
 import { PageHeader } from '@/components/public/PageHeader';
 import { EmptyState } from '@/components/ui/Feedback';
 import { publicAnnouncements } from '@/lib/data/public';
@@ -20,6 +21,7 @@ export default async function NewsPage() {
         eyebrow="Notice board"
         title="News and announcements."
         standfirst="Public notices from the school office. Registered families also receive these by email and in the portal."
+              photo={PHOTOGRAPHY.junior}
       />
 
       <section className="bg-warm py-20 lg:py-28">

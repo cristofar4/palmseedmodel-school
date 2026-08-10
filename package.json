@@ -14,6 +14,7 @@
     "admin:create": "tsx scripts/create-admin.ts",
     "students:import": "tsx scripts/import-students.ts",
     "media:fetch": "tsx scripts/fetch-media.ts",
+    "media:check": "tsx scripts/check-media.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

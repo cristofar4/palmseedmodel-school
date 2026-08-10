@@ -28,3 +28,6 @@ next-env.d.ts
 
 # local database cluster used by the integration tests
 /pgdata/
+
+# Capture output, regenerated on demand.
+screenshots/

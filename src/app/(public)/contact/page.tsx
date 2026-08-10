@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { PHOTOGRAPHY } from '@/lib/media';
 import { PageHeader } from '@/components/public/PageHeader';
 import { ContactForm } from '@/components/public/ContactForm';
 import { csrfToken } from '@/lib/security/csrf';
@@ -20,6 +21,7 @@ export default async function ContactPage() {
         eyebrow="Contact"
         title="Speak to the school office."
         standfirst="Send a message and a member of staff will reply by email. You will receive an acknowledgement straight away."
+              photo={PHOTOGRAPHY.schoolLife}
       />
 
       <section className="bg-warm py-20 lg:py-28">

@@ -37,6 +37,7 @@ export default function AcademicsPage() {
         eyebrow="Academics"
         title="Six years, one standard."
         standfirst="Palmseed follows the Nigerian national curriculum. What follows is how the programme is organised, how students are assessed and how results reach families."
+              photo={PHOTOGRAPHY.senior}
       />
 
       {/* Structure ---------------------------------------------------------- */}

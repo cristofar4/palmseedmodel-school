@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { PageHeader, Prose } from '@/components/public/PageHeader';
-import { Photo } from '@/components/media/Photo';
+import { Plate } from '@/components/media/Plate';
 import { PHOTOGRAPHY } from '@/lib/media';
 import { SCHOOL } from '@/lib/school';
 
@@ -17,13 +17,19 @@ export default function AboutPage() {
         eyebrow="About Palmseed"
         title="A secondary school with a plain purpose."
         standfirst="Palmseed Model School exists to make young people capable. The motto, Always Useful, is the standard we hold every lesson and every rule against."
+              photo={PHOTOGRAPHY.teaching}
       />
 
       <section className="bg-warm">
         <div className="shell pt-20 lg:pt-28">
-          <div data-vortex-item className="relative aspect-[21/9] overflow-hidden bg-ink">
-            <Photo photo={PHOTOGRAPHY.teaching} sizes="100vw" />
-          </div>
+          {/* The reading room, not the teaching plate: the masthead already
+              carries that one and a page should not show the same image twice. */}
+          <Plate
+            photo={PHOTOGRAPHY.schoolLife}
+            aspect="21 / 9"
+            sizes="100vw"
+            
+          />
         </div>
 
         <Prose>

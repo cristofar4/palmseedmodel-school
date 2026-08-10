@@ -44,6 +44,7 @@ export default function SchoolLifePage() {
         eyebrow="School Life"
         title="What happens between the lessons."
         standfirst="A timetable teaches subjects. The rest of the school day teaches everything else, and it is planned with the same care."
+              photo={PHOTOGRAPHY.schoolLife}
       />
 
       <section className="bg-warm">
