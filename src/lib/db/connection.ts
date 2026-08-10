@@ -88,7 +88,10 @@ export function assertUsableConnectionString(value: string, variableName: string
     if (!url.hostname) {
       fail('it has no host name', 'copy the whole URI from the Supabase dashboard');
     }
-    if (!url.password) {
+    /* A local database is commonly reached over trust or peer authentication
+       with no password at all, so this is only a problem for a remote host. */
+    const local = ['localhost', '127.0.0.1', '::1', ''].includes(url.hostname);
+    if (!url.password && !local) {
       fail(
         'it has no password',
         'the format is postgresql://user:password@host:5432/database',

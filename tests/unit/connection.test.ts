@@ -9,6 +9,12 @@ describe('connection string checking', () => {
     expect(() => assertUsableConnectionString(GOOD, 'DATABASE_URL')).not.toThrow();
   });
 
+  it('accepts a local database with no password, which trust auth allows', () => {
+    expect(() =>
+      assertUsableConnectionString('postgresql://postgres@127.0.0.1:5433/palmseed', 'DATABASE_URL'),
+    ).not.toThrow();
+  });
+
   it('accepts the direct connection too', () => {
     expect(() =>
       assertUsableConnectionString(
@@ -44,7 +50,7 @@ describe('connection string checking', () => {
       'names no database',
     ],
     [
-      'no password',
+      'no password on a remote host',
       'postgresql://postgres@db.abcdefg.supabase.co:5432/postgres',
       'has no password',
     ],
