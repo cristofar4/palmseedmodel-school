@@ -127,7 +127,7 @@ export function SignUpForm({ csrfToken, tone = 'dark', onSwitchToSignin }: SignU
           <button
             type="button"
             onClick={onSwitchToSignin}
-            className="font-medium text-brand-light underline underline-offset-4"
+            className="font-medium text-accent underline underline-offset-4"
           >
             Sign in
           </button>

@@ -43,18 +43,17 @@ export function isSeniorLevel(level: string): boolean {
  * value: email templates, the canvas field, the browser theme colour.
  */
 export const BRAND = {
-  /** The seed red, exactly as it appears in the crest. */
-  seed: '#DE0C0F',
-  /** The working red. Holds its contrast on paper at small sizes. */
-  brand: '#D21B1F',
-  brandDeep: '#A2141A',
-  /** The accent for dark surfaces, where the pure red vibrates against black. */
-  brandLight: '#F04A4E',
-  ink: '#141414',
-  warm: '#F7F5F1',
+  brand: '#12603C',
+  brandDeep: '#0C4A2E',
+  brandMid: '#1E7E4F',
+  brandLight: '#58A97C',
+  /** The single accent. Used sparingly, never as a second brand colour. */
+  accent: '#D8A43C',
+  ink: '#10231A',
+  warm: '#FAF8F3',
   white: '#FFFFFF',
-  muted: '#6B6660',
-  hairline: '#E9E5DF',
+  muted: '#6A7A70',
+  hairline: '#E8EDE9',
 } as const;
 
 export function siteUrl(): string {

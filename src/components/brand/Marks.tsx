@@ -30,8 +30,8 @@ export function RingNumber({
   className?: string;
 }) {
   const label = typeof value === 'number' ? String(value).padStart(2, '0') : value;
-  const ring = tone === 'light' ? 'rgba(247,245,241,0.28)' : 'rgba(20,20,20,0.22)';
-  const text = tone === 'light' ? '#F7F5F1' : '#141414';
+  const ring = tone === 'light' ? 'rgba(247,245,241,0.28)' : 'rgba(16,35,26,0.22)';
+  const text = tone === 'light' ? '#F7F5F1' : '#10231A';
 
   return (
     <span
@@ -82,7 +82,7 @@ export function SeedRule({
   tone?: 'dark' | 'light';
   className?: string;
 }) {
-  const line = tone === 'light' ? 'rgba(247,245,241,0.16)' : 'rgba(20,20,20,0.12)';
+  const line = tone === 'light' ? 'rgba(247,245,241,0.16)' : 'rgba(16,35,26,0.12)';
 
   return (
     <div className={`flex items-center gap-5 ${className}`} aria-hidden="true">

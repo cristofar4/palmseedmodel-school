@@ -1,28 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1330" width="1000" height="1330" role="presentation" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="ground" x1="0" y1="0" x2="0.50" y2="1">
-      <stop offset="0" stop-color="#221F1E"/>
-      <stop offset="0.5" stop-color="#141414"/>
-      <stop offset="1" stop-color="#080706"/>
+      <stop offset="0" stop-color="#1B3126"/>
+      <stop offset="0.5" stop-color="#10231A"/>
+      <stop offset="1" stop-color="#050D09"/>
     </linearGradient>
     <radialGradient id="source" cx="0.600" cy="0.300" r="0.82">
-      <stop offset="0" stop-color="#F04A4E" stop-opacity="0.37"/>
-      <stop offset="0.32" stop-color="#A2141A" stop-opacity="0.16"/>
-      <stop offset="1" stop-color="#A2141A" stop-opacity="0"/>
+      <stop offset="0" stop-color="#D8A43C" stop-opacity="0.37"/>
+      <stop offset="0.32" stop-color="#12603C" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#12603C" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#FFD9D4" stop-opacity="0"/>
-      <stop offset="0.42" stop-color="#FFD9D4" stop-opacity="0.096"/>
-      <stop offset="0.72" stop-color="#FFD9D4" stop-opacity="0"/>
+      <stop offset="0" stop-color="#F2DFB4" stop-opacity="0"/>
+      <stop offset="0.42" stop-color="#F2DFB4" stop-opacity="0.096"/>
+      <stop offset="0.72" stop-color="#F2DFB4" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="horizon" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#B8322F" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#F04A4E" stop-opacity="0.3"/>
-      <stop offset="1" stop-color="#B8322F" stop-opacity="0"/>
+      <stop offset="0" stop-color="#B3822A" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#D8A43C" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#B3822A" stop-opacity="0"/>
     </linearGradient>
     <radialGradient id="vignette" cx="0.5" cy="0.46" r="0.8">
-      <stop offset="0.42" stop-color="#080706" stop-opacity="0"/>
-      <stop offset="1" stop-color="#080706" stop-opacity="0.66"/>
+      <stop offset="0.42" stop-color="#050D09" stop-opacity="0"/>
+      <stop offset="1" stop-color="#050D09" stop-opacity="0.66"/>
     </radialGradient>
     <pattern id="grain" width="180" height="180" patternUnits="userSpaceOnUse">
       <rect width="180" height="180" filter="url(#noise)"/>
@@ -40,199 +40,199 @@
 
     <g transform="rotate(-3 500.0 665.0)">
       <line x1="-1254.6" y1="-133.0" x2="-1254.6" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.11"
+         stroke="#FAF8F3" stroke-width="1.11"
          opacity="0.036"/>
       <line x1="-1197.5" y1="-133.0" x2="-1197.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.63"
+         stroke="#FAF8F3" stroke-width="0.63"
          opacity="0.031"/>
       <line x1="-1170.6" y1="-133.0" x2="-1170.6" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.28"
+         stroke="#FAF8F3" stroke-width="1.28"
          opacity="0.039"/>
       <line x1="-1140.0" y1="-133.0" x2="-1140.0" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.19"
+         stroke="#FAF8F3" stroke-width="1.19"
          opacity="0.016"/>
       <line x1="-1086.0" y1="-133.0" x2="-1086.0" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.07"
+         stroke="#FAF8F3" stroke-width="1.07"
          opacity="0.024"/>
       <line x1="-1021.1" y1="-133.0" x2="-1021.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.95"
+         stroke="#FAF8F3" stroke-width="0.95"
          opacity="0.026"/>
       <line x1="-952.1" y1="-133.0" x2="-952.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.97"
+         stroke="#FAF8F3" stroke-width="0.97"
          opacity="0.031"/>
       <line x1="-902.2" y1="-133.0" x2="-902.2" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.88"
+         stroke="#FAF8F3" stroke-width="0.88"
          opacity="0.035"/>
       <line x1="-867.8" y1="-133.0" x2="-867.8" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.18"
+         stroke="#FAF8F3" stroke-width="1.18"
          opacity="0.032"/>
       <line x1="-833.1" y1="-133.0" x2="-833.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.08"
+         stroke="#FAF8F3" stroke-width="1.08"
          opacity="0.018"/>
       <line x1="-757.1" y1="-133.0" x2="-757.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.68"
+         stroke="#FAF8F3" stroke-width="0.68"
          opacity="0.034"/>
       <line x1="-711.3" y1="-133.0" x2="-711.3" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.25"
+         stroke="#FAF8F3" stroke-width="1.25"
          opacity="0.033"/>
       <line x1="-645.4" y1="-133.0" x2="-645.4" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.27"
+         stroke="#FAF8F3" stroke-width="1.27"
          opacity="0.018"/>
       <line x1="-570.5" y1="-133.0" x2="-570.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.77"
+         stroke="#FAF8F3" stroke-width="0.77"
          opacity="0.013"/>
       <line x1="-483.6" y1="-133.0" x2="-483.6" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.81"
+         stroke="#FAF8F3" stroke-width="0.81"
          opacity="0.032"/>
       <line x1="-451.4" y1="-133.0" x2="-451.4" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.99"
+         stroke="#FAF8F3" stroke-width="0.99"
          opacity="0.029"/>
       <line x1="-419.1" y1="-133.0" x2="-419.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.82"
+         stroke="#FAF8F3" stroke-width="0.82"
          opacity="0.027"/>
       <line x1="-376.0" y1="-133.0" x2="-376.0" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.28"
+         stroke="#FAF8F3" stroke-width="1.28"
          opacity="0.042"/>
       <line x1="-340.7" y1="-133.0" x2="-340.7" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.93"
+         stroke="#FAF8F3" stroke-width="0.93"
          opacity="0.013"/>
       <line x1="-297.1" y1="-133.0" x2="-297.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.00"
+         stroke="#FAF8F3" stroke-width="1.00"
          opacity="0.039"/>
       <line x1="-233.2" y1="-133.0" x2="-233.2" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.88"
+         stroke="#FAF8F3" stroke-width="0.88"
          opacity="0.025"/>
       <line x1="-198.7" y1="-133.0" x2="-198.7" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.03"
+         stroke="#FAF8F3" stroke-width="1.03"
          opacity="0.046"/>
       <line x1="-120.8" y1="-133.0" x2="-120.8" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.63"
+         stroke="#FAF8F3" stroke-width="0.63"
          opacity="0.046"/>
       <line x1="-53.7" y1="-133.0" x2="-53.7" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.71"
+         stroke="#FAF8F3" stroke-width="0.71"
          opacity="0.029"/>
       <line x1="29.2" y1="-133.0" x2="29.2" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.15"
+         stroke="#FAF8F3" stroke-width="1.15"
          opacity="0.029"/>
       <line x1="85.7" y1="-133.0" x2="85.7" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.06"
+         stroke="#FAF8F3" stroke-width="1.06"
          opacity="0.024"/>
       <line x1="155.0" y1="-133.0" x2="155.0" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.17"
+         stroke="#FAF8F3" stroke-width="1.17"
          opacity="0.015"/>
       <line x1="189.1" y1="-133.0" x2="189.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.08"
+         stroke="#FAF8F3" stroke-width="1.08"
          opacity="0.023"/>
       <line x1="261.6" y1="-133.0" x2="261.6" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.08"
+         stroke="#FAF8F3" stroke-width="1.08"
          opacity="0.025"/>
       <line x1="317.2" y1="-133.0" x2="317.2" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.03"
+         stroke="#FAF8F3" stroke-width="1.03"
          opacity="0.042"/>
       <line x1="400.5" y1="-133.0" x2="400.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.00"
+         stroke="#FAF8F3" stroke-width="1.00"
          opacity="0.035"/>
       <line x1="488.4" y1="-133.0" x2="488.4" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.60"
+         stroke="#FAF8F3" stroke-width="0.60"
          opacity="0.034"/>
       <line x1="554.5" y1="-133.0" x2="554.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.09"
+         stroke="#FAF8F3" stroke-width="1.09"
          opacity="0.036"/>
       <line x1="605.9" y1="-133.0" x2="605.9" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.61"
+         stroke="#FAF8F3" stroke-width="0.61"
          opacity="0.024"/>
       <line x1="667.4" y1="-133.0" x2="667.4" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.28"
+         stroke="#FAF8F3" stroke-width="1.28"
          opacity="0.044"/>
       <line x1="718.1" y1="-133.0" x2="718.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.91"
+         stroke="#FAF8F3" stroke-width="0.91"
          opacity="0.012"/>
       <line x1="769.0" y1="-133.0" x2="769.0" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.60"
+         stroke="#FAF8F3" stroke-width="0.60"
          opacity="0.013"/>
       <line x1="855.1" y1="-133.0" x2="855.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.93"
+         stroke="#FAF8F3" stroke-width="0.93"
          opacity="0.046"/>
       <line x1="883.7" y1="-133.0" x2="883.7" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.20"
+         stroke="#FAF8F3" stroke-width="1.20"
          opacity="0.038"/>
       <line x1="953.2" y1="-133.0" x2="953.2" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.99"
+         stroke="#FAF8F3" stroke-width="0.99"
          opacity="0.029"/>
       <line x1="1008.9" y1="-133.0" x2="1008.9" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.09"
+         stroke="#FAF8F3" stroke-width="1.09"
          opacity="0.021"/>
       <line x1="1094.6" y1="-133.0" x2="1094.6" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.96"
+         stroke="#FAF8F3" stroke-width="0.96"
          opacity="0.046"/>
       <line x1="1129.5" y1="-133.0" x2="1129.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.24"
+         stroke="#FAF8F3" stroke-width="1.24"
          opacity="0.030"/>
       <line x1="1163.2" y1="-133.0" x2="1163.2" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.16"
+         stroke="#FAF8F3" stroke-width="1.16"
          opacity="0.020"/>
       <line x1="1190.5" y1="-133.0" x2="1190.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.78"
+         stroke="#FAF8F3" stroke-width="0.78"
          opacity="0.025"/>
       <line x1="1244.1" y1="-133.0" x2="1244.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.13"
+         stroke="#FAF8F3" stroke-width="1.13"
          opacity="0.040"/>
       <line x1="1304.7" y1="-133.0" x2="1304.7" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.10"
+         stroke="#FAF8F3" stroke-width="1.10"
          opacity="0.016"/>
       <line x1="1389.3" y1="-133.0" x2="1389.3" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.04"
+         stroke="#FAF8F3" stroke-width="1.04"
          opacity="0.047"/>
       <line x1="1433.3" y1="-133.0" x2="1433.3" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.72"
+         stroke="#FAF8F3" stroke-width="0.72"
          opacity="0.017"/>
       <line x1="1475.5" y1="-133.0" x2="1475.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.28"
+         stroke="#FAF8F3" stroke-width="1.28"
          opacity="0.022"/>
       <line x1="1539.5" y1="-133.0" x2="1539.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.95"
+         stroke="#FAF8F3" stroke-width="0.95"
          opacity="0.037"/>
       <line x1="1566.3" y1="-133.0" x2="1566.3" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.16"
+         stroke="#FAF8F3" stroke-width="1.16"
          opacity="0.041"/>
       <line x1="1633.3" y1="-133.0" x2="1633.3" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.83"
+         stroke="#FAF8F3" stroke-width="0.83"
          opacity="0.013"/>
       <line x1="1677.7" y1="-133.0" x2="1677.7" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.21"
+         stroke="#FAF8F3" stroke-width="1.21"
          opacity="0.016"/>
       <line x1="1743.9" y1="-133.0" x2="1743.9" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.61"
+         stroke="#FAF8F3" stroke-width="0.61"
          opacity="0.027"/>
       <line x1="1797.2" y1="-133.0" x2="1797.2" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.17"
+         stroke="#FAF8F3" stroke-width="1.17"
          opacity="0.024"/>
       <line x1="1856.5" y1="-133.0" x2="1856.5" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.12"
+         stroke="#FAF8F3" stroke-width="1.12"
          opacity="0.015"/>
       <line x1="1944.0" y1="-133.0" x2="1944.0" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.18"
+         stroke="#FAF8F3" stroke-width="1.18"
          opacity="0.015"/>
       <line x1="1996.6" y1="-133.0" x2="1996.6" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.08"
+         stroke="#FAF8F3" stroke-width="1.08"
          opacity="0.030"/>
       <line x1="2065.4" y1="-133.0" x2="2065.4" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.09"
+         stroke="#FAF8F3" stroke-width="1.09"
          opacity="0.042"/>
       <line x1="2139.0" y1="-133.0" x2="2139.0" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.91"
+         stroke="#FAF8F3" stroke-width="0.91"
          opacity="0.037"/>
       <line x1="2221.4" y1="-133.0" x2="2221.4" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.12"
+         stroke="#FAF8F3" stroke-width="1.12"
          opacity="0.040"/>
       <line x1="2270.1" y1="-133.0" x2="2270.1" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="0.91"
+         stroke="#FAF8F3" stroke-width="0.91"
          opacity="0.020"/>
       <line x1="2323.9" y1="-133.0" x2="2323.9" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.13"
+         stroke="#FAF8F3" stroke-width="1.13"
          opacity="0.037"/>
       <line x1="2378.7" y1="-133.0" x2="2378.7" y2="1463.0"
-         stroke="#F7F5F1" stroke-width="1.26"
+         stroke="#FAF8F3" stroke-width="1.26"
          opacity="0.038"/>
       <rect x="-200.0" y="186.4" width="1400.0" height="159.1"
         fill="url(#beam)" opacity="0.50"/><rect x="-200.0" y="399.0" width="1400.0" height="98.5"
@@ -242,7 +242,7 @@
       <rect x="-200.0" y="907.0" width="1400.0" height="1" fill="url(#horizon)" opacity="0.5"/>
     </g>
 
-    <circle cx="600.0" cy="399.0" r="30.0" fill="#FFD9D4" opacity="0.113"/>
+    <circle cx="600.0" cy="399.0" r="30.0" fill="#F2DFB4" opacity="0.113"/>
     <rect width="1000" height="1330" fill="url(#vignette)"/>
     <rect width="1000" height="1330" fill="url(#grain)" opacity="0.05" style="mix-blend-mode:overlay"/>
   </g>

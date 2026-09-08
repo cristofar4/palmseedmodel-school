@@ -7,35 +7,35 @@
 
 @theme {
   /* Brand.
-     Taken from the crest, not invented. Sampling the supplied artwork gives
-     three colours and only three: white at about half the mark, a near black
-     at a quarter, and the seed red at a tenth. So the site is black, red and
-     paper. There is no gold in the school's identity and there is none here.
+     Deep green, gold and paper, following the design that was approved. Green
+     carries the navigation, the buttons and the punctuating bands; gold is the
+     single accent and is used sparingly, on eyebrows, quote marks and the one
+     call to action that has to outrank the others. */
+  --color-brand: #12603c;
+  --color-brand-deep: #0c4a2e;
+  --color-brand-mid: #1e7e4f;
+  --color-brand-light: #58a97c;
+  --color-brand-tint: #e7f0ea;
+  --color-brand-wash: #f4f8f5;
 
-     The seed red itself is #DE0C0F. That exact value is used where it sits on
-     paper at size. Small text and links take the deeper mix, which holds its
-     contrast, and dark surfaces take the lighter one, which does not vibrate
-     against black the way the pure red does. */
-  --color-brand: #d21b1f;
-  --color-brand-deep: #a2141a;
-  --color-brand-light: #f04a4e;
-  --color-brand-tint: #fbe9e9;
-  --color-seed: #de0c0f;
+  --color-accent: #d8a43c;
+  --color-accent-deep: #b3822a;
 
-  --color-ink: #141414;
-  --color-warm: #f7f5f1;
+  --color-ink: #10231a;
+  --color-warm: #faf8f3;
   --color-pure: #ffffff;
 
-  /* Neutral ramp, warmed a trace so it never reads blue beside the red. */
-  --color-ink-900: #141414;
-  --color-ink-800: #1f1f1e;
-  --color-ink-700: #2e2d2b;
-  --color-ink-600: #47443f;
-  --color-ink-500: #6b6660;
-  --color-ink-400: #928c85;
-  --color-ink-300: #b7b1aa;
-  --color-ink-200: #d9d4cd;
-  --color-ink-100: #e9e5df;
+  /* Neutral ramp, warmed very slightly toward the ground so greys never read
+     blue beside the green. */
+  --color-ink-900: #10231a;
+  --color-ink-800: #1b3126;
+  --color-ink-700: #2c4237;
+  --color-ink-600: #46584d;
+  --color-ink-500: #6a7a70;
+  --color-ink-400: #909b94;
+  --color-ink-300: #b6beb8;
+  --color-ink-200: #d8ddd8;
+  --color-ink-100: #e8ede9;
 
   /* Typography */
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;

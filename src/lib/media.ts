@@ -24,6 +24,20 @@
  * photographer. They are not a claim that these pictures show Palmseed.
  */
 
+/**
+ * The image slots the site has. Declared here rather than derived from the
+ * manifest, because Photograph refers to it and deriving would make the type
+ * reference itself through its own elements.
+ */
+export type PhotographKey =
+  | 'hero'
+  | 'junior'
+  | 'senior'
+  | 'teaching'
+  | 'digital'
+  | 'schoolLife'
+  | 'admissions';
+
 export interface Photograph {
   /** Local path under public/. */
   src: string;
@@ -41,6 +55,16 @@ export interface Photograph {
   alt: string;
   /** Focal point, so the crop keeps faces in frame on narrow screens. */
   position?: string;
+  /**
+   * Another slot to borrow from while this one has no photograph of its own.
+   *
+   * The alternative is an empty hero, and a school's landing page should not
+   * open on a colour field when there are usable photographs a scroll further
+   * down. The borrowed image keeps its own alt text, because the description
+   * has to match the picture a screen reader is actually being told about,
+   * not the picture this slot is waiting for.
+   */
+  standIn?: PhotographKey;
 }
 
 const PEXELS = (id: string, size = 1920) =>
@@ -48,6 +72,10 @@ const PEXELS = (id: string, size = 1920) =>
 
 export const PHOTOGRAPHY = {
   hero: {
+    /* Borrows the teaching photograph until an exterior of the school arrives.
+       That one is the widest of the set, so it survives the hero crop, and it
+       is the least seen elsewhere. */
+    standIn: 'teaching',
     artwork: '/artwork/hero.svg',
     src: '/photography/hero-assembly.jpg',
     sourceUrl: 'https://www.pexels.com/photo/8926648/',
@@ -93,6 +121,8 @@ export const PHOTOGRAPHY = {
     position: '50% 40%',
   },
   schoolLife: {
+    /* Borrows the laboratory photograph until a courtyard shot arrives. */
+    standIn: 'senior',
     artwork: '/artwork/school-life.svg',
     src: '/photography/school-life.jpg',
     sourceUrl: 'https://www.pexels.com/photo/8613089/',
@@ -110,9 +140,8 @@ export const PHOTOGRAPHY = {
     alt: 'A parent and a student meeting a member of school staff at a desk',
     position: '50% 35%',
   },
-} as const satisfies Record<string, Photograph>;
+} as const satisfies Record<PhotographKey, Photograph>;
 
-export type PhotographKey = keyof typeof PHOTOGRAPHY;
 
 /** Credit line shown in the page footer, one entry per photographer used. */
 export function photographyCredits(): string[] {

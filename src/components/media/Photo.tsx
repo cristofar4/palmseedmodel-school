@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import Image from 'next/image';
-import type { Photograph } from '@/lib/media';
+import { PHOTOGRAPHY, type Photograph } from '@/lib/media';
 
 /**
  * Formats accepted for an installed photograph, in the order they are tried.
@@ -46,6 +46,25 @@ function isPresent(src: string): boolean {
   return resolveSource(src) !== null;
 }
 
+/**
+ * The slot actually rendered for a declared slot.
+ *
+ * A slot with no photograph of its own may borrow one from elsewhere in the
+ * manifest, declared as `standIn`. The whole borrowed entry is returned, alt
+ * text included, because the description has to match the picture a screen
+ * reader is being told about rather than the picture this slot is waiting for.
+ *
+ * Borrowing is one hop. A stand in that has no photograph either falls through
+ * to the tonal panel rather than searching further, so the manifest can never
+ * chase itself around a loop.
+ */
+function effective(photo: Photograph): Photograph {
+  if (isPresent(photo.src) || !photo.standIn) return photo;
+
+  const borrowed = PHOTOGRAPHY[photo.standIn];
+  return isPresent(borrowed.src) ? borrowed : photo;
+}
+
 interface PhotoProps {
   photo: Photograph;
   /** Loads eagerly and raises fetch priority. Use for the hero only. */
@@ -65,12 +84,13 @@ interface PhotoProps {
  * never mistaken for missing content.
  */
 export function Photo({
-  photo,
+  photo: declared,
   priority = false,
   sizes = '100vw',
   className = '',
   toneClassName = '',
 }: PhotoProps) {
+  const photo = effective(declared);
   const installed = resolveSource(photo.src);
 
   if (installed === null) {
@@ -121,7 +141,7 @@ export function Photo({
  * once it does.
  */
 export function hasPhotograph(photo: Photograph): boolean {
-  return isPresent(photo.src);
+  return isPresent(effective(photo).src);
 }
 
 /** True when at least one photograph is installed, used to decide on credits. */

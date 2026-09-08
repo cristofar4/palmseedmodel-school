@@ -93,7 +93,9 @@ test.describe('gravity vortex', () => {
   test('opens the create account experience when that control is tapped', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByRole('button', { name: 'Begin a registration' }).first().click();
+    // Scoped to main, because the header carries an Apply Now of its own and
+    // this test is about the control in the hero.
+    await page.locator('#main').getByRole('button', { name: 'Apply Now' }).first().click();
 
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible({ timeout: 8_000 });
@@ -106,7 +108,7 @@ test.describe('gravity vortex', () => {
     await openAuthFromHeader(page, 'signin');
 
     // Hammer the control. The guard should ignore everything after the first.
-    const trigger = page.getByRole('button', { name: 'Sign in' }).locator('visible=true').first();
+    const trigger = page.getByRole('button', { name: 'Login' }).locator('visible=true').first();
     for (let index = 0; index < 5; index += 1) {
       await trigger.click({ force: true, timeout: 2_000 }).catch(() => undefined);
     }

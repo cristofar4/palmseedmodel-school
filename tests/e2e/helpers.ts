@@ -173,7 +173,9 @@ export async function registerStudent(
  * stays in the DOM at small widths and is merely hidden.
  */
 export async function openAuthFromHeader(page: Page, mode: 'signin' | 'signup'): Promise<void> {
-  const label = mode === 'signin' ? 'Sign in' : 'Create account';
+  // The header controls are labelled Login and Apply Now, which are not the
+  // labels on the forms those controls open.
+  const label = mode === 'signin' ? 'Login' : 'Apply Now';
   const control = () => page.getByRole('button', { name: label }).locator('visible=true').first();
 
   if ((await control().count()) === 0) {

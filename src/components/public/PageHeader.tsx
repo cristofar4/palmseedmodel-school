@@ -22,7 +22,7 @@ export function PageHeader({
   const heading = (
     <div className="w-full px-6 py-16 sm:px-10 lg:py-24 lg:pl-10 lg:pr-14 xl:pl-16">
       <div className="mx-auto max-w-[34rem] lg:mx-0 lg:ml-auto">
-        <p className="eyebrow mb-6 text-brand-light">{eyebrow}</p>
+        <p className="eyebrow mb-6 text-accent">{eyebrow}</p>
         <h1
           data-vortex-item
           className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.05] tracking-[-0.028em] text-warm"
@@ -45,7 +45,7 @@ export function PageHeader({
       <header className="bg-ink text-warm">
         <div className="shell py-20 lg:py-24">
           <div className="max-w-[34rem]">
-            <p className="eyebrow mb-6 text-brand-light">{eyebrow}</p>
+            <p className="eyebrow mb-6 text-accent">{eyebrow}</p>
             <h1
               data-vortex-item
               className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.05] tracking-[-0.028em] text-warm"
@@ -74,7 +74,7 @@ export function PageHeader({
         <div
           aria-hidden="true"
           className="absolute inset-0 hidden lg:block"
-          style={{ background: 'linear-gradient(to right, #141414 0%, rgba(20,20,20,0.18) 34%, transparent 62%)' }}
+          style={{ background: 'linear-gradient(to right, #10231A 0%, rgba(16,35,26,0.18) 34%, transparent 62%)' }}
         />
       </div>
     </header>

@@ -86,7 +86,7 @@ export function SettingsForm({
               value={option.value}
               checked={selected === option.value}
               onChange={() => setSelected(option.value)}
-              className="mt-1 h-4 w-4 shrink-0 accent-[#D21B1F]"
+              className="mt-1 h-4 w-4 shrink-0 accent-[#12603C]"
             />
             <span>
               <span className="block text-[0.9375rem] font-medium">{option.label}</span>

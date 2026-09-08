@@ -7,6 +7,7 @@ import { Logo } from '@/components/brand/Logo';
 import { useVortex } from '@/components/vortex/VortexProvider';
 
 const LINKS = [
+  { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/academics', label: 'Academics' },
   { href: '/admissions', label: 'Admissions' },
@@ -49,7 +50,7 @@ export function SiteHeader() {
     <header
       data-vortex-item
       className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
-        lifted ? 'border-ink-100 bg-warm/95 backdrop-blur-md' : 'border-transparent bg-warm'
+        lifted ? 'border-ink-100 bg-pure/95 backdrop-blur-md' : 'border-transparent bg-pure'
       }`}
     >
       <div className="shell flex h-[4.5rem] items-center justify-between gap-6">
@@ -65,11 +66,17 @@ export function SiteHeader() {
                 key={link.href}
                 href={link.href}
                 aria-current={active ? 'page' : undefined}
-                className={`relative text-[0.8125rem] font-medium tracking-[0.01em] transition-colors ${
+                className={`relative py-1.5 text-[0.8125rem] font-medium tracking-[0.01em] transition-colors ${
                   active ? 'text-brand' : 'text-ink-600 hover:text-ink'
                 }`}
               >
                 {link.label}
+                {active ? (
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full bg-brand"
+                  />
+                ) : null}
               </Link>
             );
           })}
@@ -81,18 +88,21 @@ export function SiteHeader() {
             type="button"
             disabled={busy}
             onClick={() => open('signin', signinRef.current)}
-            className="px-4 py-2.5 text-[0.8125rem] font-medium text-ink transition-colors hover:text-brand disabled:opacity-50"
+            className="rounded-full border border-ink-200 px-6 py-2.5 text-[0.8125rem] font-medium text-ink transition-colors hover:border-brand hover:text-brand disabled:opacity-50"
           >
-            Sign in
+            Login
           </button>
           <button
             ref={signupRef}
             type="button"
             disabled={busy}
             onClick={() => open('signup', signupRef.current)}
-            className="bg-brand px-5 py-2.5 text-[0.8125rem] font-medium text-white transition-colors hover:bg-brand-deep disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-2.5 text-[0.8125rem] font-semibold text-white transition-colors hover:bg-brand-deep disabled:opacity-50"
           >
-            Create account
+            Apply Now
+            <svg width="13" height="9" viewBox="0 0 13 9" aria-hidden="true">
+              <path d="M0 4.5h11M7.5 1l3.5 3.5L7.5 8" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
         </div>
 
@@ -117,7 +127,7 @@ export function SiteHeader() {
       </div>
 
       {menuOpen ? (
-        <div id="mobile-navigation" className="border-t border-ink-100 bg-warm lg:hidden">
+        <div id="mobile-navigation" className="border-t border-ink-100 bg-pure lg:hidden">
           <nav aria-label="Main" className="shell flex flex-col py-4">
             {LINKS.map((link) => (
               <Link
@@ -138,9 +148,9 @@ export function SiteHeader() {
                 setMenuOpen(false);
                 open('signin', event.currentTarget);
               }}
-              className="border border-ink px-5 py-3.5 text-sm font-medium text-ink"
+              className="rounded-full border border-ink-200 px-5 py-3.5 text-sm font-medium text-ink"
             >
-              Sign in
+              Login
             </button>
             <button
               type="button"
@@ -149,9 +159,9 @@ export function SiteHeader() {
                 setMenuOpen(false);
                 open('signup', event.currentTarget);
               }}
-              className="bg-brand px-5 py-3.5 text-sm font-medium text-white"
+              className="rounded-full bg-brand px-5 py-3.5 text-sm font-semibold text-white"
             >
-              Create account
+              Apply Now
             </button>
           </div>
         </div>

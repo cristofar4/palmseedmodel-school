@@ -1,14 +1,20 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { gsap } from 'gsap';
 import { useVortex } from '@/components/vortex/VortexProvider';
+
+/** The four words the school leads with. Not claims, so they can be stated. */
+const PILLARS = ['Discipline', 'Knowledge', 'Character', 'Opportunity'] as const;
 
 /**
  * The opening statement.
  *
- * The image now sits beside this column rather than behind it, so nothing here
- * needs a gradient to stay legible and the type can be set at full contrast.
+ * The photograph sits behind the right of this column rather than under the
+ * type, so nothing here needs a scrim to stay legible and the headline can be
+ * set at full contrast on the pale ground.
+ *
  * Motion is one short entrance timeline, with a static presentation for anyone
  * who has asked for reduced motion.
  */
@@ -26,13 +32,13 @@ export function HeroContent({ variant = 'split' }: { variant?: 'split' | 'full' 
     const targets = root.querySelectorAll<HTMLElement>('[data-hero-line]');
 
     const context = gsap.context(() => {
-      gsap.set(targets, { y: 24, autoAlpha: 0 });
+      gsap.set(targets, { y: 22, autoAlpha: 0 });
       gsap.to(targets, {
         y: 0,
         autoAlpha: 1,
-        duration: 1,
+        duration: 0.95,
         ease: 'power3.out',
-        stagger: 0.08,
+        stagger: 0.075,
         delay: 0.1,
       });
     }, root);
@@ -40,68 +46,93 @@ export function HeroContent({ variant = 'split' }: { variant?: 'split' | 'full' 
     return () => context.revert();
   }, []);
 
-  /* In the split layout this column sits against the picture, so its measure
-     is narrow and it hugs the seam. Standing alone it takes the page grid and
-     a wider measure, because a 34rem column adrift in a full width band reads
-     as a mistake. */
   const outer =
     variant === 'split'
       ? 'w-full px-6 py-20 sm:px-10 lg:py-24 lg:pl-10 lg:pr-14 xl:pl-16'
-      : 'shell w-full py-24 lg:py-32';
-  const inner = variant === 'split' ? 'mx-auto max-w-[34rem] lg:mx-0 lg:ml-auto' : 'max-w-[44rem]';
+      : 'shell w-full py-16 lg:py-24';
 
   return (
     <div ref={rootRef} className={`relative z-10 ${outer}`}>
-      <div className={inner}>
-        <p data-hero-line className="eyebrow mb-7 text-brand-light">
-          Nigerian Secondary Education
+      <div className="max-w-[38rem]">
+        <p
+          data-hero-line
+          className="mb-6 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[0.6875rem] font-semibold uppercase tracking-[0.18em]"
+        >
+          <span className="text-accent-deep">A brighter tomorrow</span>
+          <span className="text-ink-400">starts here</span>
         </p>
 
         <h1
           data-hero-line
           data-vortex-item
-          className={`font-medium leading-[0.99] tracking-[-0.03em] text-warm ${
-            variant === 'split'
-              ? 'text-[clamp(2.5rem,6.2vw,4.4rem)]'
-              : 'text-[clamp(2.6rem,7vw,5.2rem)]'
-          }`}
+          className="text-[clamp(2.1rem,5.2vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.025em] text-ink"
         >
-          A school that takes
-          <span className="block text-brand-light">every mind seriously.</span>
+          Quality education for confident,
+          <span className="block text-brand">compassionate leaders.</span>
         </h1>
-
-        <div data-hero-line className="mt-9 h-px w-16 bg-brand/50" />
 
         <p
           data-hero-line
           data-vortex-item
-          className="mt-9 max-w-[46ch] text-[1.0625rem] leading-[1.8] text-warm/70"
+          className="mt-6 max-w-[46ch] text-[0.9375rem] leading-[1.85] text-ink-600"
         >
           Palmseed Model School teaches the Nigerian secondary curriculum from JSS 1 to SS 3, with
-          Science, Art and Commercial pathways in the senior school. Careful teaching, clear
-          standards, and a portal that keeps families informed.
+          Science, Art and Commercial pathways in the senior school. A safe, supportive place where
+          every student can learn, grow and make a positive difference.
         </p>
 
-        <div data-hero-line data-vortex-item className="mt-11 flex flex-wrap items-center gap-4">
+        <div data-hero-line data-vortex-item className="mt-9 flex flex-wrap items-center gap-3.5">
           <button
             ref={applyRef}
             type="button"
             disabled={busy}
             onClick={() => open('signup', applyRef.current)}
-            className="bg-brand px-8 py-4 text-[0.9375rem] font-semibold text-white transition-colors hover:bg-brand-deep disabled:opacity-60"
+            className="inline-flex items-center gap-2.5 rounded-full bg-brand px-7 py-3.5 text-[0.875rem] font-semibold text-white transition-colors hover:bg-brand-deep disabled:opacity-60"
           >
-            Begin a registration
+            Apply Now
+            <svg width="13" height="9" viewBox="0 0 13 9" aria-hidden="true">
+              <path
+                d="M0 4.5h11M7.5 1l3.5 3.5L7.5 8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
 
-          <a
-            href="#introduction"
-            className="border border-warm/25 px-8 py-4 text-[0.9375rem] font-medium text-warm transition-colors hover:border-warm hover:bg-warm hover:text-ink"
+          <Link
+            href="/school-life"
+            className="inline-flex items-center gap-2.5 rounded-full border border-ink-200 bg-pure px-7 py-3.5 text-[0.875rem] font-semibold text-ink transition-colors hover:border-brand hover:text-brand"
           >
-            About the school
-          </a>
+            <span
+              aria-hidden="true"
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-brand text-white"
+            >
+              <svg width="8" height="9" viewBox="0 0 8 9" aria-hidden="true">
+                <path d="M0 0v9l8-4.5L0 0Z" fill="currentColor" />
+              </svg>
+            </span>
+            See school life
+          </Link>
         </div>
 
-        <p data-hero-line className="mt-8 text-[0.8125rem] leading-relaxed text-warm/40">
+        <ul
+          data-hero-line
+          className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-l-2 border-accent pl-5"
+        >
+          {PILLARS.map((word) => (
+            <li
+              key={word}
+              className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-ink-500"
+            >
+              {word}
+            </li>
+          ))}
+        </ul>
+
+        <p data-hero-line className="mt-6 text-[0.75rem] leading-relaxed text-ink-400">
           Creating an account starts a registration. The school reviews each one before a place is
           offered.
         </p>

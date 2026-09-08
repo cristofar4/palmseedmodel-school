@@ -2,12 +2,10 @@ import Link from 'next/link';
 import { HeroContent } from '@/components/public/Hero';
 import { ContactForm } from '@/components/public/ContactForm';
 import { Photo, hasPhotograph } from '@/components/media/Photo';
-import { Plate, Band } from '@/components/media/Plate';
-import { FeatureSection } from '@/components/public/FeatureSection';
-import { RingNumber, SeedRule, Ribbon } from '@/components/brand/Marks';
-import { SectionHeading } from '@/components/ui/Layout';
+import { Plate } from '@/components/media/Plate';
 import { EmptyState } from '@/components/ui/Feedback';
 import { PHOTOGRAPHY } from '@/lib/media';
+import { PROFILE } from '@/lib/data/profile';
 import { publicAnnouncements } from '@/lib/data/public';
 import { csrfToken } from '@/lib/security/csrf';
 import { formatDate } from '@/lib/format';
@@ -15,474 +13,789 @@ import { JUNIOR_LEVELS, SENIOR_LEVELS, SCHOOL } from '@/lib/school';
 
 export const dynamic = 'force-dynamic';
 
-/* The index under the hero. Editorial signposting, and the fastest route into
-   the four things a visitor actually came to find out. */
-const INDEX = [
-  { number: '01', label: 'The school', href: '#introduction' },
-  { number: '02', label: 'Academics', href: '/academics' },
-  { number: '03', label: 'School life', href: '/school-life' },
-  { number: '04', label: 'Admissions', href: '/admissions' },
+/* ------------------------------------------------------------------ copy */
+/* Everything below describes how the school works, which this build does
+   know. Nothing here is a number, a name or an achievement, because those are
+   claims. Those live in src/lib/data/profile.ts, where the school fills them
+   in or the section stays hidden. */
+
+const PILLARS = [
+  {
+    title: 'Our vision',
+    body: 'To be a leading secondary school in Nigeria, recognised for academic excellence and moral uprightness.',
+    icon: 'eye',
+  },
+  {
+    title: 'Our mission',
+    body: 'To provide an education that helps every student discover what they are capable of and contribute to the society around them.',
+    icon: 'target',
+  },
 ] as const;
 
 const VALUES = [
+  'Academic excellence',
+  'Service',
+  'Discipline',
+  'Leadership',
+  'Integrity',
+  'Compassion',
+] as const;
+
+const PROGRAMMES = [
   {
-    title: 'Useful knowledge',
-    body: 'Every subject is taught so that a student can do something with it. Understanding first, then fluency, then application.',
+    title: 'Junior Secondary',
+    note: `${JUNIOR_LEVELS[0]} to ${JUNIOR_LEVELS.at(-1)}`,
+    icon: 'seedling',
   },
   {
-    title: 'Clear standards',
-    body: 'Students know what is expected, how they are assessed and where they stand. Nothing about a grade should be a surprise.',
+    title: 'Senior Secondary',
+    note: `${SENIOR_LEVELS[0]} to ${SENIOR_LEVELS.at(-1)}`,
+    icon: 'shield',
+  },
+  { title: 'Science', note: 'Build, explore, innovate', icon: 'flask' },
+  { title: 'Art', note: 'Creativity shapes tomorrow', icon: 'palette' },
+  { title: 'Commercial', note: 'Business skills for life', icon: 'chart' },
+  { title: 'Computer studies', note: 'Digital skills for a brighter future', icon: 'monitor' },
+  { title: 'Library', note: 'A world of knowledge', icon: 'book' },
+  { title: 'Clubs and sport', note: 'Teamwork and leadership', icon: 'ball' },
+] as const;
+
+const ADVANTAGES = [
+  { title: 'Qualified and caring teachers', icon: 'badge' },
+  { title: 'Conducive learning environment', icon: 'building' },
+  { title: 'Holistic development', icon: 'sparkle' },
+  { title: 'Leadership opportunities', icon: 'star' },
+  { title: 'A record every family can see', icon: 'chart' },
+  { title: 'A vibrant school community', icon: 'people' },
+] as const;
+
+const STEPS = [
+  { title: 'Create an account', body: 'Register with a valid email address.' },
+  { title: 'Fill the application form', body: 'Provide the required student information.' },
+  {
+    title: 'Upload documents',
+    body: 'Birth certificate, last school report and a passport photograph.',
+  },
+  { title: 'The school reviews it', body: 'Every registration is read by the admissions office.' },
+  { title: 'Receive confirmation', body: 'You are notified by email, with the decision.' },
+] as const;
+
+const FACILITIES = [
+  {
+    title: 'Modern classrooms',
+    body: 'Spacious, well equipped learning spaces.',
+    photo: PHOTOGRAPHY.junior,
   },
   {
-    title: 'Steady character',
-    body: 'Punctuality, honesty and respect are taught with the same seriousness as any examination subject.',
+    title: 'Science laboratory',
+    body: 'Hands on discovery and practical work.',
+    photo: PHOTOGRAPHY.senior,
   },
   {
-    title: 'Families informed',
-    body: 'Guardians receive results, attendance and notices through the portal, not through rumour or a lost letter.',
+    title: 'Teaching and support',
+    body: 'Guidance for every student who needs it.',
+    photo: PHOTOGRAPHY.teaching,
+  },
+  {
+    title: 'Digital learning',
+    body: 'Computer studies and coursework in the portal.',
+    photo: PHOTOGRAPHY.digital,
+  },
+  {
+    title: 'Admissions office',
+    body: 'Families are met, not processed.',
+    photo: PHOTOGRAPHY.admissions,
   },
 ] as const;
 
-const PATHWAYS = [
-  { name: 'Science', body: 'For medicine, engineering, computing and the physical and life sciences.' },
-  { name: 'Art', body: 'For law, languages, the humanities, media and the social sciences.' },
-  { name: 'Commercial', body: 'For accounting, economics, business administration and commerce.' },
-] as const;
+/* ----------------------------------------------------------------- icons */
+/* Drawn here rather than pulled from a set, so they share one stroke weight
+   and the page carries no icon font. */
+
+function Icon({ name, className = '' }: { name: string; className?: string }) {
+  const s = {
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.5,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+  };
+
+  const paths: Record<string, React.ReactNode> = {
+    eye: (
+      <>
+        <path d="M1 10s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z" {...s} />
+        <circle cx="10" cy="10" r="2.6" {...s} />
+      </>
+    ),
+    target: (
+      <>
+        <circle cx="10" cy="10" r="7.5" {...s} />
+        <circle cx="10" cy="10" r="3" {...s} />
+      </>
+    ),
+    seedling: (
+      <>
+        <path d="M10 17v-6" {...s} />
+        <path d="M10 11c0-3 2.4-5 5-5 0 3-2 5-5 5Z" {...s} />
+        <path d="M10 12c0-2.6-2-4.4-4.4-4.4C5.6 10 7.6 12 10 12Z" {...s} />
+      </>
+    ),
+    shield: <path d="M10 2.5 16.5 5v5c0 4-3 6.7-6.5 7.8C6.5 16.7 3.5 14 3.5 10V5L10 2.5Z" {...s} />,
+    flask: (
+      <>
+        <path d="M8 2.5h4M8.8 2.5v5L4.6 15a1.6 1.6 0 0 0 1.4 2.4h8a1.6 1.6 0 0 0 1.4-2.4l-4.2-7.5v-5" {...s} />
+        <path d="M6.2 12.2h7.6" {...s} />
+      </>
+    ),
+    palette: (
+      <>
+        <path d="M10 2.5a7.5 7.5 0 0 0 0 15c1 0 1.6-.7 1.6-1.5 0-1.4 1-1.9 2.2-1.9h1.2A4.5 4.5 0 0 0 10 2.5Z" {...s} />
+        <circle cx="7" cy="8" r="1" fill="currentColor" stroke="none" />
+        <circle cx="11" cy="6.5" r="1" fill="currentColor" stroke="none" />
+      </>
+    ),
+    chart: (
+      <>
+        <path d="M3 17h14" {...s} />
+        <path d="M6 17V9M10 17V4.5M14 17v-5" {...s} />
+      </>
+    ),
+    monitor: (
+      <>
+        <rect x="2.5" y="4" width="15" height="10" rx="1.4" {...s} />
+        <path d="M7.5 17.5h5M10 14v3.5" {...s} />
+      </>
+    ),
+    book: (
+      <>
+        <path d="M3.5 4.2A1.7 1.7 0 0 1 5.2 2.5H16v13H5.2a1.7 1.7 0 0 0-1.7 1.7V4.2Z" {...s} />
+        <path d="M3.5 15.5A1.7 1.7 0 0 1 5.2 13.8H16" {...s} />
+      </>
+    ),
+    ball: (
+      <>
+        <circle cx="10" cy="10" r="7.5" {...s} />
+        <path d="M10 2.6 12.6 7l-2.6 3-2.6-3 2.6-4.4ZM3 9.4l4.4.6M17 9.4l-4.4.6M6.6 16.6 8 12.4M13.4 16.6 12 12.4" {...s} />
+      </>
+    ),
+    badge: (
+      <>
+        <circle cx="10" cy="8" r="4.5" {...s} />
+        <path d="M7 12.2 6 18l4-2 4 2-1-5.8" {...s} />
+      </>
+    ),
+    building: (
+      <>
+        <path d="M3.5 17.5V6.6L10 3l6.5 3.6v10.9" {...s} />
+        <path d="M3.5 17.5h13M8 17.5v-4h4v4" {...s} />
+      </>
+    ),
+    sparkle: <path d="M10 2.5 11.8 8 17.5 10 11.8 12 10 17.5 8.2 12 2.5 10 8.2 8 10 2.5Z" {...s} />,
+    star: <path d="m10 2.8 2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 8.1l5-.7L10 2.8Z" {...s} />,
+    people: (
+      <>
+        <circle cx="7.6" cy="7.4" r="2.7" {...s} />
+        <path d="M2.6 16.4a5 5 0 0 1 10 0" {...s} />
+        <path d="M13.4 5a2.7 2.7 0 0 1 0 5.2M14.4 12.2a5 5 0 0 1 3 4.2" {...s} />
+      </>
+    ),
+    check: <path d="m4 10.4 4 4 8-9" {...s} />,
+    phone: (
+      <path
+        d="M6.6 3.2 8.4 7l-1.7 1.6a10 10 0 0 0 4.7 4.7L13 11.6l3.8 1.8v3a1.4 1.4 0 0 1-1.5 1.4A13.4 13.4 0 0 1 2.2 4.7 1.4 1.4 0 0 1 3.6 3.2h3Z"
+        {...s}
+      />
+    ),
+    mail: (
+      <>
+        <rect x="2.5" y="4.5" width="15" height="11" rx="1.4" {...s} />
+        <path d="m2.9 5.6 7.1 5 7.1-5" {...s} />
+      </>
+    ),
+    pin: (
+      <>
+        <path d="M10 17.5s6-5.2 6-9.3a6 6 0 1 0-12 0c0 4.1 6 9.3 6 9.3Z" {...s} />
+        <circle cx="10" cy="8.1" r="2.2" {...s} />
+      </>
+    ),
+    clock: (
+      <>
+        <circle cx="10" cy="10" r="7.5" {...s} />
+        <path d="M10 5.6V10l3 1.8" {...s} />
+      </>
+    ),
+    help: (
+      <>
+        <circle cx="10" cy="10" r="7.5" {...s} />
+        <path d="M7.9 7.8a2.2 2.2 0 1 1 2.8 2.1c-.5.2-.7.6-.7 1.1v.4" {...s} />
+        <circle cx="10" cy="14" r=".9" fill="currentColor" stroke="none" />
+      </>
+    ),
+  };
+
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" className={className}>
+      {paths[name] ?? paths.sparkle}
+    </svg>
+  );
+}
+
+/** The gold rule and label that opens each section. */
+function Eyebrow({ children, onDark = false }: { children: React.ReactNode; onDark?: boolean }) {
+  return (
+    <p className="mb-4 flex items-center gap-3 text-[0.6875rem] font-semibold uppercase tracking-[0.18em]">
+      <span aria-hidden="true" className="h-px w-6 bg-accent" />
+      <span className={onDark ? 'text-accent' : 'text-accent-deep'}>{children}</span>
+    </p>
+  );
+}
+
+function Arrow() {
+  return (
+    <svg width="13" height="9" viewBox="0 0 13 9" aria-hidden="true" className="shrink-0">
+      <path
+        d="M0 4.5h11M7.5 1l3.5 3.5L7.5 8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ page */
 
 export default async function HomePage() {
-  const [announcements, token] = await Promise.all([publicAnnouncements(4), csrfToken()]);
+  const [announcements, token] = await Promise.all([publicAnnouncements(3), csrfToken()]);
 
-  /* Sections built around a picture arrange themselves differently until the
-     school installs one. See FeatureSection. */
   const heroHasPhoto = hasPhotograph(PHOTOGRAPHY.hero);
-  const digitalHasPhoto = hasPhotograph(PHOTOGRAPHY.digital);
-  const admissionsHasPhoto = hasPhotograph(PHOTOGRAPHY.admissions);
+  const aboutHasPhoto = hasPhotograph(PHOTOGRAPHY.schoolLife);
+  const advantageHasPhoto = hasPhotograph(PHOTOGRAPHY.digital);
 
   return (
     <>
-      {/* 1. Hero. Split around the photograph when there is one, and a single
-          full measure column of type when there is not. */}
-      {heroHasPhoto ? (
-        <section className="relative isolate grid bg-ink lg:min-h-[92svh] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)]">
-          <div className="order-2 flex items-center lg:order-1">
-            <HeroContent />
-          </div>
-
-          <div className="relative order-1 min-h-[46svh] overflow-hidden lg:order-2 lg:min-h-full">
-            <Photo photo={PHOTOGRAPHY.hero} priority sizes="(max-width: 1024px) 100vw, 55vw" />
-            {/* Seats the image against the type column. Only across the seam,
-                so the picture itself is left alone. */}
+      {/* 1. Hero ---------------------------------------------------------- */}
+      <section className="relative isolate overflow-hidden bg-brand-wash">
+        {heroHasPhoto ? (
+          <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-[58%] lg:block">
+            <Photo photo={PHOTOGRAPHY.hero} priority sizes="60vw" />
+            {/* Fades the picture into the type column. Only across the seam, so
+                the photograph itself is left alone. */}
             <div
-              aria-hidden="true"
-              className="absolute inset-0 hidden lg:block"
+              className="absolute inset-0"
               style={{
                 background:
-                  'linear-gradient(to right, #141414 0%, rgba(20,20,20,0.2) 30%, transparent 58%)',
+                  'linear-gradient(to right, #F4F8F5 0%, rgba(244,248,245,0.94) 20%, rgba(244,248,245,0.12) 60%, transparent 100%)',
               }}
             />
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 bottom-0 h-32 lg:hidden"
-              style={{ background: 'linear-gradient(to top, #141414 0%, transparent 100%)' }}
-            />
           </div>
-        </section>
-      ) : (
-        <section className="relative isolate flex items-center overflow-hidden bg-ink lg:min-h-[88svh]">
-          {/* A deep field rather than a drawing. It carries the light without
-              claiming to be a picture of anywhere. */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                'radial-gradient(90% 70% at 78% 26%, rgba(210,27,31,0.28) 0%, rgba(20,20,20,0) 58%), radial-gradient(70% 60% at 96% 8%, rgba(240,74,78,0.16) 0%, rgba(20,20,20,0) 60%), linear-gradient(160deg, #221F1E 0%, #141414 52%, #080706 100%)',
-            }}
-          />
+        ) : null}
+
+        <div className="relative">
           <HeroContent variant="full" />
-        </section>
-      )}
-
-      {/* 2. Index strip ---------------------------------------------------- */}
-      <nav aria-label="Page sections" className="border-y border-white/10 bg-ink">
-        <ol className="shell grid grid-cols-2 lg:grid-cols-4">
-          {INDEX.map((item, i) => (
-            <li
-              key={item.label}
-              className={`border-white/10 ${i % 2 === 1 ? '' : 'border-r'} ${
-                i < 2 ? 'border-b lg:border-b-0' : ''
-              } lg:border-r lg:last:border-r-0`}
-            >
-              <Link
-                href={item.href}
-                className="flex items-center gap-4 px-1 py-6 transition-colors hover:text-brand-light lg:px-6"
-              >
-                <RingNumber value={item.number} size={38} tone="light" />
-                <span className="text-[0.9375rem] text-warm/80">{item.label}</span>
-              </Link>
-            </li>
-          ))}
-        </ol>
-      </nav>
-
-      {/* 3. Introduction. Light from here on, which is the change. ---------- */}
-      <section id="introduction" className="scroll-mt-24 bg-warm py-24 lg:py-36">
-        <div className="shell grid gap-12 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-24">
-          <div data-vortex-item>
-            <p className="eyebrow">The school</p>
-            <Ribbon className="mt-6">{SCHOOL.motto}</Ribbon>
-          </div>
-
-          <div data-vortex-item>
-            <h2 className="max-w-[20ch] text-[clamp(2rem,4.6vw,3.4rem)] leading-[1.06] tracking-[-0.025em]">
-              A secondary school with nothing hidden from the people it serves.
-            </h2>
-
-            <div className="mt-12 grid gap-10 sm:grid-cols-2">
-              <p className="text-[1.0625rem] leading-[1.8] text-ink-600">
-                Palmseed Model School follows the national curriculum through Junior Secondary and
-                Senior Secondary, and prepares students for the examinations that decide what comes
-                next.
-              </p>
-              <p className="text-[1.0625rem] leading-[1.8] text-ink-600">
-                The motto is not decoration. It is the test we apply to a lesson, a rule and a
-                report. If a thing does not help a student become more capable, it does not belong
-                in the school day.
-              </p>
-            </div>
-
-            <div className="mt-12 flex flex-wrap gap-4">
-              <Link
-                href="/about"
-                className="border border-ink px-6 py-3.5 text-sm font-medium text-ink transition-colors hover:bg-ink hover:text-warm"
-              >
-                More about Palmseed
-              </Link>
-              <Link
-                href="/academics"
-                className="px-6 py-3.5 text-sm font-medium text-ink underline underline-offset-4 transition-colors hover:text-brand"
-              >
-                See the academic programme
-              </Link>
-            </div>
-          </div>
         </div>
-      </section>
 
-      {/* 4. Commitments. A numbered editorial list, not four boxes. --------- */}
-      <section className="bg-pure py-24 lg:py-32">
-        <div className="shell">
-          <SeedRule className="mb-20" />
-          <SectionHeading
-            eyebrow="What we hold to"
-            title="Four commitments that shape the school day."
-            className="mb-16"
-          />
-
-          <ol className="border-t border-ink-100">
-            {VALUES.map((value, index) => (
-              <li
-                key={value.title}
-                data-vortex-item
-                className="grid gap-4 border-b border-ink-100 py-8 sm:grid-cols-[5rem_16rem_minmax(0,1fr)] sm:gap-10 lg:py-10"
-              >
-                <RingNumber value={index + 1} size={46} />
-                <h3 className="text-[1.25rem] leading-snug">{value.title}</h3>
-                <p className="max-w-[56ch] text-[0.9375rem] leading-[1.8] text-ink-500">
-                  {value.body}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* 5. Junior Secondary --------------------------------------------- */}
-      <FeatureSection photo={PHOTOGRAPHY.junior} imageSide="left">
-        <p className="eyebrow mb-5">Junior Secondary</p>
-        <h2 className="text-[clamp(1.75rem,3.6vw,2.7rem)] leading-[1.1]">
-          JSS 1 to JSS 3, where the habits are set.
-        </h2>
-        <p className="mt-7 text-[1.0625rem] leading-[1.8] text-ink-600">
-          The junior school builds the foundation the senior years depend on. Students take the full
-          basic education curriculum, and the emphasis is on reading closely, writing clearly and
-          reasoning in numbers.
-        </p>
-        <p className="mt-5 text-[1.0625rem] leading-[1.8] text-ink-600">
-          Junior Secondary ends with the Basic Education Certificate Examination, which also informs
-          the pathway a student takes into the senior school.
-        </p>
-
-        <ul className="mt-10 flex flex-wrap gap-2.5">
-          {JUNIOR_LEVELS.map((level) => (
-            <li
-              key={level}
-              className="border border-ink-200 px-4 py-2 text-[0.8125rem] font-medium tracking-wide text-ink-700"
-            >
-              {level}
-            </li>
-          ))}
-        </ul>
-      </FeatureSection>
-
-      {/* 6. Senior Secondary ---------------------------------------------- */}
-      <FeatureSection photo={PHOTOGRAPHY.senior} imageSide="right" tone="dark">
-        <p className="eyebrow mb-5 text-brand-light">Senior Secondary</p>
-        <h2 className="text-[clamp(1.75rem,3.6vw,2.7rem)] leading-[1.1] text-warm">
-          SS 1 to SS 3, and a pathway that fits.
-        </h2>
-        <p className="mt-7 text-[1.0625rem] leading-[1.8] text-warm/65">
-          Senior students choose one of three pathways. The choice is made with the school after
-          looking at junior results, aptitude and what the student intends to study next.
-        </p>
-
-        <dl className="mt-10 border-t border-white/10">
-          {PATHWAYS.map((pathway) => (
-            <div
-              key={pathway.name}
-              className="flex flex-wrap gap-x-8 gap-y-2 border-b border-white/10 py-5"
-            >
-              <dt className="w-24 shrink-0 font-display text-[1.0625rem] text-brand-light">
-                {pathway.name}
-              </dt>
-              <dd className="flex-1 text-[0.9375rem] leading-[1.7] text-warm/60">{pathway.body}</dd>
-            </div>
-          ))}
-        </dl>
-
-        <ul className="mt-10 flex flex-wrap gap-2.5">
-          {SENIOR_LEVELS.map((level) => (
-            <li
-              key={level}
-              className="border border-white/20 px-4 py-2 text-[0.8125rem] font-medium tracking-wide text-warm/80"
-            >
-              {level}
-            </li>
-          ))}
-        </ul>
-      </FeatureSection>
-
-      {/* 7. School life. One full bleed band, the image at full strength. --- */}
-      <section className="relative">
-        <Band photo={PHOTOGRAPHY.schoolLife} sizes="100vw" className="min-h-[78svh]">
-          <div className="relative flex min-h-[78svh] items-end">
-            <div className="shell pb-16 lg:pb-20">
-              <div data-vortex-item className="max-w-2xl">
-                <p className="eyebrow mb-5 text-brand-light">School life</p>
-                <h2 className="text-[clamp(1.9rem,4.2vw,3rem)] leading-[1.08] text-warm">
-                  A school day has more in it than lessons.
-                </h2>
-                <p className="mt-6 text-[1.0625rem] leading-[1.8] text-warm/70">
-                  Assembly, clubs, sport, debate and service run alongside the timetable. They are
-                  where students learn to speak in front of others, to lose well, to organise
-                  something and to finish what they started.
-                </p>
-                <Link
-                  href="/school-life"
-                  className="mt-9 inline-block border border-warm/30 px-7 py-3.5 text-sm font-medium text-warm transition-colors hover:border-warm hover:bg-warm hover:text-ink"
-                >
-                  More on school life
-                </Link>
-              </div>
-            </div>
+        {heroHasPhoto ? (
+          <div className="relative h-[40svh] w-full overflow-hidden lg:hidden">
+            <Photo photo={PHOTOGRAPHY.hero} sizes="100vw" />
           </div>
-        </Band>
-
-        <ul className="grid bg-ink sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { title: 'Assembly', body: 'The day opens together, with notices, standards and recognition.' },
-            { title: 'Clubs and societies', body: 'Debate, press, science, literary and cultural groups.' },
-            { title: 'Sport', body: 'Inter house competition and regular physical education.' },
-            { title: 'Service', body: 'Responsibilities that keep the school running and teach ownership.' },
-          ].map((item) => (
-            <li
-              key={item.title}
-              data-vortex-item
-              className="border-b border-white/10 p-8 sm:border-r sm:last:border-r-0 lg:border-b-0"
-            >
-              <h3 className="text-[1.0625rem] text-warm">{item.title}</h3>
-              <p className="mt-3 text-[0.875rem] leading-[1.7] text-warm/55">{item.body}</p>
-            </li>
-          ))}
-        </ul>
+        ) : null}
       </section>
 
-      {/* 8. Digital learning ------------------------------------------------ */}
-      <section className="bg-pure py-24 lg:py-32">
-        <div className="shell">
-          <SectionHeading
-            eyebrow="Digital learning"
-            title="Technology where it earns its place."
-            standfirst="Screens are a tool, not a timetable. Palmseed uses them for the things they genuinely do better than paper."
-            className="mb-16"
-          />
-
-          <div
-            className={`grid gap-12 lg:gap-20 ${
-              digitalHasPhoto ? 'lg:grid-cols-[1fr_0.82fr]' : ''
-            }`}
-          >
-            <ol className="border-t border-ink-100">
-              {[
-                {
-                  title: 'Records that reach home the same day',
-                  body: 'Scores, attendance and remarks are entered by teachers and published by the school. Guardians are notified.',
-                },
-                {
-                  title: 'Coursework that does not get lost',
-                  body: 'Assignments are set, submitted and returned in the portal, with the deadline visible to everyone.',
-                },
-                {
-                  title: 'Computer studies as a subject',
-                  body: 'Students learn to use a computer properly, from keyboard fluency to spreadsheets and safe conduct online.',
-                },
-              ].map((item, index) => (
-                <li
-                  key={item.title}
-                  data-vortex-item
-                  className="grid gap-3 border-b border-ink-100 py-7 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-8"
-                >
-                  <RingNumber value={index + 1} size={40} />
-                  <div>
-                    <h3 className="text-[1.125rem] leading-snug">{item.title}</h3>
-                    <p className="mt-3 text-[0.9375rem] leading-[1.75] text-ink-500">{item.body}</p>
+      {/* 2. Figures. Present only when the school has supplied any. -------- */}
+      {PROFILE.figures.length > 0 || PROFILE.strapline ? (
+        <section className="border-y border-ink-100 bg-pure">
+          <div className="shell flex flex-wrap items-center justify-between gap-x-12 gap-y-8 py-8">
+            {PROFILE.figures.length > 0 ? (
+              <dl className="flex flex-wrap items-center gap-x-14 gap-y-6">
+                {PROFILE.figures.map((figure) => (
+                  <div key={figure.label} data-vortex-item className="flex items-center gap-3.5">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-tint text-brand">
+                      <Icon name="star" />
+                    </span>
+                    <div>
+                      <dd className="font-display text-[1.4rem] leading-none text-ink">
+                        {figure.value}
+                      </dd>
+                      <dt className="mt-1.5 text-[0.8125rem] text-ink-500">{figure.label}</dt>
+                    </div>
                   </div>
-                </li>
-              ))}
-            </ol>
+                ))}
+              </dl>
+            ) : null}
 
-            <Plate
-              photo={PHOTOGRAPHY.digital}
-              aspect="4 / 5"
-              sizes="(max-width: 1024px) 100vw, 42vw"
-              className="self-start"
-            />
+            {PROFILE.strapline ? (
+              <p className="max-w-sm border-l-2 border-accent pl-5 font-display text-[0.9375rem] italic leading-relaxed text-ink-600">
+                {PROFILE.strapline}
+              </p>
+            ) : null}
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
-      {/* 9. Admissions ------------------------------------------------------ */}
-      <section className="bg-warm py-24 lg:py-32">
-        <div
-          className={`shell grid items-center gap-14 lg:gap-20 ${
-            admissionsHasPhoto ? 'lg:grid-cols-[1fr_0.8fr]' : ''
-          }`}
-        >
+      {/* 3. About --------------------------------------------------------- */}
+      <section id="introduction" className="scroll-mt-24 bg-brand-wash py-20 lg:py-24">
+        <div className="shell grid items-start gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div data-vortex-item>
-            <p className="eyebrow mb-5">Admissions</p>
-            <h2 className="text-[clamp(1.85rem,4vw,2.9rem)] leading-[1.08]">
-              Registration is open for {JUNIOR_LEVELS.join(', ')} and {SENIOR_LEVELS.join(', ')}.
-            </h2>
-            <p className="mt-7 max-w-[54ch] text-[1.0625rem] leading-[1.8] text-ink-600">
-              Start by creating an account. You will be asked for the student details, the class you
-              are applying for and a parent or guardian contact. The school reviews every
-              registration and replies by email.
+            <Eyebrow>Who we are</Eyebrow>
+            <h2 className="text-[clamp(1.75rem,3.4vw,2.5rem)] leading-[1.15]">About our school</h2>
+            <p className="mt-6 max-w-[46ch] text-[0.9375rem] leading-[1.85] text-ink-600">
+              {SCHOOL.name} teaches the Nigerian national curriculum through Junior and Senior
+              Secondary. Academic work, moral discipline and leadership together, so that students
+              leave able to do something with what they have learnt.
             </p>
-
-            <ol className="mt-11 border-t border-ink-200">
-              {[
-                'Create an account and confirm your email address.',
-                'Complete the admission details and give guardian consent.',
-                'The school reviews the registration.',
-                'On approval, an admission number and class are issued and the full portal opens.',
-              ].map((step, index) => (
-                <li key={step} className="flex gap-6 border-b border-ink-200 py-4">
-                  <RingNumber value={index + 1} size={30} />
-                  <span className="text-[0.9375rem] leading-[1.7] text-ink-700">{step}</span>
-                </li>
-              ))}
-            </ol>
-
-            <div className="mt-11 flex flex-wrap gap-4">
-              <Link
-                href="/signup"
-                className="bg-brand px-7 py-4 text-[0.9375rem] font-medium text-white transition-colors hover:bg-brand-deep"
-              >
-                Begin a registration
-              </Link>
-              <Link
-                href="/admissions"
-                className="border border-ink px-7 py-4 text-[0.9375rem] font-medium text-ink transition-colors hover:bg-ink hover:text-warm"
-              >
-                Read the admissions guide
-              </Link>
-            </div>
-          </div>
-
-          <Plate
-            photo={PHOTOGRAPHY.admissions}
-            aspect="3 / 4"
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            className="self-center"
-          />
-        </div>
-      </section>
-
-      {/* 10. Announcements -------------------------------------------------- */}
-      <section className="border-t border-ink-100 bg-pure py-24 lg:py-28">
-        <div className="shell">
-          <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
-            <SectionHeading eyebrow="Notice board" title="News and announcements" />
+            <p className="mt-5 max-w-[46ch] text-[0.9375rem] leading-[1.85] text-ink-600">
+              The motto is not decoration. It is the test we apply to a lesson, a rule and a report.
+            </p>
             <Link
-              href="/news"
-              className="text-sm font-medium text-ink underline underline-offset-4 transition-colors hover:text-brand"
+              href="/about"
+              className="mt-8 inline-flex items-center gap-2.5 rounded-full bg-brand px-6 py-3 text-[0.8125rem] font-semibold text-white transition-colors hover:bg-brand-deep"
             >
-              All announcements
+              Learn more about us
+              <Arrow />
             </Link>
           </div>
 
-          {announcements.length === 0 ? (
-            <EmptyState
-              title="No announcements have been published yet."
-              description="When the school publishes a notice it appears here and in the portal. Registered families are emailed at the same time."
-            />
-          ) : (
-            <ul className="grid gap-px border border-ink-100 bg-ink-100 md:grid-cols-2">
-              {announcements.map((item) => (
-                <li key={item.id} data-vortex-item className="bg-pure p-8">
-                  <div className="flex items-center gap-3">
-                    <time
-                      dateTime={new Date(item.published_at).toISOString()}
-                      className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink-400"
-                    >
-                      {formatDate(item.published_at)}
-                    </time>
-                    {item.is_pinned ? (
-                      <span className="border border-brand/30 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-brand">
-                        Pinned
-                      </span>
-                    ) : null}
-                  </div>
-                  <h3 className="mt-4 text-[1.1875rem] leading-snug">{item.title}</h3>
-                  <p className="mt-3 line-clamp-4 text-[0.9375rem] leading-[1.7] text-ink-500">
-                    {item.body}
-                  </p>
+          <div className={`grid gap-6 ${aboutHasPhoto ? 'sm:grid-cols-[1.5fr_1fr]' : ''}`}>
+            {aboutHasPhoto ? (
+              <Plate
+                photo={PHOTOGRAPHY.schoolLife}
+                aspect="4 / 3"
+                sizes="(max-width: 640px) 100vw, 45vw"
+                className="rounded-2xl"
+                frame={false}
+              />
+            ) : null}
+
+            <div
+              data-vortex-item
+              className="flex flex-col justify-center rounded-2xl border border-ink-100 bg-pure p-7"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-tint text-brand">
+                <Icon name="building" />
+              </span>
+              <h3 className="mt-5 text-[1.125rem]">Our story</h3>
+              <p className="mt-3 text-[0.875rem] leading-[1.75] text-ink-500">
+                A community of learners, teachers and families working towards the same thing.
+              </p>
+              <Link
+                href="/about"
+                className="mt-6 inline-flex items-center gap-2 text-[0.8125rem] font-semibold text-brand hover:text-brand-deep"
+              >
+                Read our story
+                <Arrow />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="shell mt-6 grid gap-6 lg:grid-cols-[repeat(2,1fr)_1.25fr]">
+          {PILLARS.map((pillar) => (
+            <div
+              key={pillar.title}
+              data-vortex-item
+              className="rounded-2xl border border-ink-100 bg-pure p-7"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-tint text-brand">
+                <Icon name={pillar.icon} />
+              </span>
+              <h3 className="mt-5 text-[1.125rem]">{pillar.title}</h3>
+              <p className="mt-3 text-[0.875rem] leading-[1.75] text-ink-500">{pillar.body}</p>
+            </div>
+          ))}
+
+          <div data-vortex-item className="rounded-2xl border border-ink-100 bg-pure p-7">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-tint text-brand">
+              <Icon name="sparkle" />
+            </span>
+            <h3 className="mt-5 text-[1.125rem]">Our core values</h3>
+            <ul className="mt-4 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
+              {VALUES.map((value) => (
+                <li key={value} className="flex items-center gap-2.5 text-[0.875rem] text-ink-600">
+                  <span className="text-brand-mid">
+                    <Icon name="check" className="h-4 w-4" />
+                  </span>
+                  {value}
                 </li>
               ))}
             </ul>
-          )}
+          </div>
         </div>
       </section>
 
-      {/* 11. Contact. Dark again, running into the footer. ------------------- */}
-      <section id="contact" className="scroll-mt-24 bg-ink py-24 text-warm lg:py-32">
-        <div className="shell grid gap-14 lg:grid-cols-[0.8fr_1fr] lg:gap-20">
+      {/* 4. Academics ------------------------------------------------------ */}
+      <section className="bg-pure py-20 lg:py-24">
+        <div className="shell grid items-start gap-10 lg:grid-cols-[0.7fr_1.3fr]">
           <div data-vortex-item>
-            <p className="eyebrow mb-5 text-brand-light">Contact</p>
-            <h2 className="text-[clamp(1.75rem,3.6vw,2.6rem)] leading-[1.1] text-warm">
-              Speak to the school office.
+            <Eyebrow>Excellence in education</Eyebrow>
+            <h2 className="text-[clamp(1.6rem,3vw,2.2rem)] leading-[1.15]">
+              Academics and learning programmes
             </h2>
-            <p className="mt-7 max-w-[46ch] text-[1.0625rem] leading-[1.8] text-warm/65">
-              Send a message and a member of staff will reply by email. Registration questions,
-              visits and general enquiries are all welcome.
+            <p className="mt-5 max-w-[42ch] text-[0.9375rem] leading-[1.8] text-ink-500">
+              A full curriculum and the room to find what a student is good at.
             </p>
-            <p className="mt-8 text-[0.9375rem] leading-relaxed text-warm/45">
-              You will receive an acknowledgement immediately, and a reply from the office after
-              that.
-            </p>
+            <ul className="mt-7 flex flex-wrap gap-2">
+              {[...JUNIOR_LEVELS, ...SENIOR_LEVELS].map((level) => (
+                <li
+                  key={level}
+                  className="rounded-full border border-ink-200 px-3.5 py-1.5 text-[0.75rem] font-medium text-ink-600"
+                >
+                  {level}
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/academics"
+              className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-ink-200 px-6 py-3 text-[0.8125rem] font-semibold text-ink transition-colors hover:border-brand hover:text-brand"
+            >
+              Explore our academics
+              <Arrow />
+            </Link>
           </div>
 
-          <div data-vortex-item className="border border-white/10 bg-warm p-7 sm:p-9">
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+            {PROGRAMMES.map((programme) => (
+              <li
+                key={programme.title}
+                data-vortex-item
+                className="rounded-2xl border border-ink-100 bg-brand-wash p-5 text-center transition-colors hover:border-brand-light"
+              >
+                <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-pure text-brand">
+                  <Icon name={programme.icon} />
+                </span>
+                <h3 className="mt-4 text-[0.875rem] font-semibold text-ink">{programme.title}</h3>
+                <p className="mt-1.5 text-[0.75rem] leading-relaxed text-ink-400">
+                  {programme.note}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 5. Why choose Palmseed -------------------------------------------- */}
+      <section className="relative isolate overflow-hidden bg-brand py-16 text-white lg:py-20">
+        {advantageHasPhoto ? (
+          <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-[34%] lg:block">
+            <Photo photo={PHOTOGRAPHY.digital} sizes="35vw" />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(to right, #12603C 0%, rgba(18,96,60,0.74) 45%, rgba(18,96,60,0.34) 100%)',
+              }}
+            />
+          </div>
+        ) : null}
+
+        <div className="relative shell grid items-center gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+          <div data-vortex-item>
+            <Eyebrow onDark>The Palmseed advantage</Eyebrow>
+            <h2 className="text-[clamp(1.6rem,3vw,2.2rem)] leading-[1.15] text-white">
+              Why choose Palmseed?
+            </h2>
+            <p className="mt-5 max-w-[38ch] text-[0.9375rem] leading-[1.8] text-white/70">
+              A nurturing environment, dedicated teachers, and a record every family can see.
+            </p>
+            <Link
+              href="/about"
+              className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-white/35 px-6 py-3 text-[0.8125rem] font-semibold text-white transition-colors hover:bg-white hover:text-brand"
+            >
+              Discover the difference
+              <Arrow />
+            </Link>
+          </div>
+
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3">
+            {ADVANTAGES.map((item) => (
+              <li key={item.title} data-vortex-item className="text-center">
+                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-accent">
+                  <Icon name={item.icon} />
+                </span>
+                <h3 className="mt-3.5 text-[0.8125rem] font-medium leading-snug text-white/90">
+                  {item.title}
+                </h3>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 6. How to apply ---------------------------------------------------- */}
+      <section className="bg-brand-wash py-20 lg:py-24">
+        <div className="shell grid items-start gap-10 lg:grid-cols-[0.62fr_1.38fr]">
+          <div data-vortex-item>
+            <Eyebrow>Join our community</Eyebrow>
+            <h2 className="text-[clamp(1.6rem,3vw,2.2rem)] leading-[1.15]">How to apply</h2>
+            <p className="mt-5 max-w-[38ch] text-[0.9375rem] leading-[1.8] text-ink-500">
+              Five steps to a place at Palmseed. Registration is open for {JUNIOR_LEVELS.join(', ')}{' '}
+              and {SENIOR_LEVELS.join(', ')}.
+            </p>
+            <Link
+              href="/signup"
+              className="mt-7 inline-flex items-center gap-2.5 rounded-full bg-brand px-6 py-3 text-[0.8125rem] font-semibold text-white transition-colors hover:bg-brand-deep"
+            >
+              Apply now
+              <Arrow />
+            </Link>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[1fr_15rem]">
+            <ol className="grid gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
+              {STEPS.map((step, index) => (
+                <li key={step.title} data-vortex-item className="relative text-center">
+                  {index < STEPS.length - 1 ? (
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-[calc(50%+1.5rem)] right-[-0.9rem] top-4 hidden border-t border-dashed border-ink-200 lg:block"
+                    />
+                  ) : null}
+                  <span className="relative mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-brand text-[0.75rem] font-semibold text-white">
+                    {index + 1}
+                  </span>
+                  <h3 className="mt-4 text-[0.8125rem] font-semibold leading-snug text-ink">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-[0.75rem] leading-relaxed text-ink-400">{step.body}</p>
+                </li>
+              ))}
+            </ol>
+
+            <div
+              data-vortex-item
+              className="self-start rounded-2xl border border-ink-100 bg-pure p-6"
+            >
+              <span className="flex items-center gap-2.5 text-[0.875rem] font-semibold text-ink">
+                <span className="text-brand">
+                  <Icon name="help" />
+                </span>
+                Need help?
+              </span>
+              <p className="mt-3 text-[0.8125rem] leading-relaxed text-ink-500">
+                The admissions office will answer any question before you start.
+              </p>
+              <Link
+                href="/contact"
+                className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full border border-ink-200 px-4 py-2.5 text-[0.8125rem] font-semibold text-ink transition-colors hover:border-brand hover:text-brand"
+              >
+                Contact admissions
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Life at Palmseed ------------------------------------------------ */}
+      <section className="bg-pure py-20 lg:py-24">
+        <div className="shell grid items-start gap-10 lg:grid-cols-[0.55fr_1.45fr]">
+          <div data-vortex-item>
+            <Eyebrow>A vibrant community</Eyebrow>
+            <h2 className="text-[clamp(1.6rem,3vw,2.2rem)] leading-[1.15]">Life at Palmseed</h2>
+            <p className="mt-5 max-w-[36ch] text-[0.9375rem] leading-[1.8] text-ink-500">
+              Assembly, clubs, sport and service run alongside the timetable.
+            </p>
+            <Link
+              href="/school-life"
+              className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-ink-200 px-6 py-3 text-[0.8125rem] font-semibold text-ink transition-colors hover:border-brand hover:text-brand"
+            >
+              Explore school life
+              <Arrow />
+            </Link>
+          </div>
+
+          <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {FACILITIES.map((facility) => (
+              <li key={facility.title} data-vortex-item>
+                <Plate
+                  photo={facility.photo}
+                  aspect="4 / 3"
+                  sizes="(max-width: 640px) 100vw, 30vw"
+                  className="rounded-xl"
+                  frame={false}
+                />
+                <h3 className="mt-3.5 text-[0.875rem] font-semibold text-ink">{facility.title}</h3>
+                <p className="mt-1.5 text-[0.75rem] leading-relaxed text-ink-400">{facility.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 8. Principal, news and testimonials -------------------------------- */}
+      <section className="bg-brand-wash py-20 lg:py-24">
+        <div className="shell grid gap-10 lg:grid-cols-2">
+          {/* A named quotation is a claim, so it appears only once the school
+              has supplied one. */}
+          {PROFILE.principal ? (
+            <div data-vortex-item className="rounded-2xl border border-ink-100 bg-pure p-8">
+              <Eyebrow>Leadership</Eyebrow>
+              <h2 className="text-[1.5rem] leading-tight">A message from our principal</h2>
+              <blockquote className="mt-6 border-l-2 border-accent pl-5 text-[0.9375rem] leading-[1.85] text-ink-600">
+                {PROFILE.principal.quote}
+              </blockquote>
+              <p className="mt-5 font-display text-[1rem] text-ink">{PROFILE.principal.name}</p>
+              <p className="text-[0.8125rem] text-ink-400">{PROFILE.principal.title}</p>
+            </div>
+          ) : null}
+
+          <div data-vortex-item className={PROFILE.principal ? '' : 'lg:col-span-2'}>
+            <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <Eyebrow>Stay informed</Eyebrow>
+                <h2 className="text-[1.5rem] leading-tight">Latest news and events</h2>
+              </div>
+              <Link
+                href="/news"
+                className="inline-flex items-center gap-2 rounded-full border border-ink-200 px-5 py-2.5 text-[0.8125rem] font-semibold text-ink transition-colors hover:border-brand hover:text-brand"
+              >
+                View all news
+                <Arrow />
+              </Link>
+            </div>
+
+            {announcements.length === 0 ? (
+              <EmptyState
+                title="No announcements have been published yet."
+                description="When the school publishes a notice it appears here and in the portal. Registered families are emailed at the same time."
+              />
+            ) : (
+              <ul className={`grid gap-4 ${PROFILE.principal ? '' : 'md:grid-cols-3'}`}>
+                {announcements.map((item) => (
+                  <li
+                    key={item.id}
+                    className="rounded-2xl border border-ink-100 bg-pure p-5 transition-colors hover:border-brand-light"
+                  >
+                    <time
+                      dateTime={new Date(item.published_at).toISOString()}
+                      className="text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-ink-400"
+                    >
+                      {formatDate(item.published_at)}
+                    </time>
+                    <h3 className="mt-2 text-[1rem] leading-snug">{item.title}</h3>
+                    <p className="mt-2 line-clamp-2 text-[0.8125rem] leading-relaxed text-ink-500">
+                      {item.body}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        {PROFILE.testimonials.length > 0 ? (
+          <div className="shell mt-12">
+            <Eyebrow>Testimonials</Eyebrow>
+            <h2 className="text-[1.5rem] leading-tight">What people say</h2>
+            <ul className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {PROFILE.testimonials.map((item) => (
+                <li
+                  key={item.name}
+                  data-vortex-item
+                  className="rounded-2xl border border-ink-100 bg-pure p-7"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="font-display text-[2rem] leading-none text-accent"
+                  >
+                    &ldquo;
+                  </span>
+                  <blockquote className="mt-2 text-[0.9375rem] leading-[1.8] text-ink-600">
+                    {item.quote}
+                  </blockquote>
+                  <p className="mt-5 text-[0.875rem] font-semibold text-ink">{item.name}</p>
+                  <p className="text-[0.75rem] text-ink-400">{item.relationship}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </section>
+
+      {/* 9. Contact --------------------------------------------------------- */}
+      <section id="contact" className="scroll-mt-24 bg-brand py-16 text-white lg:py-20">
+        <div className="shell">
+          <div className="flex flex-wrap items-start justify-between gap-10">
+            <div data-vortex-item className="max-w-xl">
+              <Eyebrow onDark>Get in touch</Eyebrow>
+              <h2 className="text-[clamp(1.6rem,3vw,2.2rem)] leading-[1.15] text-white">
+                Let us build a brighter tomorrow together
+              </h2>
+              <p className="mt-4 text-[0.9375rem] leading-[1.8] text-white/70">
+                Send a message and a member of staff will reply by email.
+              </p>
+            </div>
+
+            <dl className="flex flex-wrap gap-x-12 gap-y-6">
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 text-accent">
+                  <Icon name="mail" />
+                </span>
+                <div>
+                  <dt className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-white/50">
+                    Email us
+                  </dt>
+                  <dd className="mt-1 text-[0.875rem]">
+                    <a href={`mailto:${SCHOOL.replyEmail}`} className="underline underline-offset-4">
+                      {SCHOOL.replyEmail}
+                    </a>
+                  </dd>
+                </div>
+              </div>
+
+              {/* Telephone, address and hours appear the moment the school
+                  supplies them. Nothing is invented meanwhile. */}
+              {SCHOOL.phone ? (
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 text-accent">
+                    <Icon name="phone" />
+                  </span>
+                  <div>
+                    <dt className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-white/50">
+                      Call us
+                    </dt>
+                    <dd className="mt-1 text-[0.875rem]">{SCHOOL.phone}</dd>
+                  </div>
+                </div>
+              ) : null}
+
+              {SCHOOL.streetAddress ? (
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 text-accent">
+                    <Icon name="pin" />
+                  </span>
+                  <div>
+                    <dt className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-white/50">
+                      Visit us
+                    </dt>
+                    <dd className="mt-1 text-[0.875rem]">{SCHOOL.streetAddress}</dd>
+                  </div>
+                </div>
+              ) : null}
+
+              {PROFILE.officeHours ? (
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 text-accent">
+                    <Icon name="clock" />
+                  </span>
+                  <div>
+                    <dt className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-white/50">
+                      School hours
+                    </dt>
+                    <dd className="mt-1 text-[0.875rem]">{PROFILE.officeHours}</dd>
+                  </div>
+                </div>
+              ) : null}
+            </dl>
+          </div>
+
+          <div
+            data-vortex-item
+            className="mt-10 rounded-2xl bg-warm p-7 text-ink sm:p-9 lg:max-w-3xl"
+          >
             <ContactForm csrfToken={token} />
           </div>
         </div>
